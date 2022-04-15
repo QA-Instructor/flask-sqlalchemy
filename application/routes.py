@@ -120,6 +120,72 @@ def people_and_cars(person_id):
 
     # return render_template('home.html', form=form, message=error)
 
+
 @app.route('/about', methods=['GET'])
 def about():
     return render_template('about.html', title='About')
+
+
+@app.route('/contact_us', methods=['GET'])
+def contact():
+    return render_template('contact_us.html', title='Contact Us')
+
+
+@app.route('/plant_care', methods=['GET'])
+def plant_care():
+    return render_template('plant_care.html', title='Plant Care')
+
+
+@app.route('/shop', methods=['GET'])
+def shop():
+    return render_template('shop.html', title='Shop')
+
+
+@app.route('/plant1', methods=['GET'])
+def plant1():
+    return render_template('plant1.html', title='Plant 1')
+
+
+@app.route('/plant2', methods=['GET'])
+def plant2():
+    return render_template('plant2.html', title='Plant 2')
+
+
+@app.route('/plant3', methods=['GET'])
+def plant3():
+    return render_template('plant3.html', title='Plant 3')
+
+
+@app.route('/plant4', methods=['GET'])
+def plant4():
+    return render_template('plant4.html', title='Plant 4')
+
+
+@app.route('/plant5', methods=['GET'])
+def plant5():
+    return render_template('plant5.html', title='Plant 5')
+
+
+@app.route('/plant6', methods=['GET'])
+def plant6():
+    return render_template('plant6.html', title='Plant 6')
+
+
+@app.route('/plant7', methods=['GET'])
+def plant7():
+    return render_template('plant7.html', title='Plant 7')
+
+
+@app.route('/plant8', methods=['GET'])
+def plant8():
+    return render_template('plant8.html', title='Plant 8')
+
+
+@app.route('/plant9', methods=['GET'])
+def plant9():
+    return render_template('plant9.html', title='Plant 9')
+
+
+@app.route('/plant10', methods=['GET'])
+def plant10():
+    return render_template('plant10.html', title='Plant 10')
