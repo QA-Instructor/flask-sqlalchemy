@@ -1,11 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Simple Form</title>
-</head>
-<body>
-<div class='form'>
+{% extends "layout.html" %}
+{% block body_content %}
+
+<!--example text, just checking the bootstrap is working -->
+<div class="container-fluid bg-3 text-center">
+    <h1>The Plant Emporium</h1>
+    <p>Here at The Plant Emporium we care about plants</p>
+
+    <!-- First Container -->
+    <div class="container-fluid bg-3 text-center">
+        <img src="{{url_for('static',filename='images/green_leaves.jpg')}}" class="img-responsive img-rounded" style="display:inline" alt="Green leaves" height="450">
+    </div>
+    <p>As you can tell from our exquisitely designed site, web design is our passion</p>
+</div>
+
+
+<!--Victoria's original code-->
+        <div class='form'>
             <form method='POST' action=''>
                 <!-- provides CSRF protection, alongside secret key. Use on all POST forms -->
                 {{ form.hidden_tag() }}
@@ -17,6 +27,5 @@
             {{ message }}
             </form>
         </div>
-</body>
-</html>
+{% endblock %}
 

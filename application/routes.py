@@ -21,8 +21,12 @@ def register():
             db.session.add(person)
             db.session.commit()
             return 'Thank you!'
+    return render_template('home.html', form=form, message=error, title='home')
 
-    return render_template('home.html', form=form, message=error)
+# made this simple home route to try and get it working
+# @app.route('/home', methods=['GET'])
+# def home():
+#     return render_template('home.html', title='home')
 
 
 @app.route('/people', methods=['GET'])
@@ -115,3 +119,7 @@ def people_and_cars(person_id):
     return render_template('person_and_cars.html', person=person, message=error, title="Person and Car Info")
 
     # return render_template('home.html', form=form, message=error)
+
+@app.route('/about', methods=['GET'])
+def about():
+    return render_template('about.html', title='About')
