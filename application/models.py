@@ -1,6 +1,7 @@
 from application import db # import the sqlalchemy object (db) created for our app
 
-# need to change these classes to plants and customers?? Will change once we have the database info
+#  will need to change these to our relevant things
+#  need to change these classes to plants and customers?? Will change once we have the database info
 class Person(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(30), nullable=False)
