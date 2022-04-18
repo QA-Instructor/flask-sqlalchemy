@@ -3,13 +3,34 @@
 # NOTE! The database MUST exist before we try to connect to it
 
 from application import db
-from application.models import Person, Car
+from application.models import Person, Car # Victoria's code
+from application.models import PlantType
+
+# these are the 11 tables we want to create, UserLogin, OrderHistory currently causing errors so not included
+# Staff, Address, Customer,  OrderStatus, Category, Size, Product, Order add to import statement once created
 
 # create our database schema
 # db.create_all()
 
 db.drop_all()
 db.create_all()
+
+# will need to use the db.session.add() code below to add the data - use lists as Victoria has below to make it easier?
+# then need db.session.commit() to actually save it to the database
+# once this code is populated, running it seperately should make everything appear in the database!
+
+
+plant1 = PlantType(plant_type_description='Cacti/Succulent')
+plant2 = PlantType(plant_type_description='Hanging')
+plant3 = PlantType(plant_type_description='Flowering')
+plant4 = PlantType(plant_type_description='Palms')
+plant5 = PlantType(plant_type_description='Ferns')
+plant_types = [plant1, plant2, plant3, plant4, plant5]
+
+db.session.add_all(plant_types)
+db.session.commit()
+
+# Victoria's Code:
 
 testPerson1 = Person(first_name='Julie',last_name='Dooley')
 testPerson2 = Person(first_name='Victoria',last_name='Lloyd')
