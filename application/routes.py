@@ -1,12 +1,12 @@
-from flask import render_template, request
+from flask import render_template, request, flash, redirect, url_for
 from application import app, db
-from application.forms import BasicForm
+from application.forms import BasicForm, RegistrationForm, LoginForm, StaffForm, PlantForm
 from application.models import Person, Car
 
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
-def register():
+def register_basic_form():
     error = ""
     form = BasicForm()
 
@@ -189,3 +189,26 @@ def plant9():
 @app.route('/plant10', methods=['GET'])
 def plant10():
     return render_template('plant10.html', title='Plant 10')
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    error = ""
+    form = RegistrationForm()
+
+    if form.validate_on_submit():
+        flash(f'Account created for {{ form.username.data }}!', 'success')
+        return redirect(url_for('home'))
+
+    if request.method == 'POST':
+        username = form.username.data
+        email = form.email.data
+        password = form.password.data
+
+        if len(username) == 0 or len(email) == 0 or len(password) < 4:
+            error = "Please supply a usernamme, email, and password"
+        else:
+            # person = Person(first_name=first_name, last_name=last_name)
+            # db.session.add(person)
+            # db.session.commit()
+    return render_template('register.html', title='Register', message= error, form=form)
