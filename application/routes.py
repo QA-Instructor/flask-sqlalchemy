@@ -1,12 +1,12 @@
-from flask import render_template, request
+from flask import render_template, request, flash, redirect, url_for
 from application import app, db
-from application.forms import BasicForm
+from application.forms import BasicForm, RegistrationForm # LoginForm, StaffForm, PlantForm
 from application.models import Person, Car
 
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
-def register():
+def register_basic_form():
     error = ""
     form = BasicForm()
 
@@ -37,6 +37,7 @@ def show_people():
         error = "There are no people to display"
         print(people)
     return render_template('people.html', people=people, message=error)
+
 
 @app.route('/cars', methods=['GET'])
 def show_cars():
@@ -189,3 +190,42 @@ def plant9():
 @app.route('/plant10', methods=['GET'])
 def plant10():
     return render_template('plant10.html', title='Plant 10')
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    error = ""
+    form = RegistrationForm()
+
+    if request.method == 'POST':
+        username = form.username.data
+        email = form.email.data
+        password = form.password.data
+
+        if len(username) == 0 or len(email) == 0 or len(password) < 4:
+            error = "Please supply a usernamme, email, and password"
+        else:
+            # person = Person(first_name=first_name, last_name=last_name)
+            # db.session.add(person)
+            # db.session.commit()
+            return 'Thank you'
+    return render_template('register.html', title='Register', message= error, form=form)
+
+
+# @app.route('/plantform', methods=['GET', 'POST'])
+# def plantform():
+#     error = ""
+#     form = PlantForm()
+#
+#     if request.method == 'POST':
+#         plant = form.plant_name.data
+#         category = form.plant_category.data
+#
+#         if len(plant) == 0 or category :
+#             error = "Please complete the fields"
+#         else:
+#             # person = Person(first_name=first_name, last_name=last_name)
+#             # db.session.add(person)
+#             # db.session.commit()
+#             return 'Thank you'
+#     return render_template('plantform.html', title='Register', message= error, form=form)
