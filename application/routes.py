@@ -1,6 +1,6 @@
 from flask import render_template, request, flash, redirect, url_for
 from application import app, db
-from application.forms import BasicForm, RegistrationForm, LoginForm, StaffForm, PlantForm
+from application.forms import BasicForm, RegistrationForm # LoginForm, StaffForm, PlantForm
 from application.models import Person, Car
 
 
@@ -37,6 +37,7 @@ def show_people():
         error = "There are no people to display"
         print(people)
     return render_template('people.html', people=people, message=error)
+
 
 @app.route('/cars', methods=['GET'])
 def show_cars():
@@ -196,10 +197,6 @@ def register():
     error = ""
     form = RegistrationForm()
 
-    if form.validate_on_submit():
-        flash(f'Account created for {{ form.username.data }}!', 'success')
-        return redirect(url_for('home'))
-
     if request.method == 'POST':
         username = form.username.data
         email = form.email.data
@@ -211,4 +208,24 @@ def register():
             # person = Person(first_name=first_name, last_name=last_name)
             # db.session.add(person)
             # db.session.commit()
+            return 'Thank you'
     return render_template('register.html', title='Register', message= error, form=form)
+
+
+# @app.route('/plantform', methods=['GET', 'POST'])
+# def plantform():
+#     error = ""
+#     form = PlantForm()
+#
+#     if request.method == 'POST':
+#         plant = form.plant_name.data
+#         category = form.plant_category.data
+#
+#         if len(plant) == 0 or category :
+#             error = "Please complete the fields"
+#         else:
+#             # person = Person(first_name=first_name, last_name=last_name)
+#             # db.session.add(person)
+#             # db.session.commit()
+#             return 'Thank you'
+#     return render_template('plantform.html', title='Register', message= error, form=form)

@@ -10,12 +10,12 @@
                 {{ form.username }}
             </div>
             <div class="form-group">
-                {{ form.password.label }}
-                {{ form.password }}
+                {{ form.email.label }}
+                {{ form.email }}
             </div>
             <div class="form-group">
-                {{ form.confirm_password.label }}
-                {{ form.confirm_password }}
+                {{ form.password.label }}
+                {{ form.password }}
             </div>
         </fieldset>
         <div class="form-group">
@@ -23,13 +23,6 @@
         </div>
 
     </form>
-    <div>
-        <small class="">
-            Already Have An Account? <a href="{{ url_for('login') }}">Sign In</a>
-<!--           Url for name of the login function, not the login route, hence why url_for instead of just {{ '/login' }}-->
-        </small>
-    </div>
-    
 </div>
 
 {% endblock %}
