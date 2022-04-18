@@ -7,6 +7,8 @@ class Staff(db.Model):
     first_name = db.Column(db.String(30), nullable=False)
     last_name = db.Column(db.String(30), nullable=False)
 # not sure if this line is correct in this instance
+    email = db.Column(db.String(50), nullable=False)
+    password = db.Column(db.String(30), nullable=False)
     orders = db.relationship('Order', backref='staff')
 
 
