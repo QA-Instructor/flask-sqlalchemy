@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block body_content %}
+<div class="forms">
+    <form action="", method="POST">
+        {{ form.hidden_tag() }}
+        <fieldset>
+            <legend>Staff Signup</legend>
+            <h5>Here, you'll be able to:</h5>
+            <li>Register a new member of staff to the Plant Emporium website</li>
+            <li>Provide access to our plant, customer and order tracking systems</li>
+            <br>
+            <div class="form-group">
+                {{ form.first_name.label }}
+                {{ form.first_name }}
+            </div>
+            <div class="form-group">
+                {{ form.last_name.label }}
+                {{ form.last_name }}
+            </div>
+            <div class="form-group">
+                {{ form.email.label }}
+                {{ form.email }}
+            </div>
+            <div class="form-group">
+                {{ form.password.label }}
+                {{ form.password }}
+            </div>
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit }}
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}
