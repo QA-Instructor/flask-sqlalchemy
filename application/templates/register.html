@@ -1,3 +1,6 @@
+<!--Isabel's notes: i've taken out username and password from this block-->
+
+
 {% extends "layout.html" %}
 {% block body_content %}
 <div class="forms">
@@ -5,17 +8,41 @@
         {{ form.hidden_tag() }}
         <fieldset>
             <legend>Join today</legend>
+            <h5>Here, you'll be able to:</h5>
+            <li>Order your favourite plants</li>
+            <li>Check in for hints on tips on caring for your new plants</li>
+            <li>Place orders</li>
+            <li>Track existing orders</li>
+            <br>
+            <h5>Happy planting!</h5>
+            <br>
             <div class="form-group">
-                {{ form.username.label }}
-                {{ form.username }}
+                {{ form.first_name.label }}
+                {{ form.first_name }}
+            </div>
+            <div class="form-group">
+                {{ form.last_name.label }}
+                {{ form.last_name }}
             </div>
             <div class="form-group">
                 {{ form.email.label }}
                 {{ form.email }}
             </div>
             <div class="form-group">
-                {{ form.password.label }}
-                {{ form.password }}
+                {{ form.address_line_one.label }}
+                {{ form.address_line_one }}
+            </div>
+            <div class="form-group">
+                {{ form.address_line_two.label }}
+                {{ form.address_line_two }}
+            </div>
+            <div class="form-group">
+                {{ form.address_line_three.label }}
+                {{ form.address_line_three }}
+            </div>
+            <div class="form-group">
+                {{ form.postcode.label }}
+                {{ form.postcode }}
             </div>
         </fieldset>
         <div class="form-group">
