@@ -229,17 +229,18 @@ def register():
                 or len(postcode) == 0:
             error = "Please complete each section of this form"
         else:
-            customer = Customer(first_name=first_name,
-                                last_name=last_name,
-                                email=email,
-                                address=Address)
             address = Address(address_line_one=address_line_one,
                               address_line_two=address_line_two,
                               address_line_three=address_line_three,
                               postcode=postcode)
+            customer = Customer(first_name=first_name,
+                                last_name=last_name,
+                                email=email,
+                                address=address)
                                 # username=username,
                                 # password=password,
-            db.session.add(customer, address)
+            db.session.add(address)
+            db.session.add(customer)
             db.session.commit()
             return 'Thank you'
     return render_template('register.html', title='Register', message= error, form=form)
@@ -319,23 +320,23 @@ def show_staff():
 
 # REGISTERING A NEW PLANT:
 
-# @app.route('/plantform', methods=['GET', 'POST'])
-# def plantform():
-#     error = ""
-#     form = PlantForm()
-#
-#     if request.method == 'POST':
-#         plant = form.plant_name.data
-#         category = form.plant_category.data
-#
-#         if len(plant) == 0 or category :
-#             error = "Please complete the fields"
-#         else:
-#             # person = Person(first_name=first_name, last_name=last_name)
-#             # db.session.add(person)
-#             # db.session.commit()
-#             return 'Thank you'
-#     return render_template('plantform.html', title='Register a Plant', message= error, form=form)
+@app.route('/plantform', methods=['GET', 'POST'])
+def plantform():
+    error = ""
+    form = PlantForm()
+
+    if request.method == 'POST':
+        plant = form.plant_name.data
+        category = form.plant_category.data
+
+        if len(plant) == 0 or category :
+            error = "Please complete the fields"
+        else:
+            # person = Person(first_name=first_name, last_name=last_name)
+            # db.session.add(person)
+            # db.session.commit()
+            return 'Thank you'
+    return render_template('plantform.html', title='Register a Plant', message= error, form=form)
 
 # ACCESSING A LIST OF PLANTS:
 # to do
