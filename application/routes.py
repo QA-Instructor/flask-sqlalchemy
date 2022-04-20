@@ -1,8 +1,8 @@
 from flask import render_template, request, flash, redirect, url_for
 from application import app, db
 from application.forms import BasicForm, RegistrationForm, StaffForm, PlantForm  # LoginForm
-from application.models import Person, Car, Customer, Address, Staff
-
+from application.models import Person, Address
+# Car, Customer, Staff
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
@@ -39,14 +39,14 @@ def show_people():
     return render_template('people.html', people=people, message=error)
 
 
-@app.route('/cars', methods=['GET'])
-def show_cars():
-    error = ""
-    cars = Car.query.all()
-    if len(cars) == 0:
-        error = "There are no cars to display"
-        print(cars)
-    return render_template('cars.html', cars=cars, message=error, title="Car")
+# @app.route('/cars', methods=['GET'])
+# def show_cars():
+#     error = ""
+#     cars = Car.query.all()
+#     if len(cars) == 0:
+#         error = "There are no cars to display"
+#         print(cars)
+#     return render_template('cars.html', cars=cars, message=error, title="Car")
 
 
 @app.route('/people/<int:person_id>', methods=['GET'])
@@ -198,7 +198,7 @@ def plant10():
 
 # REGISTERING A NEW CUSTOMER:
 # not yet functional, issues linking address foreign key
-
+# combine staff and customer into person and add person_type
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     error = ""
@@ -233,14 +233,14 @@ def register():
                               address_line_two=address_line_two,
                               address_line_three=address_line_three,
                               postcode=postcode)
-            customer = Customer(first_name=first_name,
+            person = Person(first_name=first_name,
                                 last_name=last_name,
                                 email=email,
                                 address=address)
                                 # username=username,
                                 # password=password,
             db.session.add(address)
-            db.session.add(customer)
+            db.session.add(person)
             db.session.commit()
             return 'Thank you'
     return render_template('register.html', title='Register', message= error, form=form)
@@ -248,6 +248,7 @@ def register():
 
 # ACCESSING A LIST OF CUSTOMERS
 # This is functional
+# will just need to add filter by person type - see line 67 for filtering
 @app.route('/customer_list', methods=['GET'])
 def show_customers():
     error = ""
@@ -263,6 +264,7 @@ def show_customers():
 
 # REGISTERING A NEW MEMBER OF STAFF:
 # This is functional
+# remove, combine into person
 
 @app.route('/register_staff', methods=['GET', 'POST'])
 def register_staff():
@@ -292,7 +294,7 @@ def register_staff():
 
 
 # ACCESSING A LIST OF CURRENT STAFF
-
+# will just need to add filter by person type - see line 67 for filtering
 @app.route('/staff_list', methods=['GET'])
 def show_staff():
     error = ""
@@ -320,6 +322,8 @@ def show_staff():
 
 # REGISTERING A NEW PLANT:
 
+# not yet complete, needs rest of the fields filling in
+
 @app.route('/plantform', methods=['GET', 'POST'])
 def plantform():
     error = ""
@@ -342,3 +346,4 @@ def plantform():
 # to do
 # DELETING PLANTS WE NO LONGER STOCK:
 # to do
+
