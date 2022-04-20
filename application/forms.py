@@ -2,8 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, BooleanField, SelectMultipleField
 # from wtforms.validators import DataRequired, Length, Email, EqualTo
 
-# Isabel's edits - i've added in a couple additional pieces to match the db, eg. first_name / last_name etc
-
+# need form to do email newsletter sign up
 
 # added here: first name, last name
 # commented out: username, needs to be added in create.py
