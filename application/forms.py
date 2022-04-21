@@ -4,6 +4,10 @@ from wtforms import StringField, SubmitField, PasswordField, BooleanField, Selec
 
 # need form to do email newsletter sign up
 
+class EmailSignUpForm(FlaskForm):
+    email = StringField('Email')
+    submit = SubmitField('Sign Up')
+
 # added here: first name, last name
 # commented out: username, needs to be added in create.py
 class RegistrationForm(FlaskForm):

@@ -1,32 +1,48 @@
 from flask import render_template, request, flash, redirect, url_for
 from application import app, db
-from application.forms import BasicForm, RegistrationForm, StaffForm, PlantForm  # LoginForm
-from application.models import Person, Address
+from application.forms import BasicForm, EmailSignUpForm, RegistrationForm, StaffForm, PlantForm  # LoginForm
+from application.models import Person, Address, Newsletter
 # Car, Customer, Staff
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
-def register_basic_form():
+
+def email_signup_form():
     error = ""
-    form = BasicForm()
+    form = EmailSignUpForm()
 
     if request.method == 'POST':
-        first_name = form.first_name.data
-        last_name = form.last_name.data
+        email = form.email.data
 
-        if len(first_name) == 0 or len(last_name) == 0:
-            error = "Please supply both first and last name"
+
+        if len(email) == 0:
+            error = "Please supply email address"
         else:
-            person = Person(first_name=first_name, last_name=last_name)
-            db.session.add(person)
+            news = Newsletter(newsletter_email=email)
+            db.session.add(news)
             db.session.commit()
             return 'Thank you!'
     return render_template('home.html', form=form, message=error, title='home')
 
-# made this simple home route to try and get it working
-# @app.route('/home', methods=['GET'])
-# def home():
-#     return render_template('home.html', title='home')
+# Victoria's code
+# def register_basic_form():
+#     error = ""
+#     form = BasicForm()
+#
+#     if request.method == 'POST':
+#         first_name = form.first_name.data
+#         last_name = form.last_name.data
+#
+#         if len(first_name) == 0 or len(last_name) == 0:
+#             error = "Please supply both first and last name"
+#         else:
+#             person = Person(first_name=first_name, last_name=last_name)
+#             db.session.add(person)
+#             db.session.commit()
+#             return 'Thank you!'
+#     return render_template('home.html', form=form, message=error, title='home')
+
+
 
 
 @app.route('/people', methods=['GET'])
