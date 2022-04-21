@@ -1,7 +1,7 @@
 from flask import render_template, request, flash, redirect, url_for
 from application import app, db
-from application.forms import BasicForm, EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm, NewBlogPostForm  # LoginForm, RegistrationForm, StaffForm
-from application.models import Person, Address, Newsletter, UserLogin, StaffInfo, Product, Category, PlantType, Size, BlogPosts
+from application.forms import BasicForm, EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm  # LoginForm, RegistrationForm, StaffForm
+from application.models import Person, Address, Newsletter, UserLogin, StaffInfo, Product, Category, PlantType, Size
 
 
 # Car, Customer, Staff
