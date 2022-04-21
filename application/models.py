@@ -1,5 +1,13 @@
 from application import db  # import the sqlalchemy object (db) created for our app
-# add one extra table for newsletter signup - just email
+
+# Blog posts
+class BlogPosts(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    author = db.Column(db.String(50), nullable=False)
+    date_posted = db.Column(db.Date, nullable=False)
+    title = db.Column(db.String(50), nullable=False)
+    post_content = db.Column(db.String(1000), nullable=False)
+
 
 
 # Newsletter signup

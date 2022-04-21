@@ -6,7 +6,8 @@
 
 from application import db
 # from application.models import Person, Car  # Victoria's code
-from application.models import Newsletter, PersonType, UserLogin,  Address, StaffInfo, Person, OrderStatus, Category, PlantType, Size,\
+from application.models import BlogPosts, Newsletter, PersonType, UserLogin,  Address, StaffInfo, Person, OrderStatus, \
+    Category, PlantType, Size,\
     Product, OrderHeader, OrderLine
 
 # Staff,Customer,
@@ -24,6 +25,13 @@ db.create_all()
 # then need db.session.commit() to actually save it to the database
 # once this code is populated, running it seperately should make everything appear in the database!
 
+
+# Blogposts table
+blog1 = BlogPosts(author='The Plant Doctor', date_posted='2022-01-01', title='Welcome', post_content='Hi, we are the '
+                                                                'Plant Emporium, what an exciting time to be alive')
+blog2 = BlogPosts(author='Master of the Retail Outlet', date_posted='2022-01-10', title='Exciting News', post_content='The shop is now officially open! Come and see us to get your plant fix, we have some gorgeous stock and are happy to help you choose')
+blog3 = BlogPosts(author='The Plant Doctor', date_posted='2022-01-10', title='Plant Clinic', post_content='We are now going to be running Sad Plant Fridays - post your ailing plants to Twitter #SadPlantFridays or email us at jody@theplantemporium.com and our resident Plant Doctor will diagnose the issue and more importantly, offer a solution!')
+blogs = [blog1, blog2, blog3]
 
 # Newsletter signup table
 news1 = Newsletter(newsletter_email='ted.lasso@afc_richmond.co.uk')
@@ -155,6 +163,7 @@ order_line6 = OrderLine(order_header_id=4, product_id=1, quantity=1, price_paid=
 order_line7 = OrderLine(order_header_id=5, product_id=6, quantity=3, price_paid=195.00)
 order_lines = [order_line1, order_line2, order_line3, order_line4, order_line5, order_line6, order_line7]
 
+db.session.add_all(blogs)
 db.session.add_all(news)
 db.session.add_all(person_types)
 db.session.add_all(users)
