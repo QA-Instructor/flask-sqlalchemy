@@ -1,7 +1,7 @@
 from flask import render_template, request, flash, redirect, url_for
 from application import app, db
-from application.forms import BasicForm, EmailSignUpForm, CustomerRegistrationForm,  StaffForm, PlantForm  # LoginForm, RegistrationForm
-from application.models import Person, Address, Newsletter, UserLogin
+from application.forms import BasicForm, EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm  # LoginForm, RegistrationForm, StaffForm
+from application.models import Person, Address, Newsletter, UserLogin, StaffInfo
 # Car, Customer, Staff
 
 
@@ -331,34 +331,112 @@ def show_customers():
 # STAFF RELATED ROUTES
 
 # REGISTERING A NEW MEMBER OF STAFF:
-# This is functional
-# remove, combine into person
+# This is almost functional, just not passing back the userlogin_id and the staff_info_id but it is doing the address_id
+
 
 @app.route('/register_staff', methods=['GET', 'POST'])
 def register_staff():
     error = ""
-    form = StaffForm()
+    form = StaffRegistrationForm()
 
     if request.method == 'POST':
+        username = form.username.data
+        password = form.password.data
         first_name = form.first_name.data
         last_name = form.last_name.data
         email = form.email.data
-        password = form.password.data
+        address_line_one = form.address_line_one.data
+        address_line_two = form.address_line_two.data
+        address_line_three = form.address_line_three.data
+        postcode = form.postcode.data
+        phone_number = form.phone_number.data
+        job_title = form.job_title.data
+        date_of_birth = form.date_of_birth.data
 
-        if len(first_name) == 0\
-                or len(last_name) == 0\
+        if len(first_name) == 0 \
+                or len(last_name) == 0 \
                 or len(email) == 0\
-                or len(password) < 4:
-            error = "Please supply an email and password"
+                or len(address_line_one) == 0\
+                or len(postcode) == 0\
+                or len(password) < 4\
+                or len(username) == 0:
+            error = "Please complete each section of this form"
         else:
-            staff = Staff(first_name=first_name,
-                          last_name=last_name,
-                          email=email,
-                          password=password)
-            db.session.add(staff)
+            user_login = UserLogin(username=username,
+                             password=password)
+            address = Address(address_line_one=address_line_one,
+                              address_line_two=address_line_two,
+                              address_line_three=address_line_three,
+                              postcode=postcode)
+            staff_info = StaffInfo(job_title=job_title,
+                                   date_of_birth=date_of_birth)
+            person = Person(first_name=first_name,
+                            last_name=last_name,
+                            email=email,
+                            address=address,
+                            phone_number=phone_number,
+                            person_type_id=1,
+                            )
+
+            db.session.add(user_login)
+            db.session.add(address)
+            db.session.add(staff_info)
+            db.session.add(person)
             db.session.commit()
             return 'Thank you'
     return render_template('register_staff.html', title='Register New Staff', message= error, form=form)
+
+# @app.route('/register_staff', methods=['GET', 'POST'])
+# def register_staff():
+#     error = ""
+#     form = StaffForm()
+#
+#     if request.method == 'POST':
+#         first_name = form.first_name.data
+#         last_name = form.last_name.data
+#         email = form.email.data
+#         password = form.password.data
+#
+#         if len(first_name) == 0\
+#                 or len(last_name) == 0\
+#                 or len(email) == 0\
+#                 or len(password) < 4:
+#             error = "Please supply an email and password"
+#         else:
+#             staff = Staff(first_name=first_name,
+#                           last_name=last_name,
+#                           email=email,
+#                           password=password)
+#             db.session.add(staff)
+#             db.session.commit()
+#             return 'Thank you'
+#     return render_template('register_staff.html', title='Register New Staff', message= error, form=form)
+
+# @app.route('/register_staff', methods=['GET', 'POST'])
+# def register_staff():
+#     error = ""
+#     form = StaffForm()
+#
+#     if request.method == 'POST':
+#         first_name = form.first_name.data
+#         last_name = form.last_name.data
+#         email = form.email.data
+#         password = form.password.data
+#
+#         if len(first_name) == 0\
+#                 or len(last_name) == 0\
+#                 or len(email) == 0\
+#                 or len(password) < 4:
+#             error = "Please supply an email and password"
+#         else:
+#             staff = Staff(first_name=first_name,
+#                           last_name=last_name,
+#                           email=email,
+#                           password=password)
+#             db.session.add(staff)
+#             db.session.commit()
+#             return 'Thank you'
+#     return render_template('register_staff.html', title='Register New Staff', message= error, form=form)
 
 
 # ACCESSING A LIST OF CURRENT STAFF

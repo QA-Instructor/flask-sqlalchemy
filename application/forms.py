@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, BooleanField, SelectMultipleField
+from wtforms import StringField, SubmitField, PasswordField, BooleanField, SelectMultipleField, DateField
 # from wtforms.validators import DataRequired, Length, Email, EqualTo
 
 # need form to do email newsletter sign up
@@ -8,6 +8,8 @@ class EmailSignUpForm(FlaskForm):
     email = StringField('Email')
     submit = SubmitField('Sign Up')
 
+# new form needs to link to userlogin person and address tables for registering customers (is set in the route to set the
+# persontype to '2' which is customer
 class CustomerRegistrationForm(FlaskForm):
     # userlogin elements
     username = StringField('Username')
@@ -50,14 +52,39 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 
-# added here: first name, last name
-class StaffForm(FlaskForm):
+# as staff are now a type of person, this form gets a bit more complicated, needs to link to userlogin, address,
+# person and staff info tables to be functional (can set persontype to '1' which is staff in the routes)
+class StaffRegistrationForm(FlaskForm):
+    # userlogin elements
+    username = StringField('Username')
+    password = PasswordField('Password')
+
+    # person elements
     first_name = StringField('First Name')
     last_name = StringField('Last Name')
     email = StringField('Email')
-    password = PasswordField('Password')
-    remember = BooleanField('Remember Me')
-    submit = SubmitField('Login')
+
+    # address elements
+    address_line_one = StringField('Address Line 1')
+    address_line_two = StringField('Address Line 2')
+    address_line_three = StringField('Address Line 3')
+    postcode = StringField('Postcode')
+    phone_number = StringField('Phone Number')
+
+    # staff info elements
+    job_title = StringField('Job title')
+    date_of_birth = DateField('Date of birth')
+    # submit
+    submit = SubmitField('Register New Staff Member')
+
+
+# class StaffForm(FlaskForm):
+#     first_name = StringField('First Name')
+#     last_name = StringField('Last Name')
+#     email = StringField('Email')
+#     password = PasswordField('Password')
+#     remember = BooleanField('Remember Me')
+#     submit = SubmitField('Login')
 
 
 class PlantForm(FlaskForm):
