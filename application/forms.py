@@ -89,6 +89,7 @@ class StaffRegistrationForm(FlaskForm):
 #     submit = SubmitField('Login')
 
 
+# IN PROGRESS - PLANT FORM
 class PlantForm(FlaskForm):
     plant_name = StringField('Plant Name')
     plant_type = SelectMultipleField('Type', choices=['Cacti/Succulent', 'Hanging', 'Flowering', 'Palms', 'Ferns'])
