@@ -6,7 +6,7 @@
 
 from application import db
 # from application.models import Person, Car  # Victoria's code
-from application.models import Newsletter, PersonType, UserLogin,  Address, Person, OrderStatus, Category, PlantType, Size,\
+from application.models import Newsletter, PersonType, UserLogin,  Address, StaffInfo, Person, OrderStatus, Category, PlantType, Size,\
     Product, OrderHeader, OrderLine
 
 # Staff,Customer,
@@ -62,6 +62,13 @@ address4 = Address(address_line_one='The Plant Emporium', address_line_two='Sky 
 addresses = [address1, address2, address3, address4]
 
 
+# staff info table
+staff1 = StaffInfo(job_title='Plant purchaser', date_of_birth='1994-06-23')
+staff2 = StaffInfo(job_title='Website wrangler', date_of_birth='1998-09-12')
+staff3 = StaffInfo(job_title='Plant doctor', date_of_birth='1984-05-26')
+staff4 = StaffInfo(job_title='Master of the retail outlet', date_of_birth='1999-08-16')
+staff = [staff1, staff2, staff3, staff4]
+
 # person table
 person1 = Person(first_name='Ted', last_name='Lasso', email='ted.lasso@afc_richmond.co.uk', address_id=1,
                      phone_number='07384957162', user_login_id=1, person_type_id=2)
@@ -74,13 +81,13 @@ person4 = Person(first_name='Roy', last_name='Kent', email='roy.kent@afc_richmon
 person5 = Person(first_name='Sam', last_name='Obisanya', email='sam.obisanya@afc_richmond.co.uk', address_id=1,
                      phone_number='07889578112', user_login_id=5, person_type_id=2)
 person6 = Person(first_name='Natasha', last_name='Edun', email='natasha@plantemporium.com', address_id=4,
-                     phone_number='07777777777',user_login_id=6, person_type_id=1)
+                     phone_number='07777777777',user_login_id=6, person_type_id=1, staff_info_id=1)
 person7 = Person(first_name='Jodie', last_name='Smith', email='jodie@plantemporium.com', address_id=4,
-                     phone_number='07777777777', user_login_id=7, person_type_id=1)
+                     phone_number='07777777777', user_login_id=7, person_type_id=1, staff_info_id=2)
 person8 = Person(first_name='Jody', last_name='Broad', email='jody@plantemporium.com', address_id=4,
-                     phone_number='07777777777', user_login_id=8, person_type_id=1)
+                     phone_number='07777777777', user_login_id=8, person_type_id=1, staff_info_id=3)
 person9 = Person(first_name='Isabel', last_name='Tulloch', email='isabel@plantemporium.com', address_id=4,
-                     phone_number='07777777777', user_login_id=9, person_type_id=1)
+                     phone_number='07777777777', user_login_id=9, person_type_id=1, staff_info_id=4)
 persons = [person1, person2, person3, person4, person5, person6, person7, person8, person9]
 
 
@@ -152,6 +159,7 @@ db.session.add_all(news)
 db.session.add_all(person_types)
 db.session.add_all(users)
 db.session.add_all(addresses)
+db.session.add_all(staff)
 db.session.add_all(persons)
 db.session.add_all(status)
 db.session.add_all(categories)

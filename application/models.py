@@ -40,6 +40,15 @@ class Address(db.Model):
     address = db.relationship('Person', backref='address')
 
 
+# Staff Info - allows us to record extra info about staff, but also gives them staff ID number to use to assign
+# to orders for packing etc
+class StaffInfo(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    job_title = db.Column(db.String(50), nullable=False)
+    date_of_birth = db.Column(db.Date, nullable=False)
+
+
+
 # Person linking to address userlogin and orderheader
 class Person(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -52,6 +61,7 @@ class Person(db.Model):
     # user_login_id is linking back for username and password purposes
     user_login_id = db.Column(db.Integer, db.ForeignKey('user_login.id'), nullable=False)
     person_type_id = db.Column(db.Integer, db.ForeignKey('person_type.id'), nullable=False)
+    staff_info_id = db.Column(db.Integer, db.ForeignKey('staff_info.id'), nullable=True)
     # not a field in the table, but OrderHeader table links back to PersonID
     person_id = db.relationship('OrderHeader', backref='person')
 
