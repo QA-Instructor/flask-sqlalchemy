@@ -316,15 +316,26 @@ def register():
 
 # ACCESSING A LIST OF CUSTOMERS
 # This is functional
-# will just need to add filter by person type - see line 67 for filtering
+
+
 @app.route('/customer_list', methods=['GET'])
 def show_customers():
     error = ""
-    customer = Customer.query.all()
-    if len(customer) == 0:
-        error = "There are no people to display"
-        print(customer)
+    customer = Person.query.filter_by(person_type_id=2)
+    # if len(customer) == 0:
+    #     error = "There are no people to display"
+    #     print(customer)
     return render_template('customer_list.html', customer=customer, message=error)
+
+
+# @app.route('/customer_list', methods=['GET'])
+# def show_customers():
+#     error = ""
+#     customer = Customer.query.all()
+#     if len(customer) == 0:
+#         error = "There are no people to display"
+#         print(customer)
+#     return render_template('customer_list.html', customer=customer, message=error)
 
 
 
@@ -440,15 +451,24 @@ def register_staff():
 
 
 # ACCESSING A LIST OF CURRENT STAFF
-# will just need to add filter by person type - see line 67 for filtering
+
 @app.route('/staff_list', methods=['GET'])
 def show_staff():
     error = ""
-    staff = Staff.query.all()
-    if len(staff) == 0:
-        error = "There are no people to display"
-        print(staff)
+    staff = Person.query.filter_by(person_type_id=1)
+    # if len(customer) == 0:
+    #     error = "There are no people to display"
+    #     print(customer)
     return render_template('staff_list.html', staff=staff, message=error)
+
+# @app.route('/staff_list', methods=['GET'])
+# def show_staff():
+#     error = ""
+#     staff = Staff.query.all()
+#     if len(staff) == 0:
+#         error = "There are no people to display"
+#         print(staff)
+#     return render_template('staff_list.html', staff=staff, message=error)
 
 # DELETE STAFF ACCOUNTS - currently provides error message 'method not allowed'
 # @app.route('/staff/<int:staff_id>', methods=['DELETE'])
