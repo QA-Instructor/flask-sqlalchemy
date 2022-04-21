@@ -6,7 +6,8 @@
 
 from application import db
 # from application.models import Person, Car  # Victoria's code
-from application.models import PersonType, UserLogin,  Address, Person, OrderStatus, Category, PlantType, Size,\
+from application.models import BlogPosts, Newsletter, PersonType, UserLogin,  Address, StaffInfo, Person, OrderStatus, \
+    Category, PlantType, Size,\
     Product, OrderHeader, OrderLine
 
 # Staff,Customer,
@@ -23,6 +24,22 @@ db.create_all()
 # will need to use the db.session.add() code below to add the data - use lists as Victoria has below to make it easier?
 # then need db.session.commit() to actually save it to the database
 # once this code is populated, running it seperately should make everything appear in the database!
+
+
+# Blogposts table
+blog1 = BlogPosts(author='The Plant Doctor', date_posted='2022-01-01', title='Welcome', post_content='Hi, we are the '
+                                                                'Plant Emporium, what an exciting time to be alive')
+blog2 = BlogPosts(author='Master of the Retail Outlet', date_posted='2022-01-10', title='Exciting News', post_content='The shop is now officially open! Come and see us to get your plant fix, we have some gorgeous stock and are happy to help you choose')
+blog3 = BlogPosts(author='The Plant Doctor', date_posted='2022-01-10', title='Plant Clinic', post_content='We are now going to be running Sad Plant Fridays - post your ailing plants to Twitter #SadPlantFridays or email us at jody@theplantemporium.com and our resident Plant Doctor will diagnose the issue and more importantly, offer a solution!')
+blogs = [blog1, blog2, blog3]
+
+# Newsletter signup table
+news1 = Newsletter(newsletter_email='ted.lasso@afc_richmond.co.uk')
+news2 = Newsletter(newsletter_email='rebecca_welton@gmail.com')
+news3 = Newsletter(newsletter_email='keeley_jones@gmail.com')
+news4 = Newsletter(newsletter_email='roy.kent@afc_richmond.co.uk')
+news5 = Newsletter(newsletter_email='sam.obisanya@afc_richmond.co.uk')
+news = [news1, news2, news3, news4, news5]
 
 # PersonType table
 person_type1 = PersonType(person_type_description='Staff')
@@ -53,6 +70,13 @@ address4 = Address(address_line_one='The Plant Emporium', address_line_two='Sky 
 addresses = [address1, address2, address3, address4]
 
 
+# staff info table
+staff1 = StaffInfo(job_title='Plant purchaser', date_of_birth='1994-06-23')
+staff2 = StaffInfo(job_title='Website wrangler', date_of_birth='1998-09-12')
+staff3 = StaffInfo(job_title='Plant doctor', date_of_birth='1984-05-26')
+staff4 = StaffInfo(job_title='Master of the retail outlet', date_of_birth='1999-08-16')
+staff = [staff1, staff2, staff3, staff4]
+
 # person table
 person1 = Person(first_name='Ted', last_name='Lasso', email='ted.lasso@afc_richmond.co.uk', address_id=1,
                      phone_number='07384957162', user_login_id=1, person_type_id=2)
@@ -65,13 +89,13 @@ person4 = Person(first_name='Roy', last_name='Kent', email='roy.kent@afc_richmon
 person5 = Person(first_name='Sam', last_name='Obisanya', email='sam.obisanya@afc_richmond.co.uk', address_id=1,
                      phone_number='07889578112', user_login_id=5, person_type_id=2)
 person6 = Person(first_name='Natasha', last_name='Edun', email='natasha@plantemporium.com', address_id=4,
-                     phone_number='07777777777',user_login_id=6, person_type_id=1)
+                     phone_number='07777777777',user_login_id=6, person_type_id=1, staff_info_id=1)
 person7 = Person(first_name='Jodie', last_name='Smith', email='jodie@plantemporium.com', address_id=4,
-                     phone_number='07777777777', user_login_id=7, person_type_id=1)
+                     phone_number='07777777777', user_login_id=7, person_type_id=1, staff_info_id=2)
 person8 = Person(first_name='Jody', last_name='Broad', email='jody@plantemporium.com', address_id=4,
-                     phone_number='07777777777', user_login_id=8, person_type_id=1)
+                     phone_number='07777777777', user_login_id=8, person_type_id=1, staff_info_id=3)
 person9 = Person(first_name='Isabel', last_name='Tulloch', email='isabel@plantemporium.com', address_id=4,
-                     phone_number='07777777777', user_login_id=9, person_type_id=1)
+                     phone_number='07777777777', user_login_id=9, person_type_id=1, staff_info_id=4)
 persons = [person1, person2, person3, person4, person5, person6, person7, person8, person9]
 
 
@@ -120,12 +144,12 @@ product10 = Product(species='Alstroemeria', price=27, stock=8, category_id=2, pl
 products = [product1, product2, product3, product4, product5, product6, product7, product8, product9, product10]
 
 
-# OrderHeader linking to person only (as customer) without dates
-order1 = OrderHeader(person_id=1, status_id=1, total_cost=54.00)
-order2 = OrderHeader(person_id=2, status_id=4, total_cost=26.97)
-order3 = OrderHeader(person_id=3, status_id=3, total_cost=197.97)
-order4 = OrderHeader(person_id=4, status_id=4, total_cost=20.00)
-order5 = OrderHeader(person_id=1, status_id=4, total_cost=195.00)
+# OrderHeader linking to person only (as customer)
+order1 = OrderHeader(person_id=1, order_date='2022-04-09', status_id=1, total_cost=54.00)
+order2 = OrderHeader(person_id=2, order_date='2022-04-10', status_id=4, total_cost=26.97)
+order3 = OrderHeader(person_id=3, order_date='2022-04-12', status_id=3, total_cost=197.97)
+order4 = OrderHeader(person_id=4, order_date='2022-04-16', status_id=4, total_cost=20.00)
+order5 = OrderHeader(person_id=1, order_date='2022-04-19', status_id=4, total_cost=195.00)
 plant_orders = [order1, order2, order3, order4, order5]
 
 
@@ -139,9 +163,12 @@ order_line6 = OrderLine(order_header_id=4, product_id=1, quantity=1, price_paid=
 order_line7 = OrderLine(order_header_id=5, product_id=6, quantity=3, price_paid=195.00)
 order_lines = [order_line1, order_line2, order_line3, order_line4, order_line5, order_line6, order_line7]
 
+db.session.add_all(blogs)
+db.session.add_all(news)
 db.session.add_all(person_types)
 db.session.add_all(users)
 db.session.add_all(addresses)
+db.session.add_all(staff)
 db.session.add_all(persons)
 db.session.add_all(status)
 db.session.add_all(categories)

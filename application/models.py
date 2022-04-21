@@ -1,6 +1,19 @@
 from application import db  # import the sqlalchemy object (db) created for our app
-# add one extra table for newsletter signup - just email
 
+# Blog posts
+class BlogPosts(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    author = db.Column(db.String(50), nullable=False)
+    date_posted = db.Column(db.Date, nullable=False)
+    title = db.Column(db.String(50), nullable=False)
+    post_content = db.Column(db.String(1000), nullable=False)
+
+
+
+# Newsletter signup
+class Newsletter(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    newsletter_email = db.Column(db.String(120), nullable=False)
 
 # PersonType linking to Person
 class PersonType(db.Model):
@@ -14,13 +27,10 @@ class PersonType(db.Model):
 # UserLogin linking to Person
 class UserLogin(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    # customer_id was the Foreign Key linking to the Customer table, but this table is now linking to both Staff
-    # and Customers
-    # customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=False)
     username = db.Column(db.String(50), nullable=False)
     password = db.Column(db.String(50), nullable=False)
     # not field in table but relationship between userlogin and person
-    # person = db.relationship('UserLogin', backref='person')
+    user_login = db.relationship('Person', backref='userlogin')
 
 
 # address linking to person
@@ -35,6 +45,15 @@ class Address(db.Model):
     address = db.relationship('Person', backref='address')
 
 
+# Staff Info - allows us to record extra info about staff, but also gives them staff ID number to use to assign
+# to orders for packing etc
+class StaffInfo(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    job_title = db.Column(db.String(50), nullable=False)
+    date_of_birth = db.Column(db.Date, nullable=False)
+
+
+
 # Person linking to address userlogin and orderheader
 class Person(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -47,6 +66,7 @@ class Person(db.Model):
     # user_login_id is linking back for username and password purposes
     user_login_id = db.Column(db.Integer, db.ForeignKey('user_login.id'), nullable=False)
     person_type_id = db.Column(db.Integer, db.ForeignKey('person_type.id'), nullable=False)
+    staff_info_id = db.Column(db.Integer, db.ForeignKey('staff_info.id'), nullable=True)
     # not a field in the table, but OrderHeader table links back to PersonID
     person_id = db.relationship('OrderHeader', backref='person')
 
@@ -95,7 +115,7 @@ class OrderHeader(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     person_id = db.Column(db.Integer, db.ForeignKey('person.id'), nullable=False)
     # not totally sure how we do dates, check this
-    # order_date = db.Column(db.Date, nullable=False)
+    order_date = db.Column(db.Date, nullable=False)
     status_id = db.Column(db.Integer, db.ForeignKey('order_status.id'), nullable=False)
     # also what is best data type for price data?
     total_cost = db.Column(db.Integer)

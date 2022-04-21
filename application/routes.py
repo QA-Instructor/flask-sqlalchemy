@@ -1,32 +1,50 @@
 from flask import render_template, request, flash, redirect, url_for
 from application import app, db
-from application.forms import BasicForm, RegistrationForm, StaffForm, PlantForm  # LoginForm
-from application.models import Person, Address
+from application.forms import BasicForm, EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm  # LoginForm, RegistrationForm, StaffForm
+from application.models import Person, Address, Newsletter, UserLogin, StaffInfo
 # Car, Customer, Staff
 
+
+# newsletter sign up form for homepage
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
-def register_basic_form():
+
+def email_signup_form():
     error = ""
-    form = BasicForm()
+    form = EmailSignUpForm()
 
     if request.method == 'POST':
-        first_name = form.first_name.data
-        last_name = form.last_name.data
+        email = form.email.data
 
-        if len(first_name) == 0 or len(last_name) == 0:
-            error = "Please supply both first and last name"
+
+        if len(email) == 0:
+            error = "Please supply email address"
         else:
-            person = Person(first_name=first_name, last_name=last_name)
-            db.session.add(person)
+            news = Newsletter(newsletter_email=email)
+            db.session.add(news)
             db.session.commit()
             return 'Thank you!'
     return render_template('home.html', form=form, message=error, title='home')
 
-# made this simple home route to try and get it working
-# @app.route('/home', methods=['GET'])
-# def home():
-#     return render_template('home.html', title='home')
+# Victoria's code
+# def register_basic_form():
+#     error = ""
+#     form = BasicForm()
+#
+#     if request.method == 'POST':
+#         first_name = form.first_name.data
+#         last_name = form.last_name.data
+#
+#         if len(first_name) == 0 or len(last_name) == 0:
+#             error = "Please supply both first and last name"
+#         else:
+#             person = Person(first_name=first_name, last_name=last_name)
+#             db.session.add(person)
+#             db.session.commit()
+#             return 'Thank you!'
+#     return render_template('home.html', form=form, message=error, title='home')
+
+
 
 
 @app.route('/people', methods=['GET'])
@@ -197,14 +215,18 @@ def plant10():
 # CUSTOMER RELATED ROUTES:
 
 # REGISTERING A NEW CUSTOMER:
-# not yet functional, issues linking address foreign key
-# combine staff and customer into person and add person_type
+# almost functional, just not linking the user_login_id for some unknown reason, is definitely writing to both the
+# userlogin and address tables, but failing to write to the person because it doesn't have the userlogin id
+# (but it is getting the address one)
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     error = ""
-    form = RegistrationForm()
+    form = CustomerRegistrationForm()
 
     if request.method == 'POST':
+        username = form.username.data
+        password = form.password.data
         first_name = form.first_name.data
         last_name = form.last_name.data
         email = form.email.data
@@ -212,33 +234,32 @@ def register():
         address_line_two = form.address_line_two.data
         address_line_three = form.address_line_three.data
         postcode = form.postcode.data
-        # username = form.username.data
-        # password = form.password.data
-
-
-# here would need to also add in username and password
-        # or len(password) < 4
-        # or len(username0 == 0
+        phone_number = form.phone_number.data
 
         if len(first_name) == 0 \
                 or len(last_name) == 0 \
                 or len(email) == 0\
                 or len(address_line_one) == 0\
-                or len(address_line_two) == 0\
-                or len(address_line_three) == 0\
-                or len(postcode) == 0:
+                or len(postcode) == 0\
+                or len(password) < 4\
+                or len(username) == 0:
             error = "Please complete each section of this form"
         else:
+            user_login = UserLogin(username=username,
+                             password=password)
             address = Address(address_line_one=address_line_one,
                               address_line_two=address_line_two,
                               address_line_three=address_line_three,
                               postcode=postcode)
             person = Person(first_name=first_name,
-                                last_name=last_name,
-                                email=email,
-                                address=address)
-                                # username=username,
-                                # password=password,
+                            last_name=last_name,
+                            email=email,
+                            address=address,
+                            phone_number=phone_number,
+                            person_type_id=2,
+                            staff_info_id='')
+
+            db.session.add(user_login)
             db.session.add(address)
             db.session.add(person)
             db.session.commit()
@@ -246,63 +267,208 @@ def register():
     return render_template('register.html', title='Register', message= error, form=form)
 
 
+# @app.route('/register', methods=['GET', 'POST'])
+# def register():
+#     error = ""
+#     form = RegistrationForm()
+#
+#     if request.method == 'POST':
+#         first_name = form.first_name.data
+#         last_name = form.last_name.data
+#         email = form.email.data
+#         address_line_one = form.address_line_one.data
+#         address_line_two = form.address_line_two.data
+#         address_line_three = form.address_line_three.data
+#         postcode = form.postcode.data
+#         # username = form.username.data
+#         # password = form.password.data
+#
+#
+# # here would need to also add in username and password
+#         # or len(password) < 4
+#         # or len(username0 == 0
+#
+#         if len(first_name) == 0 \
+#                 or len(last_name) == 0 \
+#                 or len(email) == 0\
+#                 or len(address_line_one) == 0\
+#                 or len(address_line_two) == 0\
+#                 or len(address_line_three) == 0\
+#                 or len(postcode) == 0:
+#             error = "Please complete each section of this form"
+#         else:
+#             address = Address(address_line_one=address_line_one,
+#                               address_line_two=address_line_two,
+#                               address_line_three=address_line_three,
+#                               postcode=postcode)
+#             person = Person(first_name=first_name,
+#                                 last_name=last_name,
+#                                 email=email,
+#                                 address=address)
+#                                 # username=username,
+#                                 # password=password,
+#             db.session.add(address)
+#             db.session.add(person)
+#             db.session.commit()
+#             return 'Thank you'
+#     return render_template('register.html', title='Register', message= error, form=form)
+
+
 # ACCESSING A LIST OF CUSTOMERS
 # This is functional
-# will just need to add filter by person type - see line 67 for filtering
+
+
 @app.route('/customer_list', methods=['GET'])
 def show_customers():
     error = ""
-    customer = Customer.query.all()
-    if len(customer) == 0:
-        error = "There are no people to display"
-        print(customer)
+    customer = Person.query.filter_by(person_type_id=2)
+    # if len(customer) == 0:
+    #     error = "There are no people to display"
+    #     print(customer)
     return render_template('customer_list.html', customer=customer, message=error)
+
+
+# @app.route('/customer_list', methods=['GET'])
+# def show_customers():
+#     error = ""
+#     customer = Customer.query.all()
+#     if len(customer) == 0:
+#         error = "There are no people to display"
+#         print(customer)
+#     return render_template('customer_list.html', customer=customer, message=error)
 
 
 
 # STAFF RELATED ROUTES
 
 # REGISTERING A NEW MEMBER OF STAFF:
-# This is functional
-# remove, combine into person
+# This is almost functional, just not passing back the userlogin_id and the staff_info_id but it is doing the address_id
+
 
 @app.route('/register_staff', methods=['GET', 'POST'])
 def register_staff():
     error = ""
-    form = StaffForm()
+    form = StaffRegistrationForm()
 
     if request.method == 'POST':
+        username = form.username.data
+        password = form.password.data
         first_name = form.first_name.data
         last_name = form.last_name.data
         email = form.email.data
-        password = form.password.data
+        address_line_one = form.address_line_one.data
+        address_line_two = form.address_line_two.data
+        address_line_three = form.address_line_three.data
+        postcode = form.postcode.data
+        phone_number = form.phone_number.data
+        job_title = form.job_title.data
+        date_of_birth = form.date_of_birth.data
 
-        if len(first_name) == 0\
-                or len(last_name) == 0\
+        if len(first_name) == 0 \
+                or len(last_name) == 0 \
                 or len(email) == 0\
-                or len(password) < 4:
-            error = "Please supply an email and password"
+                or len(address_line_one) == 0\
+                or len(postcode) == 0\
+                or len(password) < 4\
+                or len(username) == 0:
+            error = "Please complete each section of this form"
         else:
-            staff = Staff(first_name=first_name,
-                          last_name=last_name,
-                          email=email,
-                          password=password)
-            db.session.add(staff)
+            user_login = UserLogin(username=username,
+                             password=password)
+            address = Address(address_line_one=address_line_one,
+                              address_line_two=address_line_two,
+                              address_line_three=address_line_three,
+                              postcode=postcode)
+            staff_info = StaffInfo(job_title=job_title,
+                                   date_of_birth=date_of_birth)
+            person = Person(first_name=first_name,
+                            last_name=last_name,
+                            email=email,
+                            address=address,
+                            phone_number=phone_number,
+                            person_type_id=1,
+                            )
+
+            db.session.add(user_login)
+            db.session.add(address)
+            db.session.add(staff_info)
+            db.session.add(person)
             db.session.commit()
             return 'Thank you'
     return render_template('register_staff.html', title='Register New Staff', message= error, form=form)
 
+# @app.route('/register_staff', methods=['GET', 'POST'])
+# def register_staff():
+#     error = ""
+#     form = StaffForm()
+#
+#     if request.method == 'POST':
+#         first_name = form.first_name.data
+#         last_name = form.last_name.data
+#         email = form.email.data
+#         password = form.password.data
+#
+#         if len(first_name) == 0\
+#                 or len(last_name) == 0\
+#                 or len(email) == 0\
+#                 or len(password) < 4:
+#             error = "Please supply an email and password"
+#         else:
+#             staff = Staff(first_name=first_name,
+#                           last_name=last_name,
+#                           email=email,
+#                           password=password)
+#             db.session.add(staff)
+#             db.session.commit()
+#             return 'Thank you'
+#     return render_template('register_staff.html', title='Register New Staff', message= error, form=form)
+
+# @app.route('/register_staff', methods=['GET', 'POST'])
+# def register_staff():
+#     error = ""
+#     form = StaffForm()
+#
+#     if request.method == 'POST':
+#         first_name = form.first_name.data
+#         last_name = form.last_name.data
+#         email = form.email.data
+#         password = form.password.data
+#
+#         if len(first_name) == 0\
+#                 or len(last_name) == 0\
+#                 or len(email) == 0\
+#                 or len(password) < 4:
+#             error = "Please supply an email and password"
+#         else:
+#             staff = Staff(first_name=first_name,
+#                           last_name=last_name,
+#                           email=email,
+#                           password=password)
+#             db.session.add(staff)
+#             db.session.commit()
+#             return 'Thank you'
+#     return render_template('register_staff.html', title='Register New Staff', message= error, form=form)
+
 
 # ACCESSING A LIST OF CURRENT STAFF
-# will just need to add filter by person type - see line 67 for filtering
+
 @app.route('/staff_list', methods=['GET'])
 def show_staff():
     error = ""
-    staff = Staff.query.all()
-    if len(staff) == 0:
-        error = "There are no people to display"
-        print(staff)
+    staff = Person.query.filter_by(person_type_id=1)
+    # if len(customer) == 0:
+    #     error = "There are no people to display"
+    #     print(customer)
     return render_template('staff_list.html', staff=staff, message=error)
+
+# @app.route('/staff_list', methods=['GET'])
+# def show_staff():
+#     error = ""
+#     staff = Staff.query.all()
+#     if len(staff) == 0:
+#         error = "There are no people to display"
+#         print(staff)
+#     return render_template('staff_list.html', staff=staff, message=error)
 
 # DELETE STAFF ACCOUNTS - currently provides error message 'method not allowed'
 # @app.route('/staff/<int:staff_id>', methods=['DELETE'])
