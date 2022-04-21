@@ -1,7 +1,9 @@
 from flask import render_template, request, flash, redirect, url_for
 from application import app, db
 from application.forms import BasicForm, EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm  # LoginForm, RegistrationForm, StaffForm
-from application.models import Person, Address, Newsletter, UserLogin, StaffInfo
+from application.models import Person, Address, Newsletter, UserLogin, StaffInfo, Product, Category, PlantType, Size
+
+
 # Car, Customer, Staff
 
 
@@ -493,23 +495,40 @@ def show_staff():
 
 # not yet complete, needs rest of the fields filling in
 
-@app.route('/plantform', methods=['GET', 'POST'])
-def plantform():
+@app.route('/plant_form', methods=['GET', 'POST'])
+def plant_form():
     error = ""
     form = PlantForm()
 
     if request.method == 'POST':
-        plant = form.plant_name.data
-        category = form.plant_category.data
+        plant_name = form.plant_name.data
+        plant_category = form.plant_category.data
+        plant_species = form.plant_species.data
+        plant_price = form.plant_price.data
+        plant_stock = form.plant_stock.data
+        plant_type = form.plant_type.data
+        plant_size = form.plant_size.data
 
-        if len(plant) == 0 or category :
+        if len(plant_name) == 0 \
+                or plant_category == 0\
+                or plant_species == 0\
+                or plant_price == 0\
+                or plant_stock == 0:
             error = "Please complete the fields"
         else:
-            # person = Person(first_name=first_name, last_name=last_name)
-            # db.session.add(person)
-            # db.session.commit()
+            plant_category = Category(category_description=plant_category)
+            plant_type = PlantType(plant_type_description=plant_type)
+            size = Size(size_description=plant_size)
+            product = Product(species=plant_species,
+                              price=plant_price,
+                              stock=plant_stock,
+                              category=plant_category,
+                              plant_type=plant_type,
+                              size=size)
+            db.session.add(product)
+            db.session.commit()
             return 'Thank you'
-    return render_template('plantform.html', title='Register a Plant', message= error, form=form)
+    return render_template('plant_form.html', title='Register a Plant', message= error, form=form)
 
 # ACCESSING A LIST OF PLANTS:
 # to do
