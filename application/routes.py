@@ -2,7 +2,8 @@ from flask import render_template, request, flash, redirect, url_for
 from application import app, db
 from application.forms import BasicForm, EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm  # LoginForm, RegistrationForm, StaffForm
 from application.models import Person, Address, Newsletter, UserLogin, StaffInfo, Product, Category, PlantType, Size
-
+from application.forms import NewBlogPostForm
+from application.models import BlogPosts
 
 # Car, Customer, Staff
 from datetime import date
@@ -559,3 +560,9 @@ def addpost():
             return 'That worked'
 
     return render_template('addpost.html', message= error, form=form)
+
+@app.route('/post/<int:post_id>')
+def post(post_id):
+    post = BlogPosts.query.filter_by(id=post_id).one()
+
+    return render_template('post.html', post=post)

@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block body_content %}
+
+   <!-- Page Header -->
+    <header class="masthead" >
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="post-heading">
+              <h1>{{ post.title }}</h1>
+                <span class="meta">Posted by
+                {{ post.author }}
+                on {{ post.date_posted.strftime('%B %d, %Y') }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Post Content -->
+    <article>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            {{ post.post_content }}
+              <br>
+              <img src="{{ url_for('static', filename='images/alstromeria_purple.jpg') }}" class="img-fluid"
+                   alt="alstromeria purple flowers">
+              <br>
+          </div>
+        </div>
+      </div>
+    </article>
+
+{% endblock %}
