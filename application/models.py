@@ -30,7 +30,7 @@ class UserLogin(db.Model):
     username = db.Column(db.String(50), nullable=False)
     password = db.Column(db.String(50), nullable=False)
     # not field in table but relationship between userlogin and person
-    user_login = db.relationship('Person', backref='userlogin')
+    user_login = db.relationship('Person', backref='user_login')
 
 
 # address linking to person
@@ -51,6 +51,7 @@ class StaffInfo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     job_title = db.Column(db.String(50), nullable=False)
     date_of_birth = db.Column(db.Date, nullable=False)
+    staff_info = db.relationship('Person', backref='staff_info')
 
 
 

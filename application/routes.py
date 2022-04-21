@@ -246,7 +246,7 @@ def register():
             error = "Please complete each section of this form"
         else:
             user_login = UserLogin(username=username,
-                             password=password)
+                                   password=password)
             address = Address(address_line_one=address_line_one,
                               address_line_two=address_line_two,
                               address_line_three=address_line_three,
@@ -257,7 +257,7 @@ def register():
                             address=address,
                             phone_number=phone_number,
                             person_type_id=2,
-                            staff_info_id='')
+                            user_login=user_login)
 
             db.session.add(user_login)
             db.session.add(address)
@@ -364,6 +364,7 @@ def register_staff():
         job_title = form.job_title.data
         date_of_birth = form.date_of_birth.data
 
+
         if len(first_name) == 0 \
                 or len(last_name) == 0 \
                 or len(email) == 0\
@@ -374,7 +375,7 @@ def register_staff():
             error = "Please complete each section of this form"
         else:
             user_login = UserLogin(username=username,
-                             password=password)
+                                   password=password)
             address = Address(address_line_one=address_line_one,
                               address_line_two=address_line_two,
                               address_line_three=address_line_three,
@@ -387,6 +388,8 @@ def register_staff():
                             address=address,
                             phone_number=phone_number,
                             person_type_id=1,
+                            user_login=user_login,
+                            staff_info=staff_info
                             )
 
             db.session.add(user_login)
