@@ -3,7 +3,7 @@ from application import app, db
 from application.forms import BasicForm, EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm, NewBlogPostForm  # LoginForm, RegistrationForm, StaffForm
 from application.models import Person, Address, Newsletter, UserLogin, StaffInfo, BlogPosts
 # Car, Customer, Staff
-from datetime import date # remove this and BlogPosts above
+from datetime import date
 
 
 # newsletter sign up form for homepage
