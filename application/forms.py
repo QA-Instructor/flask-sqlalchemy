@@ -1,5 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, BooleanField, SelectMultipleField, DateField
+from wtforms import StringField, SubmitField, PasswordField, BooleanField, SelectMultipleField, DateField, IntegerField
+
+
 # from wtforms.validators import DataRequired, Length, Email, EqualTo
 
 # need form to do email newsletter sign up
@@ -88,8 +90,13 @@ class StaffRegistrationForm(FlaskForm):
 
 
 class PlantForm(FlaskForm):
-    plant_name = StringField('Plant')
-    plant_category = SelectMultipleField('Categories', choices=['Cacti/Succulent', 'Hanging', 'Flowering', 'Palms', 'Ferns'])
+    plant_name = StringField('Plant Name')
+    plant_type = SelectMultipleField('Type', choices=['Cacti/Succulent', 'Hanging', 'Flowering', 'Palms', 'Ferns'])
+    plant_category = SelectMultipleField('Categories', choices=['Indoor', 'Outdoor'])
+    plant_species = StringField('Plant Species')
+    plant_price = IntegerField('Plant Price')
+    plant_stock = IntegerField('Number in Stock')
+    plant_size = SelectMultipleField('Size', choices=['Tiny', 'Small', 'Medium', 'Tall'])
     submit = SubmitField('Register Plant')
 
 
