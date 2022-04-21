@@ -1,8 +1,9 @@
 from flask import render_template, request, flash, redirect, url_for
 from application import app, db
-from application.forms import BasicForm, EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm  # LoginForm, RegistrationForm, StaffForm
-from application.models import Person, Address, Newsletter, UserLogin, StaffInfo
+from application.forms import BasicForm, EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm, NewBlogPostForm  # LoginForm, RegistrationForm, StaffForm
+from application.models import Person, Address, Newsletter, UserLogin, StaffInfo, BlogPosts
 # Car, Customer, Staff
+from datetime import date # remove this and BlogPosts above
 
 
 # newsletter sign up form for homepage
@@ -152,9 +153,9 @@ def contact():
     return render_template('contact_us.html', title='Contact Us')
 
 
-@app.route('/plant_care', methods=['GET'])
-def plant_care():
-    return render_template('plant_care.html', title='Plant Care')
+# @app.route('/plant_care', methods=['GET'])
+# def plant_care():
+#     return render_template('plant_care.html', title='Plant Care')
 
 
 @app.route('/shop', methods=['GET'])
@@ -513,3 +514,29 @@ def plantform():
 # DELETING PLANTS WE NO LONGER STOCK:
 # to do
 
+# delete below here before updating
+
+@app.route('/plant_care', methods=['GET'])
+def plant_care():
+    posts = BlogPosts.query.order_by(BlogPosts.date_posted.desc()).all()
+    return render_template('plant_care.html', title='Plant Care', posts=posts)
+
+@app.route('/addpost', methods=['GET', 'POST'])
+def addpost():
+    error = ""
+    form = NewBlogPostForm()
+    if request.method == 'POST':
+        title = form.title.data
+        author = form.author.data
+        post_content = form.post_content.data
+        if len(title) == 0\
+                or len(author) == 0\
+                or len(post_content) == 0:
+            error = "Please complete the fields"
+        else:
+            post = BlogPosts(title=title, author=author, post_content=post_content, date_posted=date.today())
+            db.session.add(post)
+            db.session.commit()
+            return 'That worked'
+
+    return render_template('addpost.html', message= error, form=form)

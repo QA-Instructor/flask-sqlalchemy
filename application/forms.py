@@ -131,4 +131,10 @@ class BasicForm(FlaskForm):
     last_name = StringField('Last Name')
     submit = SubmitField('Add Name')
 
+# additions below here:
+class NewBlogPostForm(FlaskForm):
+    title = StringField('Title')
+    author = StringField('Author')
+    post_content = StringField('Post Content')
 
+    submit = SubmitField('Add post')
