@@ -2,6 +2,11 @@ from application import db  # import the sqlalchemy object (db) created for our 
 # add one extra table for newsletter signup - just email
 
 
+# Newsletter signup
+class Newsletter(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    newsletter_email = db.Column(db.String(120), nullable=False)
+
 # PersonType linking to Person
 class PersonType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -95,7 +100,7 @@ class OrderHeader(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     person_id = db.Column(db.Integer, db.ForeignKey('person.id'), nullable=False)
     # not totally sure how we do dates, check this
-    # order_date = db.Column(db.Date, nullable=False)
+    order_date = db.Column(db.Date, nullable=False)
     status_id = db.Column(db.Integer, db.ForeignKey('order_status.id'), nullable=False)
     # also what is best data type for price data?
     total_cost = db.Column(db.Integer)

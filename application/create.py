@@ -6,7 +6,7 @@
 
 from application import db
 # from application.models import Person, Car  # Victoria's code
-from application.models import PersonType, UserLogin,  Address, Person, OrderStatus, Category, PlantType, Size,\
+from application.models import Newsletter, PersonType, UserLogin,  Address, Person, OrderStatus, Category, PlantType, Size,\
     Product, OrderHeader, OrderLine
 
 # Staff,Customer,
@@ -23,6 +23,15 @@ db.create_all()
 # will need to use the db.session.add() code below to add the data - use lists as Victoria has below to make it easier?
 # then need db.session.commit() to actually save it to the database
 # once this code is populated, running it seperately should make everything appear in the database!
+
+
+# Newsletter signup table
+news1 = Newsletter(newsletter_email='ted.lasso@afc_richmond.co.uk')
+news2 = Newsletter(newsletter_email='rebecca_welton@gmail.com')
+news3 = Newsletter(newsletter_email='keeley_jones@gmail.com')
+news4 = Newsletter(newsletter_email='roy.kent@afc_richmond.co.uk')
+news5 = Newsletter(newsletter_email='sam.obisanya@afc_richmond.co.uk')
+news = [news1, news2, news3, news4, news5]
 
 # PersonType table
 person_type1 = PersonType(person_type_description='Staff')
@@ -120,12 +129,12 @@ product10 = Product(species='Alstroemeria', price=27, stock=8, category_id=2, pl
 products = [product1, product2, product3, product4, product5, product6, product7, product8, product9, product10]
 
 
-# OrderHeader linking to person only (as customer) without dates
-order1 = OrderHeader(person_id=1, status_id=1, total_cost=54.00)
-order2 = OrderHeader(person_id=2, status_id=4, total_cost=26.97)
-order3 = OrderHeader(person_id=3, status_id=3, total_cost=197.97)
-order4 = OrderHeader(person_id=4, status_id=4, total_cost=20.00)
-order5 = OrderHeader(person_id=1, status_id=4, total_cost=195.00)
+# OrderHeader linking to person only (as customer)
+order1 = OrderHeader(person_id=1, order_date='2022-04-09', status_id=1, total_cost=54.00)
+order2 = OrderHeader(person_id=2, order_date='2022-04-10', status_id=4, total_cost=26.97)
+order3 = OrderHeader(person_id=3, order_date='2022-04-12', status_id=3, total_cost=197.97)
+order4 = OrderHeader(person_id=4, order_date='2022-04-16', status_id=4, total_cost=20.00)
+order5 = OrderHeader(person_id=1, order_date='2022-04-19', status_id=4, total_cost=195.00)
 plant_orders = [order1, order2, order3, order4, order5]
 
 
@@ -139,6 +148,7 @@ order_line6 = OrderLine(order_header_id=4, product_id=1, quantity=1, price_paid=
 order_line7 = OrderLine(order_header_id=5, product_id=6, quantity=3, price_paid=195.00)
 order_lines = [order_line1, order_line2, order_line3, order_line4, order_line5, order_line6, order_line7]
 
+db.session.add_all(news)
 db.session.add_all(person_types)
 db.session.add_all(users)
 db.session.add_all(addresses)
