@@ -8,20 +8,39 @@ class EmailSignUpForm(FlaskForm):
     email = StringField('Email')
     submit = SubmitField('Sign Up')
 
-# added here: first name, last name
-# commented out: username, needs to be added in create.py
-class RegistrationForm(FlaskForm):
+class CustomerRegistrationForm(FlaskForm):
+    # userlogin elements
+    username = StringField('Username')
+    password = PasswordField('Password')
+
+    # person elements
     first_name = StringField('First Name')
     last_name = StringField('Last Name')
-    # username = StringField('Username')
     email = StringField('Email')
-    # password = PasswordField('Password')
-    submit = SubmitField('Sign Up')
+
     # address elements
     address_line_one = StringField('Address Line 1')
     address_line_two = StringField('Address Line 2')
     address_line_three = StringField('Address Line 3')
     postcode = StringField('Postcode')
+    phone_number = StringField('Phone Number')
+    # submit
+    submit = SubmitField('Sign Up')
+
+# added here: first name, last name
+# commented out: username, needs to be added in create.py
+# class RegistrationForm(FlaskForm):
+#     first_name = StringField('First Name')
+#     last_name = StringField('Last Name')
+#     # username = StringField('Username')
+#     email = StringField('Email')
+#     # password = PasswordField('Password')
+#     submit = SubmitField('Sign Up')
+#     # address elements
+#     address_line_one = StringField('Address Line 1')
+#     address_line_two = StringField('Address Line 2')
+#     address_line_three = StringField('Address Line 3')
+#     postcode = StringField('Postcode')
 
 
 class LoginForm(FlaskForm):

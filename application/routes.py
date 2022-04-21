@@ -1,9 +1,11 @@
 from flask import render_template, request, flash, redirect, url_for
 from application import app, db
-from application.forms import BasicForm, EmailSignUpForm, RegistrationForm, StaffForm, PlantForm  # LoginForm
-from application.models import Person, Address, Newsletter
+from application.forms import BasicForm, EmailSignUpForm, CustomerRegistrationForm,  StaffForm, PlantForm  # LoginForm, RegistrationForm
+from application.models import Person, Address, Newsletter, UserLogin
 # Car, Customer, Staff
 
+
+# newsletter sign up form for homepage
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
 
@@ -213,14 +215,18 @@ def plant10():
 # CUSTOMER RELATED ROUTES:
 
 # REGISTERING A NEW CUSTOMER:
-# not yet functional, issues linking address foreign key
-# combine staff and customer into person and add person_type
+# almost functional, just not linking the user_login_id for some unknown reason, is definitely writing to both the
+# userlogin and address tables, but failing to write to the person because it doesn't have the userlogin id
+# (but it is getting the address one)
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     error = ""
-    form = RegistrationForm()
+    form = CustomerRegistrationForm()
 
     if request.method == 'POST':
+        username = form.username.data
+        password = form.password.data
         first_name = form.first_name.data
         last_name = form.last_name.data
         email = form.email.data
@@ -228,38 +234,84 @@ def register():
         address_line_two = form.address_line_two.data
         address_line_three = form.address_line_three.data
         postcode = form.postcode.data
-        # username = form.username.data
-        # password = form.password.data
-
-
-# here would need to also add in username and password
-        # or len(password) < 4
-        # or len(username0 == 0
+        phone_number = form.phone_number.data
 
         if len(first_name) == 0 \
                 or len(last_name) == 0 \
                 or len(email) == 0\
                 or len(address_line_one) == 0\
-                or len(address_line_two) == 0\
-                or len(address_line_three) == 0\
-                or len(postcode) == 0:
+                or len(postcode) == 0\
+                or len(password) < 4\
+                or len(username) == 0:
             error = "Please complete each section of this form"
         else:
+            user_login = UserLogin(username=username,
+                             password=password)
             address = Address(address_line_one=address_line_one,
                               address_line_two=address_line_two,
                               address_line_three=address_line_three,
                               postcode=postcode)
             person = Person(first_name=first_name,
-                                last_name=last_name,
-                                email=email,
-                                address=address)
-                                # username=username,
-                                # password=password,
+                            last_name=last_name,
+                            email=email,
+                            address=address,
+                            phone_number=phone_number,
+                            person_type_id=2,
+                            staff_info_id='')
+
+            db.session.add(user_login)
             db.session.add(address)
             db.session.add(person)
             db.session.commit()
             return 'Thank you'
     return render_template('register.html', title='Register', message= error, form=form)
+
+
+# @app.route('/register', methods=['GET', 'POST'])
+# def register():
+#     error = ""
+#     form = RegistrationForm()
+#
+#     if request.method == 'POST':
+#         first_name = form.first_name.data
+#         last_name = form.last_name.data
+#         email = form.email.data
+#         address_line_one = form.address_line_one.data
+#         address_line_two = form.address_line_two.data
+#         address_line_three = form.address_line_three.data
+#         postcode = form.postcode.data
+#         # username = form.username.data
+#         # password = form.password.data
+#
+#
+# # here would need to also add in username and password
+#         # or len(password) < 4
+#         # or len(username0 == 0
+#
+#         if len(first_name) == 0 \
+#                 or len(last_name) == 0 \
+#                 or len(email) == 0\
+#                 or len(address_line_one) == 0\
+#                 or len(address_line_two) == 0\
+#                 or len(address_line_three) == 0\
+#                 or len(postcode) == 0:
+#             error = "Please complete each section of this form"
+#         else:
+#             address = Address(address_line_one=address_line_one,
+#                               address_line_two=address_line_two,
+#                               address_line_three=address_line_three,
+#                               postcode=postcode)
+#             person = Person(first_name=first_name,
+#                                 last_name=last_name,
+#                                 email=email,
+#                                 address=address)
+#                                 # username=username,
+#                                 # password=password,
+#             db.session.add(address)
+#             db.session.add(person)
+#             db.session.commit()
+#             return 'Thank you'
+#     return render_template('register.html', title='Register', message= error, form=form)
 
 
 # ACCESSING A LIST OF CUSTOMERS

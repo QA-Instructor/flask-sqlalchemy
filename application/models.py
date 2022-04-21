@@ -27,13 +27,10 @@ class PersonType(db.Model):
 # UserLogin linking to Person
 class UserLogin(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    # customer_id was the Foreign Key linking to the Customer table, but this table is now linking to both Staff
-    # and Customers
-    # customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=False)
     username = db.Column(db.String(50), nullable=False)
     password = db.Column(db.String(50), nullable=False)
     # not field in table but relationship between userlogin and person
-    # person = db.relationship('UserLogin', backref='person')
+    user_login = db.relationship('Person', backref='userlogin')
 
 
 # address linking to person
