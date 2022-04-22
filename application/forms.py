@@ -15,12 +15,12 @@ class CustomerRegistrationForm(FlaskForm):
     # userlogin elements
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=30)])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=6)])
-    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('confirm_password', message="Passwords must match")])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('confirm_password', message="Passwords must match")]) #Equal to validator not working, will still submit even if passwords do not match
 
     # person elements
     first_name = StringField('First Name', validators=[DataRequired(), Length(min=2, max=30)])
     last_name = StringField('Last Name', validators=[DataRequired(), Length(min=2, max=30)])
-    email = StringField('Email', validators=[DataRequired(), Email(message='Please supply a valid email')])
+    email = StringField('Email', validators=[DataRequired(), Email(message='Please supply a valid email')]) #email validator not working, form will still submit even if no @ or . is present in field.
 
     # address elements
     address_line_one = StringField('Address Line 1', validators=[DataRequired()])
@@ -31,8 +31,9 @@ class CustomerRegistrationForm(FlaskForm):
     # submit
     submit = SubmitField('Sign Up')
 
+    # Custom error created to raise error when special characters are used in username, however, error not raising when tested"
     def validate_username(self, username):
-        self.username = username
+        # self.username = username
         excluded_chars = " *?!'^+%&/()=}][{$#"
         for char in self.username.data:
             if char in excluded_chars:
@@ -102,6 +103,7 @@ class StaffRegistrationForm(FlaskForm):
 # IN PROGRESS - PLANT FORM
 class PlantForm(FlaskForm):
     # plant_name = StringField('Plant Name', validators=[DataRequired()])
+    #removed plant_name field as not sure it was necessary, can add again if needed. Had to completely remove from html file as form would not work with it commented out, was still picking up on the website after submitting the form"
     plant_species = StringField('Plant Species', validators=[DataRequired()])
     plant_type = SelectField('Type', choices=[('1', 'Cacti/Succulent'), ('2', 'Hanging'), ('3', 'Flowering'), ('4', 'Palms'), ('5', 'Ferns')], validators=[DataRequired()])
     plant_category = SelectField('Categories', choices=[('1', 'Indoor'), ('2', 'Outdoor')])

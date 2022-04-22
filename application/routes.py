@@ -384,7 +384,7 @@ def register_staff():
         job_title = form.job_title.data
         date_of_birth = form.date_of_birth.data
 
-
+        # if messages left in for all form routes because may need to raise error here for validations that aren't currently showing
         if len(first_name) == 0 \
                 or len(last_name) == 0 \
                 or len(email) == 0\
