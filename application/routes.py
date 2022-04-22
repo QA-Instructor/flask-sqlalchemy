@@ -226,6 +226,10 @@ def register():
     error = ""
     form = CustomerRegistrationForm()
 
+    if form.validate_on_submit():
+        flash(f'Account created for {form.username.data}!')
+
+
     if request.method == 'POST':
         username = form.username.data
         password = form.password.data
@@ -237,6 +241,18 @@ def register():
         address_line_three = form.address_line_three.data
         postcode = form.postcode.data
         phone_number = form.phone_number.data
+
+        if request.method == 'POST':
+            username = form.username.data
+            password = form.password.data
+            first_name = form.first_name.data
+            last_name = form.last_name.data
+            email = form.email.data
+            address_line_one = form.address_line_one.data
+            address_line_two = form.address_line_two.data
+            address_line_three = form.address_line_three.data
+            postcode = form.postcode.data
+            phone_number = form.phone_number.data
 
         if len(first_name) == 0 \
                 or len(last_name) == 0 \
@@ -265,8 +281,8 @@ def register():
             db.session.add(address)
             db.session.add(person)
             db.session.commit()
-            return 'Thank you'
-    return render_template('register.html', title='Register', message= error, form=form)
+            return render_template('home.html', title='Home', message=error, form=form)
+    return render_template('register.html', title='Register', message=error, form=form)
 
 
 # @app.route('/register', methods=['GET', 'POST'])
@@ -391,9 +407,7 @@ def register_staff():
                             phone_number=phone_number,
                             person_type_id=1,
                             user_login=user_login,
-                            staff_info=staff_info
-                            )
-
+                            staff_info=staff_info)
             db.session.add(user_login)
             db.session.add(address)
             db.session.add(staff_info)
@@ -516,15 +530,15 @@ def plant_form():
                 or plant_stock == 0:
             error = "Please complete the fields"
         else:
-            plant_category = Category(category_description=plant_category)
-            plant_type = PlantType(plant_type_description=plant_type)
-            size = Size(size_description=plant_size)
+            # plant_category = Category(category_description=plant_category)
+            # plant_type = PlantType(plant_type_description=plant_type)
+            # size = Size(size_description=plant_size)
             product = Product(species=plant_species,
                               price=plant_price,
                               stock=plant_stock,
-                              category=plant_category,
-                              plant_type=plant_type,
-                              size=size)
+                              category_id=plant_category,
+                              plant_type_id=plant_type,
+                              size_id=plant_size)
             db.session.add(product)
             db.session.commit()
             return 'Thank you'
