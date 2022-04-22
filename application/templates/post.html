@@ -24,8 +24,21 @@
           <div class="col-lg-8 col-md-10 mx-auto">
             {{ post.post_content }}
               <br>
-              <img src="{{ url_for('static', filename='images/alstromeria_purple.jpg') }}" class="img-fluid"
-                   alt="alstromeria purple flowers">
+<!--            this if block displays a different image based on the post_id field; can be set to specific numbers or could do a range etc etc-->
+              {% if post.id == 1 %}
+                <div class="thumbnail">
+                <img src="{{ url_for('static', filename='images/general_rose_1.jpg') }}" alt="a rose" style="width:35%">
+                </div>
+                {% elif post.id == 2 %}
+                <div class="thumbnail">
+                <img src="{{ url_for('static', filename='images/general_rose_2.jpg') }}" alt="a rose" style="width:35%">
+                </div>
+                {% else %}
+                <div class="thumbnail">
+                <img src="{{ url_for('static', filename='images/general_rose_3.jpg') }}" alt="a rose" style="width:35%">
+                </div>
+                {% endif %}
+
               <br>
           </div>
         </div>
