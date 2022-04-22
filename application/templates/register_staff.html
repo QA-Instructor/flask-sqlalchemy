@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+{% block body_content %}
+<div class="forms">
+    <form action="", method="POST">
+        {{ form.hidden_tag() }}
+        <fieldset>
+            <legend>Staff Signup</legend>
+            <h5>Here, you'll be able to:</h5>
+            <li>Register a new member of staff to the Plant Emporium website</li>
+            <li>Provide access to our plant, customer and order tracking systems</li>
+            <br>
+            <div class="form-group">
+                {{ form.first_name.label(class="form-control-label") }}
+                {{ form.first_name(class="form-control form-control-lg", placeholder="First name") }}
+            </div>
+            <div class="form-group">
+                {{ form.last_name.label(class="form-control-label") }}
+                {{ form.last_name(class="form-control form-control-lg", placeholder="Last name") }}
+            </div>
+            <div class="form-group">
+                {{ form.email.label(class="form-control-label") }}
+                {{ form.email(class="form-control form-control-lg", placeholder="example@plantemporium.com") }}
+            </div>
+            <div class="form-group">
+                {{ form.username.label(class="form-control-label") }}
+                {{ form.username(class="form-control form-control-lg", placeholder="Your username here") }}
+            </div>
+            <div class="form-group">
+                {{ form.password.label(class="form-control-label") }}
+                {{ form.password(class="form-control form-control-lg", placeholder="Password") }}
+            </div>
+            <div class="form-group">
+                {{ form.confirm_password.label(class="form-control-label") }}
+                {{ form.confirm_password(class="form-control form-control-lg", placeholder="Repeat your password") }}
+            </div>
+            <div class="form-group">
+                {{ form.address_line_one.label(class="form-control-label") }}
+                {{ form.address_line_one(class="form-control form-control-lg", placeholder="Address line 1") }}
+            </div>
+            <div class="form-group">
+                {{ form.address_line_two.label(class="form-control-label") }}
+                {{ form.address_line_two(class="form-control form-control-lg", placeholder="Address line 2") }}
+            </div>
+            <div class="form-group">
+                {{ form.address_line_three.label(class="form-control-label") }}
+                {{ form.address_line_three(class="form-control form-control-lg", placeholder="Address line 3") }}
+            </div>
+            <div class="form-group">
+                {{ form.postcode.label(class="form-control-label") }}
+                {{ form.postcode(class="form-control form-control-lg", placeholder="Postcode") }}
+            </div>
+            <div class="form-group">
+                {{ form.phone_number.label(class="form-control-label") }}
+                {{ form.phone_number(class="form-control form-control-lg", placeholder="Enter your phone number") }}
+            </div>
+            <div class="form-group">
+                {{ form.job_title.label(class="form-control-label") }}
+                {{ form.job_title(class="form-control form-control-lg", placeholder="Job role") }}
+            </div>
+            <div class="form-group">
+                {{ form.date_of_birth.label(class="form-control-label") }}
+                {{ form.date_of_birth(class="form-control form-control-lg") }}
+            </div>
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-secondary") }}
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}

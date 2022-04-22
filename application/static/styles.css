@@ -1,19 +1,21 @@
 body{
   width: 90%;
   margin: auto;
-  font-family: "Helvetica Neue";
-  background-color: lightblue;
+  font-family: "Raleway", sans-serif;
+  background-color: #F0EDE1;
+  color: #0A451B;
 }
 
 h1 {
   font-family: verdana;
-  color: white;
+  color: #2E6B28;
   text-align: center;
 }
 
 p {
   font-family: verdana;
   font-size: 24px;
+  color: #0A451B
 }
 footer{
   font-size: 1.2em;
