@@ -563,6 +563,10 @@ def plant_care():
 def addpost():
     error = ""
     form = NewBlogPostForm()
+
+    if form.validate_on_submit():
+        flash(f' New Blog Post created called {form.title.data}!', 'success')
+
     if request.method == 'POST':
         title = form.title.data
         author = form.author.data
@@ -575,7 +579,8 @@ def addpost():
             post = BlogPosts(title=title, author=author, post_content=post_content, date_posted=date.today())
             db.session.add(post)
             db.session.commit()
-            return 'That worked'
+            posts = BlogPosts.query.order_by(BlogPosts.date_posted.desc()).all()
+            return render_template('plant_care.html', title='Plant Care', posts=posts)
 
     return render_template('addpost.html', message= error, form=form)
 

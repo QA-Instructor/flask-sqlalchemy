@@ -113,7 +113,13 @@ class PlantForm(FlaskForm):
     submit = SubmitField('Register Plant')
 
 
+# add a new blog post
+class NewBlogPostForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    author = StringField('Author', validators=[DataRequired()])
+    post_content = StringField('Post Content', validators=[DataRequired()])
 
+    submit = SubmitField('Add post')
 
 # Victoria's code
 class BasicForm(FlaskForm):
@@ -121,10 +127,5 @@ class BasicForm(FlaskForm):
     last_name = StringField('Last Name')
     submit = SubmitField('Add Name')
 
-# additions below here:
-class NewBlogPostForm(FlaskForm):
-    title = StringField('Title')
-    author = StringField('Author')
-    post_content = StringField('Post Content')
 
-    submit = SubmitField('Add post')
+

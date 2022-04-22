@@ -1,30 +1,33 @@
 {% extends "layout.html" %}
 {% block body_content %}
-<h1>Plant Care</h1>
-<blockquote class="text-center">Welcome to the Plant Care Blog! Here our staff will offer regular tips as well as highlighting important events.</blockquote>
+<h2 class="blog-post-title">Plant Care</h2>
+<blockquote class="text-left">Welcome to the Plant Care Blog! Here our staff will offer regular tips as well as highlighting important events.</blockquote>
 
-<div class="container-fluid bg-1 text-center">
-    <h3>Blog</h3>
+<div class="container-fluid bg-1 text-left">
+    <h2 class="blog-post-title">Recent Posts</h2>
+    <hr>
     {% for post in posts %}
-    <h1 class="post-title"></h1>
-             <a href="post/{{ post.id }}">  {{ post.title }} </a>
+    <h3 class="pb-4 mb-4 fst-italic border-bottom">
+        <a href="post/{{ post.id }}">  {{ post.title }} </a>
+    </h3>
         <p> {{ post.post_content }}</p>
     <!--            this if block displays a different image based on the post_id field; can be set to specific numbers or could do a range etc etc-->
         {% if post.id == 1 %}
             <div class="thumbnail">
-            <img src="{{ url_for('static', filename='images/climbing_rose_1.jpg') }}" alt="a climbing rose" style="width:35%">
+            <img src="{{ url_for('static', filename='images/aloe_vera_pot.jpg') }}" alt="aloe vera plant" style="width:15%">
             </div>
         {% elif post.id == 2 %}
             <div class="thumbnail">
-            <img src="{{ url_for('static', filename='images/climbing_rose_2.jpg') }}" alt="a climbing rose" style="width:35%">
+            <img src="{{ url_for('static', filename='images/parlour_palm.jpg') }}" alt="parlour palm" style="width:15%">
             </div>
         {% else %}
             <div class="thumbnail">
-            <img src="{{ url_for('static', filename='images/climbing_rose_3.jpg') }}" alt="a climbing rose" style="width:35%">
+            <img src="{{ url_for('static', filename='images/swiss_cheese_plant.jpg') }}" alt="swiss cheese plant" style="width:15%">
             </div>
         {% endif %}
-        <p class="post-meta">Posted by {{ post.author }} on {{ post.date_posted.strftime('%B %d, %Y') }}</p>
-
+        <p class="blog-post-meta">Posted by {{ post.author }} on {{ post.date_posted.strftime('%B %d, %Y') }}</p>
+    <br>
+    <hr>
     {% endfor %}
 </div>
 

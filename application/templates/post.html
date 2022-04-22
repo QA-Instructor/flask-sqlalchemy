@@ -6,12 +6,9 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
-            <div class="post-heading">
-              <h1>{{ post.title }}</h1>
-                <span class="meta">Posted by
-                {{ post.author }}
-                on {{ post.date_posted.strftime('%B %d, %Y') }}</span>
-            </div>
+
+              <h2 class="blog-post-heading text-center">{{ post.title }}</h2>
+
           </div>
         </div>
       </div>
@@ -22,12 +19,14 @@
       <div class="container bg-1 text-center">
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
+            <p>
             {{ post.post_content }}
+              </p>
               <br>
 <!--            this if block displays a different image based on the post_id field; can be set to specific numbers or could do a range etc etc-->
               {% if post.id == 1 %}
                 <div class="thumbnail">
-                <img src="{{ url_for('static', filename='images/general_rose_1.jpg') }}" alt="a rose" style="width:35%">
+                <img src="{{ url_for('static', filename='images/sweet_orange_tree_1.jpg') }}" alt="small orange tree" style="width:35%">
                 </div>
                 {% elif post.id == 2 %}
                 <div class="thumbnail">
@@ -35,7 +34,7 @@
                 </div>
                 {% else %}
                 <div class="thumbnail">
-                <img src="{{ url_for('static', filename='images/general_rose_3.jpg') }}" alt="a rose" style="width:35%">
+                <img src="{{ url_for('static', filename='images/hydrangea_dusky_pink.jpg') }}" alt="close up of a dusky pink hydrangea" style="width:35%">
                 </div>
                 {% endif %}
 
@@ -46,6 +45,10 @@
     </article>
 
     <div class="container-fluid bg-4 text-center">
+      <span class="blog-post-meta">Posted by
+                {{ post.author }}
+                on {{ post.date_posted.strftime('%B %d, %Y') }}</span>
+      <br>
 
         <a href="{{ url_for('plant_care') }}">Back to the Plant Care Blog</a>
     </div>
