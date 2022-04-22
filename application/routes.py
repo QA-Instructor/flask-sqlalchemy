@@ -534,7 +534,7 @@ def plant_form():
 # DELETING PLANTS WE NO LONGER STOCK:
 # to do
 
-# delete below here before updating
+
 
 @app.route('/plant_care', methods=['GET'])
 def plant_care():
