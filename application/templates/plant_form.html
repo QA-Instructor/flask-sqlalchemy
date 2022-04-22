@@ -9,8 +9,8 @@
             <li>Add a plant to the existing Plant Emporium Directory</li>
             <br>
             <div class="form-group">
-                {{ form.plant_name.label(class="form-control-label") }}
-                {{ form.plant_name(class="form-control form-control-lg") }}
+                {{ form.plant_species.label(class="form-control-label") }}
+                {{ form.plant_species(class="form-control form-control-lg", placeholder="e.g. Boston Fern") }}
             </div>
             <div class="form-group">
                 {{ form.plant_type.label(class="form-control-label") }}
@@ -19,10 +19,6 @@
             <div class="form-group">
                 {{ form.plant_category.label(class="form-control-label") }}
                 {{ form.plant_category(class="form-control form-control-lg") }}
-            </div>
-            <div class="form-group">
-                {{ form.plant_species.label(class="form-control-label") }}
-                {{ form.plant_species(class="form-control form-control-lg", placeholder="e.g. Boston Fern") }}
             </div>
             <div class="form-group">
                 {{ form.plant_size.label(class="form-control-label") }}
@@ -37,6 +33,7 @@
                 {{ form.plant_price(class="form-control form-control-lg") }}
             </div>
         </fieldset>
+        <br>
         <div class="form-group">
             {{ form.submit(class="btn btn-secondary") }}
         </div>

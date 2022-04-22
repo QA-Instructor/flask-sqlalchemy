@@ -101,10 +101,10 @@ class StaffRegistrationForm(FlaskForm):
 
 # IN PROGRESS - PLANT FORM
 class PlantForm(FlaskForm):
-    plant_name = StringField('Plant Name', validators=[DataRequired()])
+    # plant_name = StringField('Plant Name', validators=[DataRequired()])
+    plant_species = StringField('Plant Species', validators=[DataRequired()])
     plant_type = SelectField('Type', choices=[('1', 'Cacti/Succulent'), ('2', 'Hanging'), ('3', 'Flowering'), ('4', 'Palms'), ('5', 'Ferns')], validators=[DataRequired()])
     plant_category = SelectField('Categories', choices=[('1', 'Indoor'), ('2', 'Outdoor')])
-    plant_species = StringField('Plant Species', validators=[DataRequired()])
     plant_price = IntegerField('Plant Price', validators=[DataRequired()])
     plant_stock = IntegerField('Number Being Added To Stock', validators=[DataRequired()])
     plant_size = SelectField('Size', choices=[('1', 'Tiny'), ('2', 'Small'), ('3', 'Medium'), ('4', 'Tall')], validators=[DataRequired()])

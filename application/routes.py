@@ -520,7 +520,7 @@ def plant_form():
         flash(f' Plant added!', 'success')
 
     if request.method == 'POST':
-        plant_name = form.plant_name.data
+        # plant_name = form.plant_name.data
         plant_category = form.plant_category.data
         plant_species = form.plant_species.data
         plant_price = form.plant_price.data
@@ -528,8 +528,7 @@ def plant_form():
         plant_type = form.plant_type.data
         plant_size = form.plant_size.data
 
-        if len(plant_name) == 0 \
-                or plant_category == 0\
+        if len(plant_category) == 0 \
                 or plant_species == 0\
                 or plant_price == 0\
                 or plant_stock == 0:
