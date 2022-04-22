@@ -228,6 +228,9 @@ def register():
     error = ""
     form = CustomerRegistrationForm()
 
+    if form.validate_on_submit():
+        flash(f'Account created for {form.username.data}!', 'success')
+
     if request.method == 'POST':
         username = form.username.data
         password = form.password.data
@@ -239,6 +242,18 @@ def register():
         address_line_three = form.address_line_three.data
         postcode = form.postcode.data
         phone_number = form.phone_number.data
+
+        if request.method == 'POST':
+            username = form.username.data
+            password = form.password.data
+            first_name = form.first_name.data
+            last_name = form.last_name.data
+            email = form.email.data
+            address_line_one = form.address_line_one.data
+            address_line_two = form.address_line_two.data
+            address_line_three = form.address_line_three.data
+            postcode = form.postcode.data
+            phone_number = form.phone_number.data
 
         if len(first_name) == 0 \
                 or len(last_name) == 0 \
@@ -267,8 +282,8 @@ def register():
             db.session.add(address)
             db.session.add(person)
             db.session.commit()
-            return 'Thank you'
-    return render_template('register.html', title='Register', message= error, form=form)
+            return render_template('home.html', title='Home', message=error, form=form)
+    return render_template('register.html', title='Register', message=error, form=form)
 
 
 # @app.route('/register', methods=['GET', 'POST'])
@@ -354,6 +369,9 @@ def register_staff():
     error = ""
     form = StaffRegistrationForm()
 
+    if form.validate_on_submit():
+        flash(f' Staff account created for {form.username.data}!', 'success')
+
     if request.method == 'POST':
         username = form.username.data
         password = form.password.data
@@ -368,7 +386,7 @@ def register_staff():
         job_title = form.job_title.data
         date_of_birth = form.date_of_birth.data
 
-
+        # if messages left in for all form routes because may need to raise error here for validations that aren't currently showing
         if len(first_name) == 0 \
                 or len(last_name) == 0 \
                 or len(email) == 0\
@@ -393,16 +411,14 @@ def register_staff():
                             phone_number=phone_number,
                             person_type_id=1,
                             user_login=user_login,
-                            staff_info=staff_info
-                            )
-
+                            staff_info=staff_info)
             db.session.add(user_login)
             db.session.add(address)
             db.session.add(staff_info)
             db.session.add(person)
             db.session.commit()
-            return 'Thank you'
-    return render_template('register_staff.html', title='Register New Staff', message= error, form=form)
+            return render_template('home.html', title='Home', message=error, form=form)
+    return render_template('register_staff.html', title='Register New Staff', message=error, form=form)
 
 # @app.route('/register_staff', methods=['GET', 'POST'])
 # def register_staff():
@@ -499,8 +515,11 @@ def plant_form():
     error = ""
     form = PlantForm()
 
+    if form.validate_on_submit():
+        flash(f' Plant added!', 'success')
+
     if request.method == 'POST':
-        plant_name = form.plant_name.data
+        # plant_name = form.plant_name.data
         plant_category = form.plant_category.data
         plant_species = form.plant_species.data
         plant_price = form.plant_price.data
@@ -508,26 +527,25 @@ def plant_form():
         plant_type = form.plant_type.data
         plant_size = form.plant_size.data
 
-        if len(plant_name) == 0 \
-                or plant_category == 0\
+        if len(plant_category) == 0 \
                 or plant_species == 0\
                 or plant_price == 0\
                 or plant_stock == 0:
             error = "Please complete the fields"
         else:
-            plant_category = Category(category_description=plant_category)
-            plant_type = PlantType(plant_type_description=plant_type)
-            size = Size(size_description=plant_size)
+            # plant_category = Category(category_description=plant_category)
+            # plant_type = PlantType(plant_type_description=plant_type)
+            # size = Size(size_description=plant_size)
             product = Product(species=plant_species,
                               price=plant_price,
                               stock=plant_stock,
-                              category=plant_category,
-                              plant_type=plant_type,
-                              size=size)
+                              category_id=plant_category,
+                              plant_type_id=plant_type,
+                              size_id=plant_size)
             db.session.add(product)
             db.session.commit()
-            return 'Thank you'
-    return render_template('plant_form.html', title='Register a Plant', message= error, form=form)
+            return render_template('plant_form.html', title='Register a Plant', message=error, form=form)
+    return render_template('plant_form.html', title='Register a Plant', message=error, form=form)
 
 # ACCESSING A LIST OF PLANTS:
 # to do
