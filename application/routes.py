@@ -516,6 +516,9 @@ def plant_form():
     error = ""
     form = PlantForm()
 
+    if form.validate_on_submit():
+        flash(f' Plant added!', 'success')
+
     if request.method == 'POST':
         plant_name = form.plant_name.data
         plant_category = form.plant_category.data
@@ -543,8 +546,8 @@ def plant_form():
                               size_id=plant_size)
             db.session.add(product)
             db.session.commit()
-            return 'Thank you'
-    return render_template('plant_form.html', title='Register a Plant', message= error, form=form)
+            return render_template('plant_form.html', title='Register a Plant', message=error, form=form)
+    return render_template('plant_form.html', title='Register a Plant', message=error, form=form)
 
 # ACCESSING A LIST OF PLANTS:
 # to do

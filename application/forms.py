@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, BooleanField, DateField, IntegerField, SelectField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, input_required
 
 # need form to do email newsletter sign up
 
@@ -101,44 +101,14 @@ class StaffRegistrationForm(FlaskForm):
 
 # IN PROGRESS - PLANT FORM
 class PlantForm(FlaskForm):
-    plant_name = StringField('Plant Name')
-    plant_type = SelectField('Type', choices=[('1', 'Cacti/Succulent'), ('2', 'Hanging'), ('3', 'Flowering'), ('4', 'Palms'), ('5', 'Ferns')])
-    plant_category = SelectField('Categories', choices=[('1,', 'Indoor'), ('2', 'Outdoor')])
-    plant_species = StringField('Plant Species')
-    plant_price = IntegerField('Plant Price')
-    plant_stock = IntegerField('Number in Stock')
-    plant_size = SelectField('Size', choices=[('1', 'Tiny'), ('2', 'Small'), ('3', 'Medium'), ('4', 'Tall')])
+    plant_name = StringField('Plant Name', validators=[DataRequired()])
+    plant_type = SelectField('Type', choices=[('1', 'Cacti/Succulent'), ('2', 'Hanging'), ('3', 'Flowering'), ('4', 'Palms'), ('5', 'Ferns')], validators=[DataRequired()])
+    plant_category = SelectField('Categories', choices=[('1', 'Indoor'), ('2', 'Outdoor')])
+    plant_species = StringField('Plant Species', validators=[DataRequired()])
+    plant_price = IntegerField('Plant Price', validators=[DataRequired()])
+    plant_stock = IntegerField('Number Being Added To Stock', validators=[DataRequired()])
+    plant_size = SelectField('Size', choices=[('1', 'Tiny'), ('2', 'Small'), ('3', 'Medium'), ('4', 'Tall')], validators=[DataRequired()])
     submit = SubmitField('Register Plant')
-
-
-
-#wanted to try add in wft validators but kept throwing up error, will do a basic form for now to just get it running then will try and add validators after
-# # class RegistrationForm(FlaskForm):
-# #     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=30)])
-# #     email = StringField('Email', validators=[DataRequired(), Email])
-# #     password = PasswordField('Password', validators=[DataRequired(), Length(min=4)])
-# #     confirm_password = PasswordField('Password', validators=[DataRequired(), Length(min=4), EqualTo('password')])
-# #     submit = SubmitField('Sign Up')
-#
-#
-# class LoginForm(FlaskForm):
-#     email = StringField('Email', validators=[DataRequired(), Email])
-#     password = PasswordField('Password', validators=[DataRequired()])
-#     remember = BooleanField('Remember Me')
-#     submit = SubmitField('Login')
-#
-#
-# class StaffForm(FlaskForm):
-#     email = StringField('Email', validators=[DataRequired(), Email])
-#     password = PasswordField('Password', validators=[DataRequired()])
-#     remember = BooleanField('Remember Me')
-#     submit = SubmitField('Login')
-#
-#
-# class PlantForm(FlaskForm):
-#     plant_name = StringField('Plant', validators=[DataRequired()])
-#     plant_category = SelectMultipleField('Categories', validators=[DataRequired()], choices=['Cacti/Succulent', 'Hanging', 'Flowering', 'Palms', 'Ferns'])
-#     submit = SubmitField('Register Plant')
 
 
 
