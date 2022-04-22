@@ -229,7 +229,6 @@ def register():
     if form.validate_on_submit():
         flash(f'Account created for {form.username.data}!', 'success')
 
-
     if request.method == 'POST':
         username = form.username.data
         password = form.password.data
@@ -368,6 +367,9 @@ def register_staff():
     error = ""
     form = StaffRegistrationForm()
 
+    if form.validate_on_submit():
+        flash(f' Staff account created for {form.username.data}!', 'success')
+
     if request.method == 'POST':
         username = form.username.data
         password = form.password.data
@@ -413,8 +415,8 @@ def register_staff():
             db.session.add(staff_info)
             db.session.add(person)
             db.session.commit()
-            return 'Thank you'
-    return render_template('register_staff.html', title='Register New Staff', message= error, form=form)
+            return render_template('home.html', title='Home', message=error, form=form)
+    return render_template('register_staff.html', title='Register New Staff', message=error, form=form)
 
 # @app.route('/register_staff', methods=['GET', 'POST'])
 # def register_staff():

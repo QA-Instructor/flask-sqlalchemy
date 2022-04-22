@@ -68,6 +68,8 @@ class StaffRegistrationForm(FlaskForm):
     # userlogin elements
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=30)])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=6)])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('confirm_password',
+                                                                                             message="Passwords must match")])
 
     # person elements
     first_name = StringField('First Name', validators=[DataRequired(), Length(min=2, max=30)])
