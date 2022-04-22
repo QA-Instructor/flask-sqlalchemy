@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, BooleanField, SelectMultipleField, DateField, IntegerField, SelectField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms import StringField, SubmitField, PasswordField, BooleanField, DateField, IntegerField, SelectField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 
 # need form to do email newsletter sign up
 
@@ -31,6 +31,14 @@ class CustomerRegistrationForm(FlaskForm):
     # submit
     submit = SubmitField('Sign Up')
 
+    def validate_username(self, username):
+        self.username = username
+        excluded_chars = " *?!'^+%&/()=}][{$#"
+        for char in self.username.data:
+            if char in excluded_chars:
+                raise ValidationError(
+                    f'Character {char} is not allowed in username.')
+
 # added here: first name, last name
 # commented out: username, needs to be added in create.py
 # class RegistrationForm(FlaskForm):
@@ -48,8 +56,8 @@ class CustomerRegistrationForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    email = StringField('Email')
-    password = PasswordField('Password')
+    email = StringField('Email', validators=[DataRequired(), Email(message='Please supply a valid email')])
+    password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
@@ -58,24 +66,24 @@ class LoginForm(FlaskForm):
 # person and staff info tables to be functional (can set persontype to '1' which is staff in the routes)
 class StaffRegistrationForm(FlaskForm):
     # userlogin elements
-    username = StringField('Username')
-    password = PasswordField('Password')
+    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=30)])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=6)])
 
     # person elements
-    first_name = StringField('First Name')
-    last_name = StringField('Last Name')
-    email = StringField('Email')
+    first_name = StringField('First Name', validators=[DataRequired(), Length(min=2, max=30)])
+    last_name = StringField('Last Name', validators=[DataRequired(), Length(min=2, max=30)])
+    email = StringField('Email', validators=[DataRequired(), Email(message='Please supply a valid email')])
 
     # address elements
-    address_line_one = StringField('Address Line 1')
+    address_line_one = StringField('Address Line 1', validators=[DataRequired()])
     address_line_two = StringField('Address Line 2')
     address_line_three = StringField('Address Line 3')
-    postcode = StringField('Postcode')
+    postcode = StringField('Postcode', validators=[DataRequired()])
     phone_number = StringField('Phone Number')
 
     # staff info elements
-    job_title = StringField('Job title')
-    date_of_birth = DateField('Date of birth')
+    job_title = StringField('Job title', validators=[DataRequired()])
+    date_of_birth = DateField('Date of birth', validators=[DataRequired()])
     # submit
     submit = SubmitField('Register New Staff Member')
 

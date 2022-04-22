@@ -227,7 +227,7 @@ def register():
     form = CustomerRegistrationForm()
 
     if form.validate_on_submit():
-        flash(f'Account created for {form.username.data}!')
+        flash(f'Account created for {form.username.data}!', 'success')
 
 
     if request.method == 'POST':
