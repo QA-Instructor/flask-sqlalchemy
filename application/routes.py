@@ -2,9 +2,11 @@ from flask import render_template, request, flash, redirect, url_for
 from application import app, db
 from application.forms import BasicForm, EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm  # LoginForm, RegistrationForm, StaffForm
 from application.models import Person, Address, Newsletter, UserLogin, StaffInfo, Product, Category, PlantType, Size
-
+from application.forms import NewBlogPostForm
+from application.models import BlogPosts
 
 # Car, Customer, Staff
+from datetime import date
 
 
 # newsletter sign up form for homepage
@@ -154,9 +156,9 @@ def contact():
     return render_template('contact_us.html', title='Contact Us')
 
 
-@app.route('/plant_care', methods=['GET'])
-def plant_care():
-    return render_template('plant_care.html', title='Plant Care')
+# @app.route('/plant_care', methods=['GET'])
+# def plant_care():
+#     return render_template('plant_care.html', title='Plant Care')
 
 
 @app.route('/shop', methods=['GET'])
@@ -504,9 +506,6 @@ def show_staff():
 #         print(staff)
 #     return render_template('staff_deletion.html', staff=staff, message=error, title="Delete Staff")
 
-
-
-
 # REGISTERING A NEW PLANT:
 
 # not yet complete, needs rest of the fields filling in
@@ -553,3 +552,40 @@ def plant_form():
 # DELETING PLANTS WE NO LONGER STOCK:
 # to do
 
+
+
+@app.route('/plant_care', methods=['GET'])
+def plant_care():
+    posts = BlogPosts.query.order_by(BlogPosts.date_posted.desc()).all()
+    return render_template('plant_care.html', title='Plant Care', posts=posts)
+
+@app.route('/addpost', methods=['GET', 'POST'])
+def addpost():
+    error = ""
+    form = NewBlogPostForm()
+
+    if form.validate_on_submit():
+        flash(f' New Blog Post created called {form.title.data}!', 'success')
+
+    if request.method == 'POST':
+        title = form.title.data
+        author = form.author.data
+        post_content = form.post_content.data
+        if len(title) == 0\
+                or len(author) == 0\
+                or len(post_content) == 0:
+            error = "Please complete the fields"
+        else:
+            post = BlogPosts(title=title, author=author, post_content=post_content, date_posted=date.today())
+            db.session.add(post)
+            db.session.commit()
+            posts = BlogPosts.query.order_by(BlogPosts.date_posted.desc()).all()
+            return render_template('plant_care.html', title='Plant Care', posts=posts)
+
+    return render_template('addpost.html', message= error, form=form)
+
+@app.route('/post/<int:post_id>')
+def post(post_id):
+    post = BlogPosts.query.filter_by(id=post_id).one()
+
+    return render_template('post.html', post=post)
