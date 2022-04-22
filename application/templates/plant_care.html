@@ -7,7 +7,7 @@
     <h3>Blog</h3>
     {% for post in posts %}
     <h1 class="post-title"></h1>
-                {{ post.title }}
+             <a href="post/{{ post.id }}">  {{ post.title }} </a>
         <p> {{ post.post_content }}</p>
         <div class="thumbnail">
         <img src="{{ url_for('static', filename='images/climbing_rose_1.jpg') }}" alt="a climbing rose" style="width:35%">
