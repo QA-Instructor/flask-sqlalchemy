@@ -687,6 +687,12 @@ def logged_in():
 @app.route('/log_out')
 @app.route('/logout')
 def delete_session():
+    error = ""
+    form = EmailSignUpForm()
     # Clear the username stored in the session object
     session.pop('logged_in_username', default=None)
-    return '<h1>You have logged out!</h1>'
+    session.pop('typesession', default=None)
+    session.pop('logged_in', default=None)
+
+    flash(f' You have logged out!', 'success')
+    return render_template('home.html', title='Home', form=form, message=error,)
