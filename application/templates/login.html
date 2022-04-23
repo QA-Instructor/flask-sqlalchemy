@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block body_content %}
+
+<html>
+  <head>
+    <title>Plant Emporium - login page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Please login</h1>
+      <br>
+      <form action="" method="post">
+        <div class="form-group">
+                {{ form.username.label(class="form-control-label") }}
+                {{ form.username(class="form-control form-control-lg", placeholder="Username") }}
+        </div>
+        <div class="form-group">
+                {{ form.password.label(class="form-control-label") }}
+                {{ form.password(class="form-control form-control-lg", placeholder="Password") }}
+        </div>
+        <div class="form-group">
+                {{ form.type.label(class="form-control-label") }}
+                {{ form.type(class="form-control form-control-lg", placeholder="Staff/Customer") }}
+        </div>
+
+        <div class="form-group">
+            {{ form.submit(class="btn btn-secondary") }}
+        </div>
+
+
+      </form>
+      {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}
+      {% endif %}
+    </div>
+  </body>
+</html>
+
+
+{% endblock %}
