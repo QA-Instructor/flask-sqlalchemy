@@ -597,6 +597,7 @@ def post(post_id):
 def login():
     form = LogInForm()
     error = ""
+    # login_redirect = url_for('login')
     if request.method == 'POST':
         # pop previous session in case someone was already logged in
         session.pop('logged_in_username', default=None)
@@ -611,7 +612,7 @@ def login():
 
         # currently returning [<UserLogin 8>] for "jody" which is the correct record
         db_username = UserLogin.query.filter_by(username=form_username).all()
-        # currently returning [<UserLogin 8>] [<UserLogin 6>, <UserLogin 7>, <UserLogin 8>, <UserLogin 9>] for the staff password, which is techincally correct, as all 4 are the same
+        # currently returning [<UserLogin 6>, <UserLogin 7>, <UserLogin 8>, <UserLogin 9>] for the staff password, which is techincally correct, as all 4 are the same
         db_password = UserLogin.query.filter_by(password=form_password).all()
         # db_password = UserLogin.query.filter_by(password=form_password)
 

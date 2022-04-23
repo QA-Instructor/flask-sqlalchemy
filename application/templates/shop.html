@@ -10,8 +10,17 @@
     <h3>What type of log in is it? You are logged in as {{ session['typesession'] }}</h3>
 <br>
 <hr>
+{% else %}
+<hr>
+    <h1>You are not currently logged in </h1>
+    <h2>Please <a href='/log_in'>Login</a> to make a purchase</h2>
+
+<br>
+<hr>
 
 {% endif %}
+
+
 
 <p>Here are our current plants in stock</p>
 
