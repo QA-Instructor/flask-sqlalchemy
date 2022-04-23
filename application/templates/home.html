@@ -1,20 +1,21 @@
 {% extends "layout.html" %}
 {% block body_content %}
 
-<!--example text, just checking the bootstrap is working -->
-<div class="container-fluid bg-3 text-center">
-    <h1>The Plant Emporium</h1>
-    <p>Here at The Plant Emporium we care about plants</p>
 
-    <!-- First Container -->
-    <div class="container-fluid bg-3 text-center">
-        <img src="{{url_for('static',filename='images/green_leaves.jpg')}}" class="img-responsive img-rounded" style="display:inline" alt="Green leaves" height="450">
-    </div>
-    <p>As you can tell from our exquisitely designed site, web design is our passion</p>
+<!--main home page container with image, copy and buttons -->
+
+<div class="container-home">
+  <img class="bg obj-fit-cover" src="{{url_for('static',filename='images/logoleaves.jpg')}}" alt="leaves">
+  <h1>The Plant Emporium</h1>
+  <h2>Plants for every space</h2>
+    <button class="btn1"><a href="" style="color:white">Shop Indoor</a></button>
+    <button class="btn2"><a href="" style="color:white">Shop Outdoor</a></button>
 </div>
 
-
-<!--newletter/subscripton page-->
+<!--newletter subscripton -->
+<div class="newsletter-home">
+  <h4>Plant Parenthood</h4>
+  <p>Sign up for our top tips on how to care for your plants</p>
     <div class='form'>
             <form method='POST' action=''>
                 <!-- provides CSRF protection, alongside secret key. Use on all POST forms -->
@@ -35,7 +36,7 @@
 <!--            <form action="#">-->
 <!--                <input type="email" class="input-box" placeholder="Your Email">-->
 <!--                <p><span><input type="checkbox"></span> I agree to the terms of services</p>-->
-<!--                <button type="button" class="sign-btn">Sign up</button>-->
+<!--                <button type="button" class="sign-btn">Subscribe</button>-->
 <!--            </form>-->
 <!--        </div>-->
 
