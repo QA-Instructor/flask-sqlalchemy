@@ -604,34 +604,25 @@ def login():
 
         # if form.validate_on_submit():
 
-        # taking the username and password from the form so we can compare to the db
+        # # taking the username and password from the form so we can compare to the db
         form_username = request.form['username']
         form_password = request.form['password']
 
         # need to do the validation here to check if username and password match the database
 
-        # currently returning [<UserLogin 8>] for "jody" which is the correct record
-        db_username = UserLogin.query.filter_by(username=form_username).all()
-        # currently returning [<UserLogin 6>, <UserLogin 7>, <UserLogin 8>, <UserLogin 9>] for the staff password, which is techincally correct, as all 4 are the same
-        db_password = UserLogin.query.filter_by(password=form_password).all()
-        # db_password = UserLogin.query.filter_by(password=form_password)
+        # this is looking for a record on the database where both the username and password match
 
+        db_username_password = UserLogin.query.filter_by(username=form_username, password=form_password).all()
+
+        # user_and_persontype = db.session.query(UserLogin, Person, StaffInfo).select_from(UserLogin).join(Person).join(StaffInfo).all()
+        # print(user_and_persontype)
         # setting initial value of pw_check to false:
         pw_check = False
 
-        # this logic is not quite right, is basically checking if there is anything in the username variable and
-        # anything in the password, so you could log in with someone else's password here, but it is a start
-        if db_username != []:
-            if db_password != []:
-                pw_check = True
-            else:
-                pw_check = False
+        if db_username_password != []:
+            pw_check = True
         else:
             pw_check = False
-
-
-        # just using this print statement to see what it has assigned, at present it is not doing what we need for the db side, preventing comparison
-        print( form_username, form_password, db_username, db_password)
 
         if pw_check == True:
         # if validation has passed, save the username to the session object
@@ -653,35 +644,16 @@ def login():
                 return redirect(url_for('shop'))
 
         else:
-     # will just show basic shop page, no session data
+            flash(f' Login failed, please try again', 'failure')
+            # will just show basic shop page, no session data
             return redirect(url_for('shop'))
-
-    # no if statement yet working
-
-        # else:
-        #     return render_template(url_for('login'))
-
-
-
-
-
+        # will display welcome message/session data and also navigation will change
         return redirect(url_for('shop'))
 
     #     if validation fails, return to log in page and flash message that it has failed
     #     return redirect(url_for('login'))
 
     return render_template('login.html', message= error, form=form)
-
-
-@app.route('/logged_in')
-def logged_in():
-    return render_template_string("""
-            {% if session['username'] %}
-                <h1>Welcome {{ session['logged_in_username'] }}!</h1>
-            {% else %}
-                <h1>Welcome! Please enter your username <a href="{{ url_for('log_in') }}">here.</a></h1>
-            {% endif %}
-        """)
 
 
 @app.route('/log_out')
