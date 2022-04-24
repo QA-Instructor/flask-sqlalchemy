@@ -1,11 +1,9 @@
-from flask import render_template, request, flash, redirect, url_for, session, render_template_string
+from flask import render_template, request, flash, redirect, url_for, session
 from application import app, db
-from application.forms import BasicForm, EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm  # LoginForm, RegistrationForm, StaffForm
-from application.models import Person, Address, Newsletter, UserLogin, StaffInfo, Product, Category, PlantType, Size
-from application.forms import NewBlogPostForm, LogInForm
-from application.models import BlogPosts
-
-# Car, Customer, Staff
+from application.forms import EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm, \
+    NewBlogPostForm, LogInForm
+from application.models import Person, Address, Newsletter, UserLogin, StaffInfo, Product, BlogPosts,\
+    Category, PlantType, Size
 from datetime import date
 
 
@@ -291,9 +289,6 @@ def plant_form():
                 or plant_stock == 0:
             error = "Please complete the fields"
         else:
-            # plant_category = Category(category_description=plant_category)
-            # plant_type = PlantType(plant_type_description=plant_type)
-            # size = Size(size_description=plant_size)
             product = Product(species=plant_species,
                               price=plant_price,
                               stock=plant_stock,
@@ -402,7 +397,7 @@ def login():
                 return redirect(url_for('shop'))
 
         else:
-            flash(f' Login failed, please try again', 'error')
+            flash(f' Login failed, please try again', 'danger')
             # will just show basic shop page, no session data
             return redirect(url_for('shop'))
         # will display welcome message/session data and also navigation will change
