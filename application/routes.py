@@ -2,7 +2,7 @@ from flask import render_template, request, flash, redirect, url_for, session, r
 from application import app, db
 from application.forms import BasicForm, EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm  # LoginForm, RegistrationForm, StaffForm
 from application.models import Person, Address, Newsletter, UserLogin, StaffInfo, Product, Category, PlantType, Size
-from application.forms import NewBlogPostForm, LogInForm
+from application.forms import NewBlogPostForm, LogInForm, AddToCartForm
 from application.models import BlogPosts
 
 # Car, Customer, Staff
@@ -348,7 +348,7 @@ def post(post_id):
 
     return render_template('post.html', post=post)
 
-# session variables
+# session variables - login
 
 @app.route('/login', methods=['GET', 'POST'])
 @app.route('/log_in', methods=['GET', 'POST'])
@@ -413,6 +413,7 @@ def login():
 
     return render_template('login.html', message= error, form=form)
 
+# session variables - log out
 
 @app.route('/log_out')
 @app.route('/logout')
@@ -423,9 +424,38 @@ def delete_session():
     session.pop('logged_in_username', default=None)
     session.pop('typesession', default=None)
     session.pop('logged_in', default=None)
+    session.pop('cart', default=None)
 
     flash(f' You have logged out!', 'success')
     return render_template('home.html', title='Home', form=form, message=error,)
+
+# session variables - shopping cart
+
+@app.route('/add_to_cart', methods=['GET', 'POST'])
+def add_to_cart():
+    error = ""
+    form = AddToCartForm()
+
+    if request.method == 'POST':
+        product = form.product.data
+        quantity = form.quantity.data
+        if 'cart' in session:
+            session['cart'].append((product, quantity))
+            session.modified = True
+        else:
+            session['cart'] = [(product, quantity)]
+
+        return render_template('cart.html', title='Cart', form=form, message=error)
+    return render_template('add_to_cart.html', form=form, message=error, title='home')
+
+@app.route('/cart', methods=['GET', 'POST'])
+def view_cart():
+    error = ""
+    form = AddToCartForm()
+
+
+    return render_template('cart.html', title='Cart', form=form, message=error)
+    # return render_template('add_to_cart.html', form=form, message=error, title='home')
 
 
 # Victoria's code

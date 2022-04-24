@@ -129,6 +129,13 @@ class LogInForm(FlaskForm):
 
     submit = SubmitField('Log in')
 
+# add to cart
+class AddToCartForm(FlaskForm):
+    product = SelectField('Species', choices=[(1, 'Boston Fern'), (2, 'Aloe Vera'), (3, 'Parlour Palm')])
+    # product = SelectField('Species', choices=['Boston Fern', 'Aloe Vera', 'Parlour Palm'])
+    quantity = IntegerField('Quantity', validators=[DataRequired()])
+    submit = SubmitField('Add to cart')
+
 # Victoria's code
 class BasicForm(FlaskForm):
     first_name = StringField('First Name')

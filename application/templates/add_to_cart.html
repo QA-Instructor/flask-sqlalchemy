@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% block body_content %}
+
+{% if session['logged_in_username'] %}
+<hr>
+    <h1>Welcome {{ session['logged_in_username'] }}!</h1>
+    <h2> Are you logged in? That is {{ session['logged_in'] }}</h2>
+    <h3>What type of log in is it? You are logged in as {{ session['typesession'] }}</h3>
+<br>
+<hr>
+{% else %}
+<hr>
+    <h1>You are not currently logged in </h1>
+    <h2>Please <a href='/log_in'>Login</a> to make a purchase</h2>
+
+<br>
+<hr>
+
+{% endif %}
+
+<div class="forms">
+    <form action="", method="POST">
+        {{ form.hidden_tag() }}
+        <fieldset>
+            <legend>Add Plant to your cart</legend>
+            <h5>Here, you'll be able to:</h5>
+            <li>Add a plant to your shopping cart</li>
+            <br>
+            <div class="form-group">
+                {{ form.product.label(class="form-control-label") }}
+                {{ form.product(class="form-control form-control-lg", placeholder="e.g. Boston Fern") }}
+            </div>
+            <div class="form-group">
+                {{ form.quantity.label(class="form-control-label") }}
+                {{ form.quantity(class="form-control form-control-lg") }}
+            </div>
+
+
+        </fieldset>
+        <br>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-secondary") }}
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}
