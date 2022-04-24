@@ -121,6 +121,14 @@ class NewBlogPostForm(FlaskForm):
 
     submit = SubmitField('Add post')
 
+# log in form
+class LogInForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    type = SelectField('Type', choices=[('1', 'Staff'), ('2', 'Customer')])
+
+    submit = SubmitField('Log in')
+
 # Victoria's code
 class BasicForm(FlaskForm):
     first_name = StringField('First Name')
