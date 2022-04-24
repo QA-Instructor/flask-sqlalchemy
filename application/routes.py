@@ -631,7 +631,7 @@ def login():
 
         # also need to check if they are a customer or staff, so need a second session variable
         # some sort of if statement needed here to check db and then:
-        # not currently checking db, but will take the form input instead:
+        # not currently checking db, but will take the form input instead as a starting point:
             if request.form['type'] == '1':
                 # if person_type = 1 then:
                 session['typesession'] = 'staff'
@@ -644,7 +644,7 @@ def login():
                 return redirect(url_for('shop'))
 
         else:
-            flash(f' Login failed, please try again', 'failure')
+            flash(f' Login failed, please try again', 'error')
             # will just show basic shop page, no session data
             return redirect(url_for('shop'))
         # will display welcome message/session data and also navigation will change
