@@ -40,21 +40,6 @@ class CustomerRegistrationForm(FlaskForm):
                 raise ValidationError(
                     f'Character {char} is not allowed in username.')
 
-# added here: first name, last name
-# commented out: username, needs to be added in create.py
-# class RegistrationForm(FlaskForm):
-#     first_name = StringField('First Name')
-#     last_name = StringField('Last Name')
-#     # username = StringField('Username')
-#     email = StringField('Email')
-#     # password = PasswordField('Password')
-#     submit = SubmitField('Sign Up')
-#     # address elements
-#     address_line_one = StringField('Address Line 1')
-#     address_line_two = StringField('Address Line 2')
-#     address_line_three = StringField('Address Line 3')
-#     postcode = StringField('Postcode')
-
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email(message='Please supply a valid email')])
@@ -91,16 +76,6 @@ class StaffRegistrationForm(FlaskForm):
     submit = SubmitField('Register New Staff Member')
 
 
-# class StaffForm(FlaskForm):
-#     first_name = StringField('First Name')
-#     last_name = StringField('Last Name')
-#     email = StringField('Email')
-#     password = PasswordField('Password')
-#     remember = BooleanField('Remember Me')
-#     submit = SubmitField('Login')
-
-
-# IN PROGRESS - PLANT FORM
 class PlantForm(FlaskForm):
     # plant_name = StringField('Plant Name', validators=[DataRequired()])
     #removed plant_name field as not sure it was necessary, can add again if needed. Had to completely remove from html file as form would not work with it commented out, was still picking up on the website after submitting the form"
