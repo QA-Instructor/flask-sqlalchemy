@@ -337,11 +337,31 @@ def addpost():
 
     return render_template('addpost.html', message= error, form=form)
 
+# display specific blog post
 @app.route('/post/<int:post_id>')
 def post(post_id):
     post = BlogPosts.query.filter_by(id=post_id).one()
 
     return render_template('post.html', post=post)
+
+# delete blog post - functional
+@app.route('/delete_blogpost/<int:blogposts_id>', methods=['DELETE'])
+def delete_blogpost(blogposts_id):
+    error = ""
+    post = BlogPosts.query.get(blogposts_id)
+    db.session.delete(post)
+    db.session.commit()
+
+    if not post:
+        error = "There is no blog post with ID: " + str(blogposts_id)
+
+    posts = BlogPosts.query.order_by(BlogPosts.date_posted.desc()).all()
+    return render_template('plant_care.html', title='Plant Care', message= error, posts=posts)
+
+@app.route('/delete_blogpost_info', methods=['GET'])
+def delete_blogpost_info():
+    return render_template('delete_blogpost.html', title='Delete Blog post')
+
 
 # session variables - login
 
@@ -356,41 +376,33 @@ def login():
         session.pop('logged_in_username', default=None)
         session.pop('typesession', default=None)
         session.pop('logged_in', default=None)
+        session.pop('id_number', default=None)
         session.pop('cart', default=None)
 
         # if form.validate_on_submit():
 
-        # # taking the username and password from the form so we can compare to the db
+        # # taking the username and password from the form so that we can compare to the db
         form_username = request.form['username']
         form_password = request.form['password']
 
-        # need to do the validation here to check if username and password match the database, this is looking for a
-        # record on the database where both the username and password match; there is almost certainly a better way
-        # to do this!
-
         db_username_password = UserLogin.query.filter_by(username=form_username, password=form_password).all()
         for user_id in db_username_password:
-            user_id_for_sv = user_id.id
+            user_id_for_session_variable = user_id.id
 
-        # can't work out how to extract the value, just getting an object
-        # print(form_username, form_password, db_username_password)
-        # print(str(db_username_password))
-
-        # setting initial value of pw_check to false:
-        pw_check = False
+        # setting initial value of password_check to false:
+        password_check = False
 
         if db_username_password != []:
-            pw_check = True
+            password_check = True
         else:
-            pw_check = False
+            password_check = False
 
-        if pw_check == True:
+        if password_check == True:
+
         # if validation has passed, save the username to the session object
             session['logged_in_username'] = request.form['username']
             session['logged_in'] = True
-            # if i can get the actual id number of the record identified for the pw check out into a string value,
-            # can then assign this as an id_number session variable in order to get order history etc for customer
-            session['id_number'] = user_id_for_sv
+            session['id_number'] = user_id_for_session_variable
 
         # also need to check if they are a customer or staff, so need a another session variable
         # some sort of if statement needed here to check db and then:
@@ -406,7 +418,7 @@ def login():
             else:
                 session['typesession'] = 'customer'
 
-            # will then need to return different nav/functionality depending on which type of log in it is
+            # will then return different nav/functionality depending on which type of log in it is - this works
 
             # will show shop page plus session variable specific text
                 return redirect(url_for('shop'))
@@ -434,6 +446,7 @@ def delete_session():
     session.pop('logged_in_username', default=None)
     session.pop('typesession', default=None)
     session.pop('logged_in', default=None)
+    session.pop('id_number', default=None)
     session.pop('cart', default=None)
 
     flash(f' You have logged out!', 'success')
