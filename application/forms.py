@@ -104,6 +104,11 @@ class LogInForm(FlaskForm):
 
     submit = SubmitField('Log in')
 
+# create a search form
+class SearchForm(FlaskForm):
+    searched = StringField('Searched', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
 # Victoria's code
 class BasicForm(FlaskForm):
     first_name = StringField('First Name')
