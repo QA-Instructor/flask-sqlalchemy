@@ -354,6 +354,9 @@ def login():
     if request.method == 'POST':
         # pop previous session in case someone was already logged in
         session.pop('logged_in_username', default=None)
+        session.pop('typesession', default=None)
+        session.pop('logged_in', default=None)
+        session.pop('cart', default=None)
 
         # if form.validate_on_submit():
 
@@ -361,14 +364,16 @@ def login():
         form_username = request.form['username']
         form_password = request.form['password']
 
-        # need to do the validation here to check if username and password match the database
-
-        # this is looking for a record on the database where both the username and password match
+        # need to do the validation here to check if username and password match the database, this is looking for a
+        # record on the database where both the username and password match; there is almost certainly a better way
+        # to do this!
 
         db_username_password = UserLogin.query.filter_by(username=form_username, password=form_password).all()
 
-        # user_and_persontype = db.session.query(UserLogin, Person, StaffInfo).select_from(UserLogin).join(Person).join(StaffInfo).all()
-        # print(user_and_persontype)
+        # can't work out how to extract the value, just getting an object
+        # print(form_username, form_password, db_username_password)
+        # print(str(db_username_password))
+
         # setting initial value of pw_check to false:
         pw_check = False
 
@@ -381,9 +386,17 @@ def login():
         # if validation has passed, save the username to the session object
             session['logged_in_username'] = request.form['username']
             session['logged_in'] = True
+            # if i can get the actual id number of the record identified for the pw check out into a string value,
+            # can then assign this as an id_number session variable in order to get order history etc for customer
+            # session['id_number'] =
 
-        # also need to check if they are a customer or staff, so need a second session variable
+        # also need to check if they are a customer or staff, so need a another session variable
         # some sort of if statement needed here to check db and then:
+
+        # this query gives you all the staff id numbers, can we then filter this based on username/id?
+        # user_and_persontype = db.session.query(UserLogin, Person, StaffInfo).select_from(UserLogin).join(Person).join(StaffInfo).all()
+        # print(user_and_persontype)
+
         # not currently checking db, but will take the form input instead as a starting point:
             if request.form['type'] == '1':
                 # if person_type = 1 then:
