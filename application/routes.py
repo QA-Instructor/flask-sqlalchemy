@@ -3,7 +3,7 @@ from application import app, db
 from application.forms import EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm, \
     NewBlogPostForm, LogInForm, AddToCartForm
 from application.models import Person, Address, Newsletter, UserLogin, StaffInfo, Product, BlogPosts,\
-    Category, PlantType, Size
+    OrderHeader, OrderLine, OrderStatus, Category, PlantType, Size
 from datetime import date
 
 
@@ -471,6 +471,7 @@ def add_to_cart():
         return render_template('cart.html', title='Cart', form=form, message=error)
     return render_template('add_to_cart.html', form=form, message=error, title='home')
 
+# view cart (currently very basic!)
 @app.route('/cart', methods=['GET', 'POST'])
 def view_cart():
     error = ""
@@ -479,6 +480,18 @@ def view_cart():
 
     return render_template('cart.html', title='Cart', form=form, message=error)
     # return render_template('add_to_cart.html', form=form, message=error, title='home')
+
+# order history - not quite working yet
+# @app.route('/customer_order_history', methods=['GET'])
+# def customer_order_history():
+#     error = ""
+#     customer_order_history = db.session.query(Person, OrderHeader, OrderStatus, OrderLine, Product).select_from(Person).\
+#         join(OrderHeader).join(OrderStatus).join(OrderLine).join(Product).all()
+#
+#     for customer, order, product, order_detail in customer_order_history:
+#         display = (customer.first_name, customer.last_name, order.id, order.order_date, order.status_description, product.species, order_detail.quantity, product.price)
+#
+#     return render_template('order_history.html', title='Order History', display=display, message=error)
 
 
 # Victoria's code
