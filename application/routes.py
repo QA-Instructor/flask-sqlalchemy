@@ -369,6 +369,8 @@ def login():
         # to do this!
 
         db_username_password = UserLogin.query.filter_by(username=form_username, password=form_password).all()
+        for user_id in db_username_password:
+            user_id_for_sv = user_id.id
 
         # can't work out how to extract the value, just getting an object
         # print(form_username, form_password, db_username_password)
@@ -388,7 +390,7 @@ def login():
             session['logged_in'] = True
             # if i can get the actual id number of the record identified for the pw check out into a string value,
             # can then assign this as an id_number session variable in order to get order history etc for customer
-            # session['id_number'] =
+            session['id_number'] = user_id_for_sv
 
         # also need to check if they are a customer or staff, so need a another session variable
         # some sort of if statement needed here to check db and then:
