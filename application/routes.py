@@ -1,4 +1,4 @@
-from flask import render_template, request, flash, redirect, url_for, session
+from flask import render_template, request, flash, redirect, url_for, session, jsonify
 from application import app, db
 from application.forms import EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm, \
     NewBlogPostForm, LogInForm, AddToCartForm
@@ -462,11 +462,26 @@ def add_to_cart():
     if request.method == 'POST':
         product = form.product.data
         quantity = form.quantity.data
+        # price = [Product.query.filter_by(product).first()]
+        # price = form.price.data
+        attributes = Product.query.filter_by(id=product).all()
+
+        productList = []
+
+        for attribute in attributes:
+            attributeObject = {}
+            attributeObject['id'] = attribute.id
+            attributeObject['species'] = attribute.species
+            attributeObject['price'] = attribute.price
+            attributeObject['plant_nickname'] = attribute.plant_nickname
+            attributeObject['quantity'] = quantity
+            productList.append(attributeObject)
+
         if 'cart' in session:
-            session['cart'].append((product, quantity))
+            session['cart'].append(productList)
             session.modified = True
         else:
-            session['cart'] = [(product, quantity)]
+            session['cart'] = [(productList)]
 
         return render_template('cart.html', title='Cart', form=form, message=error)
     return render_template('add_to_cart.html', form=form, message=error, title='home')
@@ -480,6 +495,27 @@ def view_cart():
 
     return render_template('cart.html', title='Cart', form=form, message=error)
     # return render_template('add_to_cart.html', form=form, message=error, title='home')
+
+# to get dynamic pricing in the drop down on the add to cart form for one item
+@app.route('/price/<int:product_id>')
+def get_price(product_id):
+    attributes = Product.query.filter_by(id=product_id).all()
+
+    priceList = []
+
+    for attribute in attributes:
+        attributeObject ={}
+        attributeObject['id'] = attribute.id
+        attributeObject['species'] = attribute.species
+        attributeObject['price'] = attribute.price
+        attributeObject['plant_nickname'] = attribute.plant_nickname
+        priceList.append(attributeObject)
+
+    # return ({'price_value': priceList})
+    return render_template('cart.html', title='Cart', priceList=priceList)
+
+
+
 
 # order history - not quite working yet
 # @app.route('/customer_order_history', methods=['GET'])

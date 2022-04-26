@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, BooleanField, DateField, IntegerField, SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, input_required
 
+
 # need form to do email newsletter sign up
 
 class EmailSignUpForm(FlaskForm):
@@ -118,6 +119,7 @@ class AddToCartForm(FlaskForm):
     product = SelectField('Species', choices=[(1, 'Boston Fern'), (2, 'Aloe Vera'), (3, 'Parlour Palm')])
     # product = SelectField('Species', choices=['Boston Fern', 'Aloe Vera', 'Parlour Palm'])
     quantity = IntegerField('Quantity', validators=[DataRequired()])
+    # price =
     submit = SubmitField('Add to cart')
 
 # Victoria's code

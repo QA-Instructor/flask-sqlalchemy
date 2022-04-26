@@ -34,6 +34,32 @@
                 {{ form.quantity.label(class="form-control-label") }}
                 {{ form.quantity(class="form-control form-control-lg") }}
             </div>
+<!--            trying to get dropdown to update automatically -->
+<!--            <script>-->
+<!--                let product_select = document.getElementById('product');-->
+<!--                let price_select = document.getElementById('price');-->
+
+<!--                product_select.onchange = function() {-->
+<!--                    product = product_select.value;-->
+
+<!--                    fetch('/price/' + product).then(function(response) {-->
+
+<!--                        response.json().then(function(data) {-->
+<!--                            let optionHTML = '';-->
+
+<!--                            for (let product of data.product) {-->
+<!--                                optionHTML += '<option value="' + price.id + '">' + price.price + '</option>';-->
+
+<!--                            }-->
+<!--                            price.select.innerHTML = optionHTML;-->
+<!--                        });-->
+<!--                    });-->
+
+<!--                }-->
+
+<!--            </script>-->
+
+
 
 
         </fieldset>
