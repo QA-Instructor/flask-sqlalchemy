@@ -1,9 +1,13 @@
 {% extends "layout.html" %}
 {% block body_content %}
-<h1>Oh No!</h1>
-<p>Looks like that's a dead link, sorry!</p>
-<img src="{{ url_for('static', filename='images/dead_plant_1.jpg') }}" alt="small orange tree" style="width:35%">
 
-<a href="{{ url_for('email_signup_form') }}">Back home</a>
+
+<div class="container-404">
+  <img class="bg obj-fit-cover" src="{{url_for('static',filename='images/dead_plant_1.jpg')}}" alt="dead plant and sad looking lady">
+  <h1>Oh No!</h1>
+  <h2>Looks like that's a dead link, sorry!</h2>
+    <button class="btn1"><a href="{{ url_for('email_signup_form') }}" style="color:white">Back Home</a></button>
+
+</div>
 
 {% endblock %}
