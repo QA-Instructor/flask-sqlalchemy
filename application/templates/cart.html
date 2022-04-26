@@ -5,12 +5,22 @@
 
 <div class="container-fluid bg-1 text-center">
     <h1>Shopping Cart</h1>
-    {% for product in ProductList %}
-        <h2>{{ product.id }}</h2>
-        <p> {{ product.species}}  {{ product.plant_nickname}}</p>
-        <p> Price for this is {{ product.price }}</p>
-        <p> Price for this is {{ product.quantity }}</p>
+     {% for product in ProductList %}
+            <h2>{{ productList.id }}</h2>
+            <p> {{ productList.species}}  {{ productList.plant_nickname}}</p>
+            <p> Price for this is {{ productList.price }}</p>
+            <p> Price for this is {{ productList.quantity }}</p>
     {% endfor %}
+
+    {% for attribute in attributeObject %}
+        <h2>{{ attribute.id }}</h2>
+        <p> {{ attribute.species}}  {{ attribute.plant_nickname}}</p>
+        <p> Price for this is {{ attribute.price }}</p>
+        <p> Price for this is {{ attribute.quantity }}</p>
+
+    {% endfor %}
+
+
 </div>
 
 <h2> {{ productList }} </h2>

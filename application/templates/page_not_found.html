@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block body_content %}
+<h1>Oh No!</h1>
+<p>Looks like that's a dead link, sorry!</p>
+<img src="{{ url_for('static', filename='images/dead_plant_1.jpg') }}" alt="small orange tree" style="width:35%">
+
+<a href="{{ url_for('email_signup_form') }}">Back home</a>
+
+{% endblock %}

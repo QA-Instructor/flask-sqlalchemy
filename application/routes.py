@@ -515,7 +515,10 @@ def get_price(product_id):
     return render_template('cart.html', title='Cart', priceList=priceList)
 
 
-
+# error handling - custom 404 page
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('page_not_found.html'), 404
 
 # order history - not quite working yet
 # @app.route('/customer_order_history', methods=['GET'])
