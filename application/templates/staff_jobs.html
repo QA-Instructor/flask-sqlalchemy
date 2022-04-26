@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block body_content %}
+    <title>Staff List</title>
+</head>
+<body>
+<div>
+{% for job, staff in staff_and_jobs %}
+   <p>{{job.job_title}} {{staff.first_name}} {{staff.last_name}}</p>
+{% endfor %}
+    <br>
+    {{ message }}
+</div>
+
+
+{% endblock %}

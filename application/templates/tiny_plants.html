@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block body_content %}
+    <title>Tiny Plants</title>
+</head>
+<body>
+<div>
+{% for product, category, plant_type, size in display_tiny_plants %}
+   <p>{{product.species}} {{category.category_description}} {{product.price}} {{product.stock}}
+       {{plant_type.plant_type_description}} {{size.size_description}}</p>
+{% endfor %}
+    <br>
+    {{ message }}
+</div>
+
+
+{% endblock %}

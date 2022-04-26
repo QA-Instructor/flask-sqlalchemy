@@ -2,8 +2,8 @@ from flask import render_template, request, flash, redirect, url_for, session
 from application import app, db
 from application.forms import EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm, \
     NewBlogPostForm, LogInForm
-from application.models import Person, Address, Newsletter, UserLogin, StaffInfo, Product, BlogPosts,\
-    Category, PlantType, Size
+from application.models import Person, Address, Newsletter, UserLogin, StaffInfo, Product, BlogPosts, \
+    Category, PlantType, Size, OrderHeader, OrderLine, OrderStatus
 from datetime import date
 
 
@@ -422,6 +422,124 @@ def delete_session():
     flash(f' You have logged out!', 'success')
     return render_template('home.html', title='Home', form=form, message=error,)
 
+
+# QUERIES
+
+# QUERY - in progress: staff and corresponding job titles
+# Gives list of staff members and their job titles
+@app.route('/staff_jobs', methods=['GET'])
+def staff_jobs():
+    error = ""
+    staff_and_jobs = db.session.query(StaffInfo, Person).join(Person).all()
+
+    for job, staff in staff_and_jobs:
+        print(job.job_title, staff.first_name, staff.last_name)
+    return render_template('staff_jobs.html', staff_and_jobs=staff_and_jobs, message=error)
+
+
+# QUERY: customers and their orders
+# Gives list of customer names, their order id and order date, the products ordered and the quantity
+@app.route('/customer_orders', methods=['GET'])
+def show_customer_orders():
+    error = ""
+    customer_orders = db.session.query(Person, OrderHeader, OrderLine, Product).select_from(Person).join(
+        OrderHeader).join(OrderLine).join(Product).all()
+    return render_template('customer_orders.html', customer_orders=customer_orders, message=error)
+
+    # for customer, order, order_detail, product in customer_orders:
+    #     print(customer.first_name, customer.last_name, order.id, order.order_date, product.species,
+    #           order_detail.quantity)
+
+
+# QUERY: Outstanding orders
+@app.route('/outstanding_orders', methods=['GET'])
+def show_outstanding_orders():
+    error = ""
+    outstanding_orders = db.session.query(OrderHeader, OrderStatus, OrderLine, Product).select_from(OrderHeader). \
+        join(OrderStatus).join(OrderLine).join(Product).filter(OrderStatus.id == 1).all()
+    return render_template('outstanding_orders.html', outstanding_orders=outstanding_orders, message=error)
+
+    # for order, order_status, order_detail, product in outstanding_orders:
+    #     print(order.id, order.order_date, order_status.status_description, product.species, order_detail.quantity)
+
+
+# QUERY: Indoor plants
+@app.route('/indoor_plants', methods=['GET'])
+def show_indoor_plants():
+    error = ""
+    display_indoor_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(Category.id == 1).all()
+    return render_template('indoor_plants.html', display_indoor_plants=display_indoor_plants, message=error)
+
+    # for product, category, plant_type, size in display_indoor_plants:
+    #     print(product.species, category.category_description, product.price, product.stock,
+    #           plant_type.plant_type_description, size.size_description)
+
+
+# QUERY: Outdoor plants
+@app.route('/outdoor_plants', methods=['GET'])
+def show_outdoor_plants():
+    error = ""
+    display_outdoor_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(Category.id == 2).all()
+    return render_template('outdoor_plants.html', display_outdoor_plants=display_outdoor_plants, message=error)
+
+    # for product, category, plant_type, size in display_outdoor_plants:
+    #     print(product.species, category.category_description, product.price, product.stock,
+    #           plant_type.plant_type_description, size.size_description)
+
+
+# QUERY: filter by height - tiny
+@app.route('/tiny_plants', methods=['GET'])
+def show_tiny_plants():
+    error = ""
+    display_tiny_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(Size.id == 1).all()
+    return render_template('tiny_plants.html', display_tiny_plants=display_tiny_plants, message=error)
+
+    # for product, category, plant_type, size in display_tiny_plants:
+    #     print(product.species, category.category_description, product.price, product.stock,
+    #           plant_type.plant_type_description, size.size_description)
+
+
+# QUERY: filter by height - small
+@app.route('/small_plants', methods=['GET'])
+def show_small_plants():
+    error = ""
+    display_small_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(Size.id == 2).all()
+    return render_template('small_plants.html', display_small_plants=display_small_plants, message=error)
+
+    # for product, category, plant_type, size in display_small_plants:
+    #     print(product.species, category.category_description, product.price, product.stock,
+    #           plant_type.plant_type_description, size.size_description)
+
+
+# QUERY: filter by height - medium
+@app.route('/medium_plants', methods=['GET'])
+def show_medium_plants():
+    error = ""
+    display_medium_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(Size.id == 3).all()
+    return render_template('medium_plants.html', display_medium_plants=display_medium_plants, message=error)
+
+    # for product, category, plant_type, size in display_medium_plants:
+    #     print(product.species, category.category_description, product.price, product.stock,
+    #           plant_type.plant_type_description, size.size_description)
+
+
+# QUERY: filter by height - tall
+@app.route('/tall_plants', methods=['GET'])
+def show_tall_plants():
+    error = ""
+    display_tall_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(Size.id == 4).all()
+    return render_template('tall_plants.html', display_tall_plants=display_tall_plants, message=error)
+
+# removed temporarily from code
+    # for product, category, plant_type, size in display_tall_plants:
+    #     print(product.species, category.category_description, product.price, product.stock,
+    #           plant_type.plant_type_description, size.size_description)
 
 # Victoria's code
 # def register_basic_form():
