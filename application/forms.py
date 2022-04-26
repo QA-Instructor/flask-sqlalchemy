@@ -33,8 +33,8 @@ class CustomerRegistrationForm(FlaskForm):
 
     # Custom error created to raise error when special characters are used in username, however, error not raising when tested"
     def validate_username(self, username):
-        # self.username = username
-        excluded_chars = " *?!'^+%&/()=}][{$#"
+        self.username = username
+        excluded_chars = " *?!'^+%&/()=}][{$£#"
         for char in self.username.data:
             if char in excluded_chars:
                 raise ValidationError(
@@ -112,6 +112,11 @@ class LogInForm(FlaskForm):
     type = SelectField('Type', choices=[('1', 'Staff'), ('2', 'Customer')])
 
     submit = SubmitField('Log in')
+
+# create a search form
+class SearchForm(FlaskForm):
+    searched = StringField('Searched', validators=[DataRequired()])
+    submit = SubmitField('Submit')
 
 # Victoria's code
 class BasicForm(FlaskForm):

@@ -1,7 +1,7 @@
 from flask import render_template, request, flash, redirect, url_for, session
 from application import app, db
 from application.forms import EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm, \
-    NewBlogPostForm, LogInForm
+    NewBlogPostForm, LogInForm, SearchForm
 from application.models import Person, Address, Newsletter, UserLogin, StaffInfo, Product, BlogPosts,\
     Category, PlantType, Size
 from datetime import date
@@ -421,6 +421,30 @@ def delete_session():
 
     flash(f' You have logged out!', 'success')
     return render_template('home.html', title='Home', form=form, message=error,)
+
+
+# Pass Stuff to Nav
+@app.context_processor
+def layout():
+    form = SearchForm()
+    return dict(form=form)
+
+
+# create search function
+@app.route('/search', methods=["POST"])
+def search():
+    form = SearchForm()
+    posts = BlogPosts.query
+    if form.validate_on_submit():
+
+        # get data from submitted form
+        post.searched = form.searched.data
+        # Query the database
+        posts = posts.filter(BlogPosts.post_content.like('%' + post.searched + '%'))
+        posts = posts.order_by(BlogPosts.title).all()
+
+        return render_template("search.html", form=form, searched=post.searched, posts=posts)
+
 
 
 # Victoria's code
