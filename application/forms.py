@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, BooleanField, DateField, IntegerField, SelectField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, input_required
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 
 # need form to do email newsletter sign up
 
@@ -9,13 +9,20 @@ class EmailSignUpForm(FlaskForm):
     submit = SubmitField('Sign Up')
 
 
+def validate_username(form, field):
+    excluded_chars = " *?!'^+%&/()=}][{$#"
+    for char in form.username.data:
+        if char in excluded_chars:
+            raise ValidationError(
+                f'Character {char} is not allowed in username. Please do not use any of the following characters: {excluded_chars}')
+
 # new form needs to link to userlogin person and address tables for registering customers (is set in the route to set the
 # persontype to '2' which is customer
 class CustomerRegistrationForm(FlaskForm):
     # userlogin elements
-    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=30)])
+    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=30), validate_username])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=6)])
-    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('confirm_password', message="Passwords must match")]) #Equal to validator not working, will still submit even if passwords do not match
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password', message="Passwords must match")]) #Equal to validator not working, will still submit even if passwords do not match
 
     # person elements
     first_name = StringField('First Name', validators=[DataRequired(), Length(min=2, max=30)])
@@ -31,14 +38,14 @@ class CustomerRegistrationForm(FlaskForm):
     # submit
     submit = SubmitField('Sign Up')
 
-    # Custom error created to raise error when special characters are used in username, however, error not raising when tested"
-    def validate_username(self, username):
-        # self.username = username
-        excluded_chars = " *?!'^+%&/()=}][{$#"
-        for char in self.username.data:
-            if char in excluded_chars:
-                raise ValidationError(
-                    f'Character {char} is not allowed in username.')
+    # # Custom error created to raise error when special characters are used in username, however, error not raising when tested"
+    # def validate_username(self, username):
+    #     # self.username = username
+    #     excluded_chars = " *?!'^+%&/()=}][{$#"
+    #     for char in self.username.data:
+    #         if char in excluded_chars:
+    #             raise ValidationError(
+    #                 f'Character {char} is not allowed in username.')
 
 
 class LoginForm(FlaskForm):

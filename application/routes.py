@@ -106,6 +106,8 @@ def register():
 
     if form.validate_on_submit():
         flash(f'Account created for {form.username.data}!', 'success')
+    else:
+        return render_template('register.html', form=form)
 
     if request.method == 'POST':
         username = form.username.data
