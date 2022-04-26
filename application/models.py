@@ -109,6 +109,15 @@ class Product(db.Model):
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
     plant_type_id = db.Column(db.Integer, db.ForeignKey('plant_type.id'), nullable=False)
     size_id = db.Column(db.Integer, db.ForeignKey('size.id'), nullable=False)
+    plant_nickname = db.Column(db.String(50), nullable=False)
+    general_info = db.Column(db.String(200), nullable=False)
+    care_tip1 = db.Column(db.String(100), nullable=False)
+    care_tip2 = db.Column(db.String(100), nullable=True)
+    care_tip3 = db.Column(db.String(100), nullable=True)
+    img_link1 = db.Column(db.String(200), nullable=False)
+    img_link2 = db.Column(db.String(200), nullable=True)
+    img_link3 = db.Column(db.String(200), nullable=True)
+    tech_description = db.Column(db.String(400), nullable=False)
     # not a field in the table, but OrderLine table links back to Product
     product = db.relationship('OrderLine', backref='product')
 
@@ -120,7 +129,9 @@ class OrderHeader(db.Model):
     status_id = db.Column(db.Integer, db.ForeignKey('order_status.id'), nullable=False)
     # also what is best data type for price data?
     total_cost = db.Column(db.Integer)
-    # staff_id = db.Column(db.Integer, db.ForeignKey('staff.id'), nullable=False)
+    # staff_id = db.Column(db.Integer, db.ForeignKey('StaffInfo.id'), nullable=False)
+    # staff_id = db.Column(db.Integer, db.ForeignKey('person.staff_info_id'), nullable=False)
+
 
 
 class OrderLine(db.Model):

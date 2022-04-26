@@ -85,6 +85,15 @@ class PlantForm(FlaskForm):
     plant_price = IntegerField('Plant Price', validators=[DataRequired()])
     plant_stock = IntegerField('Number Being Added To Stock', validators=[DataRequired()])
     plant_size = SelectField('Size', choices=[('1', 'Tiny'), ('2', 'Small'), ('3', 'Medium'), ('4', 'Tall')], validators=[DataRequired()])
+    plant_nickname = StringField('Plant Nickname', validators=[DataRequired()])
+    plant_info = StringField('General Plant Info', validators=[DataRequired()])
+    care_tip_1 = StringField('First Care Tip', validators=[DataRequired()])
+    care_tip_2 = StringField('Second Care Tip')
+    care_tip_3 = StringField('Third Care Tip')
+    image_1 = StringField('Image Link', validators=[DataRequired()])
+    image_2 = StringField('Image Link')
+    image_3 = StringField('Image Link')
+    tech_description = StringField('Women in tech description', validators=[DataRequired()])
     submit = SubmitField('Register Plant')
 
 
