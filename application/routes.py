@@ -1,7 +1,7 @@
 from flask import render_template, request, flash, redirect, url_for, session, jsonify
 from application import app, db
 from application.forms import EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm, \
-    NewBlogPostForm, LogInForm, AddToCartForm
+    NewBlogPostForm, LogInForm, AddToCartForm, DeleteBlogPostForm
 from application.models import Person, Address, Newsletter, UserLogin, StaffInfo, Product, BlogPosts,\
     OrderHeader, OrderLine, OrderStatus, Category, PlantType, Size
 from datetime import date
@@ -345,18 +345,21 @@ def post(post_id):
     return render_template('post.html', post=post)
 
 # delete blog post - functional
-@app.route('/delete_blogpost/<int:blogposts_id>', methods=['DELETE'])
+@app.route('/delete_blogpost/<int:blogposts_id>', methods=['GET','DELETE'])
 def delete_blogpost(blogposts_id):
     error = ""
-    post = BlogPosts.query.get(blogposts_id)
-    db.session.delete(post)
-    db.session.commit()
+    form = DeleteBlogPostForm()
 
-    if not post:
-        error = "There is no blog post with ID: " + str(blogposts_id)
+    if request.method == 'DELETE':
+        post = BlogPosts.query.get(blogposts_id)
+        db.session.delete(post)
+        db.session.commit()
+
+        if not post:
+            error = "There is no blog post with ID: " + str(blogposts_id)
 
     posts = BlogPosts.query.order_by(BlogPosts.date_posted.desc()).all()
-    return render_template('plant_care.html', title='Plant Care', message= error, posts=posts)
+    return render_template('plant_care.html', title='Plant Care', message= error, posts=posts, form=form)
 
 @app.route('/delete_blogpost_info', methods=['GET'])
 def delete_blogpost_info():

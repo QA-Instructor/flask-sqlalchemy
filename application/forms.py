@@ -106,6 +106,14 @@ class NewBlogPostForm(FlaskForm):
 
     submit = SubmitField('Add post')
 
+# delete blog post
+class DeleteBlogPostForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    author = StringField('Author', validators=[DataRequired()])
+    post_content = StringField('Post Content', validators=[DataRequired()])
+
+    submit = SubmitField('Add post')
+
 # log in form
 class LogInForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
