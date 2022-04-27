@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, BooleanField, DateField, IntegerField, SelectField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, input_required
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 
 
 # need form to do email newsletter sign up
@@ -16,12 +16,12 @@ class CustomerRegistrationForm(FlaskForm):
     # userlogin elements
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=30)])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=6)])
-    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('confirm_password', message="Passwords must match")]) #Equal to validator not working, will still submit even if passwords do not match
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password', message="Passwords must match")])
 
     # person elements
     first_name = StringField('First Name', validators=[DataRequired(), Length(min=2, max=30)])
     last_name = StringField('Last Name', validators=[DataRequired(), Length(min=2, max=30)])
-    email = StringField('Email', validators=[DataRequired(), Email(message='Please supply a valid email')]) #email validator not working, form will still submit even if no @ or . is present in field.
+    email = StringField('Email', validators=[DataRequired(), Email(message='Please supply a valid email')])
 
     # address elements
     address_line_one = StringField('Address Line 1', validators=[DataRequired()])
