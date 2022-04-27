@@ -190,6 +190,8 @@ def register_staff():
 
     if form.validate_on_submit():
         flash(f' Staff account created for {form.username.data}!', 'success')
+    else:
+        return render_template('register_staff.html', form=form)
 
     if request.method == 'POST':
         username = form.username.data
