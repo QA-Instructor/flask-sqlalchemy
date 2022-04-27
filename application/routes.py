@@ -361,9 +361,10 @@ def delete_blogpost(blogposts_id):
     posts = BlogPosts.query.order_by(BlogPosts.date_posted.desc()).all()
     return render_template('plant_care.html', title='Plant Care', message= error, posts=posts, form=form)
 
-@app.route('/delete_blogpost_info', methods=['GET'])
-def delete_blogpost_info():
-    return render_template('delete_blogpost.html', title='Delete Blog post')
+# dont think we need this anymore
+# @app.route('/delete_blogpost_info', methods=['GET'])
+# def delete_blogpost_info():
+#     return render_template('delete_blogpost.html', title='Delete Blog post')
 
 
 # session variables - login
