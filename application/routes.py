@@ -502,10 +502,24 @@ def view_cart():
     form = AddToCartForm()
     cart_contents = session['cart']
     print("Cart contents", cart_contents)
-    i = int(len(cart_contents))
-    print(i)
-    for i in cart_contents:
-        print(cart_contents[1])
+    # i = len(cart_contents)
+    # print(i)
+    # for line in cart_contents:
+    #     # print("line", line)
+    #     for item in line:
+    #         # print("item", item)
+    #         for (key, value) in item.items():
+    #             print("key and value", key, value)
+
+    # for (key, value) in cart_contents.items():
+    #     print(key, value)
+
+    # for item in range (0, len(cart_contents)):
+    #     print(item)
+
+    # for key in cart_contents:
+    #     print(key, ':', cart_contents[key])
+
 
 
 

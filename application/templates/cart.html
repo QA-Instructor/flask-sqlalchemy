@@ -11,11 +11,34 @@
 
 <h3>Everything in your cart is:</h3>
 
-    {% for i in cart_contents: %}
-    <h3> {{cart_contents.i}}</h3>
+    {% for line in cart_contents %}
+        {% for item in line %}
+            {% for key, value in item.items() %}
+                Plant id: {{ item.id }}
+                Plant name: {{ item.plant_nickname }}
+                Plant species: {{ item.species}}
+                Item price: £{{ item.price }}
+                Quantity: {{ item.quantity }}
+    <br>
 
-{% endfor %}
+    {% endfor %}
+    {% endfor %}
+    {% endfor %}
 
+
+ <h2> Why can't I stop it repeating?</h2>
+    {% for line in cart_contents %}
+        {% for dict_item in line %}
+        {% for key, value in dict_item.items() %}
+            Plant id: {{ dict_item.id }}
+            Plant name: {{ dict_item.plant_nickname }}
+            Plant species: {{ dict_item.species}}
+            Item price: £{{ dict_item.price }}
+            Quantity: {{ dict_item.quantity }}
+<br>
+     {% endfor %}
+     {% endfor %}
+     {% endfor %}
 
 
     <h2 hidden>{{ cart_contents.id }}</h2>
