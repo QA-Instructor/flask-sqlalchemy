@@ -478,6 +478,9 @@ def add_to_cart():
 
         productAttributes = []
 
+        # what if we nested dictionaries not lists?
+        # productAttributes = {}
+
         for attribute in attributes:
             attributeObject = {}
             attributeObject['id'] = attribute.id
@@ -506,9 +509,9 @@ def view_cart():
     # i = len(cart_contents)
     # print(i)
     # for line in cart_contents:
-    #     # print("line", line)
+    #     print("line", line)
     #     for item in line:
-    #         # print("item", item)
+    #         print("item", item)
     #         for (key, value) in item.items():
     #             print("key and value", key, value)
 
