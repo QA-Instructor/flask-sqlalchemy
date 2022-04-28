@@ -1,4 +1,4 @@
-from flask import render_template, request, flash, redirect, url_for, session, jsonify
+from flask import render_template, request, flash, redirect, url_for, session
 from application import app, db
 from application.forms import EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm, \
 NewBlogPostForm, LogInForm, AddToCartForm, DeleteBlogPostForm, SearchForm
@@ -475,7 +475,7 @@ def add_to_cart():
         # price = form.price.data
         attributes = Product.query.filter_by(id=product).all()
 
-        productList = []
+        productAttributes = []
 
         for attribute in attributes:
             attributeObject = {}
@@ -484,15 +484,15 @@ def add_to_cart():
             attributeObject['price'] = attribute.price
             attributeObject['plant_nickname'] = attribute.plant_nickname
             attributeObject['quantity'] = quantity
-            productList.append(attributeObject)
+            productAttributes.append(attributeObject)
 
         if 'cart' in session:
-            session['cart'].append(productList)
+            session['cart'].append(productAttributes)
             session.modified = True
         else:
-            session['cart'] = [(productList)]
+            session['cart'] = [productAttributes]
 
-        return render_template('cart.html', title='Cart', form=form, message=error)
+        return render_template('cart.html', title='Cart', form=form, message=error, productAttributes=productAttributes, attributeObject=attributeObject, cart=session['cart'])
     return render_template('add_to_cart.html', form=form, message=error, title='home')
 
 # view cart (currently very basic!)

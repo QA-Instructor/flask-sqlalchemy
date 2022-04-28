@@ -5,24 +5,31 @@
 
 <div class="container-fluid bg-1 text-center">
     <h1>Shopping Cart</h1>
-     {% for product in ProductList %}
-            <h2>{{ productList.id }}</h2>
-            <p> {{ productList.species}}  {{ productList.plant_nickname}}</p>
-            <p> Price for this is {{ productList.price }}</p>
-            <p> Price for this is {{ productList.quantity }}</p>
-    {% endfor %}
+         {% for product in productAttributes %}
+            {% set productloop = loop %}
+                {% for attribute in attributeObject %}
+                    <h2>{{ attribute.id }}</h2>
+                    <p> {{ attribute.species}}  {{ attribute.plant_nickname}}</p>
+                     <p> {{ productloop.species}}.{{ loop.species}} {{ attribute }}
+                    <p>{{ attribute.plant_nickname}}</p>
+                    <p> Price for this is {{ attribute.price }}</p>
+                    <p> Price for this is {{ attribute.quantity }}</p>
 
-    {% for attribute in attributeObject %}
-        <h2>{{ attribute.id }}</h2>
-        <p> {{ attribute.species}}  {{ attribute.plant_nickname}}</p>
-        <p> Price for this is {{ attribute.price }}</p>
-        <p> Price for this is {{ attribute.quantity }}</p>
+                {% endfor %}
+    <!--            <h2>{{ productAttributes.id }}</h2>-->
+    <!--            <p> {{ productAttributes.species}}  {{ productAttributes.plant_nickname}}</p>-->
+    <!--            <p> Price for this is {{ productAttributes.price }}</p>-->
+    <!--            <p> Price for this is {{ productAttributes.quantity }}</p>-->
 
-    {% endfor %}
+        {% endfor %}
+
+
 
 
 </div>
 
-<h2> {{ productList }} </h2>
+<h2> {{ productAttributes }} </h2>
+
+<h2> {{ attributeObject }} </h2>
 
 {% endblock %}
