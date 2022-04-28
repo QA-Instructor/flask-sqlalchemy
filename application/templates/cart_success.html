@@ -17,19 +17,33 @@
 
 <h3>Everything in your cart is:</h3>
 
-        {% for line in cart_contents %}
+<div class="table-responsive">
+    <table class="table">
+  <thead>
+    <tr>
+        {% for header in headings %}
+      <th scope="col">{{ header }}</th>
+       {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+     {% for line in cart_contents %}
         {% for item in line %}
-            {% for key, value in item.items() %}
-                Plant id: {{ item.id }}
-                Plant name: {{ item.plant_nickname }}
-                Plant species: {{ item.species}}
-                Item price: £{{ item.price }}
-                Quantity: {{ item.quantity }}
-    <br>
+            {% for value in item.items() %}
+            <p hidden> Plant id: {{ item.id }} </p>
+      <th scope="row"><a href="#">{{ item.plant_nickname }}</a></th>
+      <td>{{ item.species}}</td>
+      <td>£{{ item.price }}</td>
+      <td>{{ item.quantity }}</td>
+    </tr>
+    {% endfor %}
+    {% endfor %}
+    {% endfor %}
 
-    {% endfor %}
-    {% endfor %}
-    {% endfor %}
+  </tbody>
+</table>
+</div>
 
 <h1> Your shopping cart contains {{ session['cart'] }}</h1>
 

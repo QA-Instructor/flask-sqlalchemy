@@ -11,19 +11,35 @@
 
 <h3>Everything in your cart is:</h3>
 
-    {% for line in cart_contents %}
+<div class="table-responsive">
+    <table class="table">
+  <thead>
+    <tr>
+        {% for header in headings %}
+      <th scope="col">{{ header }}</th>
+       {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+     {% for line in cart_contents %}
         {% for item in line %}
-            {% for key, value in item.items() %}
-                Plant id: {{ item.id }}
-                Plant name: {{ item.plant_nickname }}
-                Plant species: {{ item.species}}
-                Item price: £{{ item.price }}
-                Quantity: {{ item.quantity }}
-    <br>
+            {% for value in item.items() %}
+            <p hidden> Plant id: {{ item.id }} </p>
+      <th scope="row"><a href="#">{{ item.plant_nickname }}</a></th>
+      <td>{{ item.species}}</td>
+      <td>£{{ item.price }}</td>
+      <td>{{ item.quantity }}</td>
+    </tr>
+    {% endfor %}
+    {% endfor %}
+    {% endfor %}
 
-    {% endfor %}
-    {% endfor %}
-    {% endfor %}
+  </tbody>
+</table>
+</div>
+
+</div>
 
 
  <h2> Why can't I stop it repeating?</h2>
@@ -41,25 +57,6 @@
      {% endfor %}
 
 
-    <h2 hidden>{{ cart_contents.id }}</h2>
-<!--        <p> {{ cart_contents.species}}</p>-->
-<!--        <p>{{ cart_contents.plant_nickname}}</p>-->
-<!--        <p> Price for this is £{{ cart_contents.price }}</p>-->
-<!--        <p> Quantity added to cart {{ cart_contents.quantity }}</p>-->
 
-<h1> Your shopping cart contains {{ session['cart'] }}</h1>
-
-
-
-</div>
-
-<h2> {{ productAttributes }} </h2>
-
-<h2> {{ attributeObject }} </h2>
-
-{% for attribute in attributeObject %}
-    <h3> {{attributeObject.species}}</h3>
-
-{% endfor %}
 
 {% endblock %}
