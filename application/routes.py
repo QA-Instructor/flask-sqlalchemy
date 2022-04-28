@@ -492,7 +492,7 @@ def add_to_cart():
         else:
             session['cart'] = [productAttributes]
 
-        return render_template('cart.html', title='Cart', form=form, message=error, productAttributes=productAttributes, attributeObject=attributeObject, cart=session['cart'])
+        return render_template('cart_success.html', title='Cart', form=form, message=error, productAttributes=productAttributes, attributeObject=attributeObject, cart=session['cart'])
     return render_template('add_to_cart.html', form=form, message=error, title='home')
 
 # view cart (currently very basic!)
@@ -500,9 +500,20 @@ def add_to_cart():
 def view_cart():
     error = ""
     form = AddToCartForm()
+    cart_contents = session['cart']
+    print("Cart contents", cart_contents)
+    i = int(len(cart_contents))
+    print(i)
+    for i in cart_contents:
+        print(cart_contents[1])
 
 
-    return render_template('cart.html', title='Cart', form=form, message=error)
+
+
+
+
+
+    return render_template('cart.html', title='Cart', form=form, message=error, cart_contents=cart_contents)
     # return render_template('add_to_cart.html', form=form, message=error, title='home')
 
 # to get dynamic pricing in the drop down on the add to cart form for one item
