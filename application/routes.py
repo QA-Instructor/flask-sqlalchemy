@@ -492,7 +492,7 @@ def add_to_cart():
         else:
             session['cart'] = [productAttributes]
 
-        return render_template('cart_success.html', title='Cart', form=form, message=error, productAttributes=productAttributes, attributeObject=attributeObject, cart=session['cart'])
+        return render_template('cart_success.html', title='Cart', form=form, message=error, productAttributes=productAttributes, attributeObject=attributeObject, cart_contents=session['cart'])
     return render_template('add_to_cart.html', form=form, message=error, title='home')
 
 # view cart (currently very basic!)

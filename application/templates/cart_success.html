@@ -17,6 +17,20 @@
 
 <h3>Everything in your cart is:</h3>
 
+        {% for line in cart_contents %}
+        {% for item in line %}
+            {% for key, value in item.items() %}
+                Plant id: {{ item.id }}
+                Plant name: {{ item.plant_nickname }}
+                Plant species: {{ item.species}}
+                Item price: £{{ item.price }}
+                Quantity: {{ item.quantity }}
+    <br>
+
+    {% endfor %}
+    {% endfor %}
+    {% endfor %}
+
 <h1> Your shopping cart contains {{ session['cart'] }}</h1>
 
 
