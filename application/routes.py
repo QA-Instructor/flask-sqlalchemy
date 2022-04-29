@@ -450,7 +450,6 @@ def search():
         return render_template("search.html", form=form, searched=post.searched, posts=posts)
 
 
-
 @app.route('/plant/<int:plant_id>')
 def plant(plant_id):
     plant = Product.query.filter_by(id=plant_id).one()
