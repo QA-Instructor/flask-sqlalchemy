@@ -20,6 +20,8 @@
     <h1>Welcome {{ session['logged_in_username'] }}!</h1>
     <h2> Are you logged in? That is {{ session['logged_in'] }}</h2>
     <h3>What type of log in is it? You are logged in as {{ session['typesession'] }}</h3>
+<!-- not currently able to get the person ID extracted into a number -->
+    <h4>Your Person ID is {{ session['id_number'] }}</h4>
 <br>
 <hr>
 {% else %}

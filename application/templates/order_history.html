@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block body_content %}
+    <title>Order History</title>
+</head>
+<body>
+<div>
+{% for item in display %}
+
+   <p>{{ customer.first_name }} {{ customer.last_name }} {{ order.id }} {{ order.order_date }} {{ order.status_description }}
+       {{ product.species }} {{ order_detail.quantity }} {{ product.price }}
+   </p>
+{% endfor %}
+    <br>
+    {{ message }}
+</div>
+
+
+{% endblock %}

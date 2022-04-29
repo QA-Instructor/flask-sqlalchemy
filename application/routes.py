@@ -1,9 +1,10 @@
 from flask import render_template, request, flash, redirect, url_for, session
 from application import app, db
-from application.forms import EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm, \
-    NewBlogPostForm, LogInForm
-from application.models import Person, Address, Newsletter, UserLogin, StaffInfo, Product, BlogPosts, \
-    Category, PlantType, Size, OrderHeader, OrderLine, OrderStatus
+from application.forms import EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm,\
+    NewBlogPostForm, LogInForm, AddToCartForm, DeleteBlogPostForm, SearchForm
+
+from application.models import Person, Address, Newsletter, UserLogin, StaffInfo, Product, BlogPosts,\
+    OrderHeader, OrderLine, OrderStatus, Category, PlantType, Size
 from datetime import date
 
 
@@ -106,6 +107,8 @@ def register():
 
     if form.validate_on_submit():
         flash(f'Account created for {form.username.data}!', 'success')
+    else:
+        return render_template('register.html', form=form)
 
     if request.method == 'POST':
         username = form.username.data
@@ -188,6 +191,8 @@ def register_staff():
 
     if form.validate_on_submit():
         flash(f' Staff account created for {form.username.data}!', 'success')
+    else:
+        return render_template('register_staff.html', form=form)
 
     if request.method == 'POST':
         username = form.username.data
@@ -337,13 +342,37 @@ def addpost():
 
     return render_template('addpost.html', message= error, form=form)
 
+# display specific blog post
 @app.route('/post/<int:post_id>')
 def post(post_id):
     post = BlogPosts.query.filter_by(id=post_id).one()
 
     return render_template('post.html', post=post)
 
-# session variables
+# delete blog post - functional
+@app.route('/delete_blogpost/<int:blogposts_id>', methods=['GET','DELETE'])
+def delete_blogpost(blogposts_id):
+    error = ""
+    form = DeleteBlogPostForm()
+
+    if request.method == 'DELETE':
+        post = BlogPosts.query.get(blogposts_id)
+        db.session.delete(post)
+        db.session.commit()
+
+        if not post:
+            error = "There is no blog post with ID: " + str(blogposts_id)
+
+    posts = BlogPosts.query.order_by(BlogPosts.date_posted.desc()).all()
+    return render_template('plant_care.html', title='Plant Care', message= error, posts=posts, form=form)
+
+# dont think we need this anymore
+# @app.route('/delete_blogpost_info', methods=['GET'])
+# def delete_blogpost_info():
+#     return render_template('delete_blogpost.html', title='Delete Blog post')
+
+
+# session variables - login
 
 @app.route('/login', methods=['GET', 'POST'])
 @app.route('/log_in', methods=['GET', 'POST'])
@@ -354,36 +383,43 @@ def login():
     if request.method == 'POST':
         # pop previous session in case someone was already logged in
         session.pop('logged_in_username', default=None)
+        session.pop('typesession', default=None)
+        session.pop('logged_in', default=None)
+        session.pop('id_number', default=None)
+        session.pop('cart', default=None)
 
         # if form.validate_on_submit():
 
-        # # taking the username and password from the form so we can compare to the db
+        # # taking the username and password from the form so that we can compare to the db
         form_username = request.form['username']
         form_password = request.form['password']
 
-        # need to do the validation here to check if username and password match the database
-
-        # this is looking for a record on the database where both the username and password match
-
         db_username_password = UserLogin.query.filter_by(username=form_username, password=form_password).all()
+        for user_id in db_username_password:
+            user_id_for_session_variable = user_id.id
 
-        # user_and_persontype = db.session.query(UserLogin, Person, StaffInfo).select_from(UserLogin).join(Person).join(StaffInfo).all()
-        # print(user_and_persontype)
-        # setting initial value of pw_check to false:
-        pw_check = False
+        # setting initial value of password_check to false:
+        password_check = False
 
         if db_username_password != []:
-            pw_check = True
+            password_check = True
         else:
-            pw_check = False
+            password_check = False
 
-        if pw_check == True:
+        if password_check == True:
+
         # if validation has passed, save the username to the session object
             session['logged_in_username'] = request.form['username']
             session['logged_in'] = True
+            session['id_number'] = user_id_for_session_variable
 
-        # also need to check if they are a customer or staff, so need a second session variable
+        # also need to check if they are a customer or staff, so need a another session variable
         # some sort of if statement needed here to check db and then:
+
+        # this query gives you all the staff id numbers, can we then filter this based on username/id?
+        # user_and_persontype = db.session.query(UserLogin, Person, StaffInfo).select_from(UserLogin).join(Person).join(StaffInfo).all()
+        # print(user_and_persontype)
+
         # not currently checking db, but will take the form input instead as a starting point:
             if request.form['type'] == '1':
                 # if person_type = 1 then:
@@ -391,7 +427,7 @@ def login():
             else:
                 session['typesession'] = 'customer'
 
-            # will then need to return different nav/functionality depending on which type of log in it is
+            # will then return different nav/functionality depending on which type of log in it is - this works
 
             # will show shop page plus session variable specific text
                 return redirect(url_for('shop'))
@@ -408,6 +444,7 @@ def login():
 
     return render_template('login.html', message= error, form=form)
 
+# session variables - log out
 
 @app.route('/log_out')
 @app.route('/logout')
@@ -418,9 +455,137 @@ def delete_session():
     session.pop('logged_in_username', default=None)
     session.pop('typesession', default=None)
     session.pop('logged_in', default=None)
+    session.pop('id_number', default=None)
+    session.pop('cart', default=None)
 
     flash(f' You have logged out!', 'success')
     return render_template('home.html', title='Home', form=form, message=error,)
+
+# session variables - shopping cart
+
+@app.route('/add_to_cart', methods=['GET', 'POST'])
+def add_to_cart():
+    error = ""
+    form = AddToCartForm()
+
+    if request.method == 'POST':
+        product = form.product.data
+        quantity = form.quantity.data
+        # price = [Product.query.filter_by(product).first()]
+        # price = form.price.data
+        attributes = Product.query.filter_by(id=product).all()
+        headings = ('Plant Name', 'Species', 'Price', 'Quantity', 'Sub-Total')
+        #
+        # productAttributes = []
+
+        # what if we nested dictionaries not lists?
+        # productAttributes = {}
+
+        for attribute in attributes:
+            attributeObject = {}
+            attributeObject['id'] = attribute.id
+            attributeObject['species'] = attribute.species
+            attributeObject['price'] = attribute.price
+            attributeObject['plant_nickname'] = attribute.plant_nickname
+            attributeObject['quantity'] = quantity
+            attributeObject['sub_total'] = (attribute.price * quantity)
+            if 'cart' in session:
+                session['cart'].append(attributeObject)
+                session.modified = True
+
+            else:
+                session['cart'] = [attributeObject]
+
+
+        return render_template('cart_success.html', title='Cart', form=form, message=error, attributeObject=attributeObject, cart_contents=session['cart'], headings=headings)
+    return render_template('add_to_cart.html', form=form, message=error, title='home')
+
+# view cart (currently very basic!)
+@app.route('/cart', methods=['GET', 'POST'])
+def view_cart():
+    error = ""
+    form = AddToCartForm()
+    if 'cart' in session:
+        cart_contents = session['cart']
+    else:
+        cart_contents = []
+
+    headings = ('Plant Name', 'Species', 'Price', 'Quantity', 'Sub-Total')
+
+
+    return render_template('cart.html', title='Cart', form=form, message=error, cart_contents=cart_contents, headings=headings)
+    # return render_template('add_to_cart.html', form=form, message=error, title='home')
+
+# empty cart (but will stay logged in)
+@app.route('/clear_cart')
+def clear_cart():
+    error = ""
+    form = EmailSignUpForm()
+    # Clear the shopping cart in the session object
+    session.pop('cart', default=None)
+
+    flash(f' You have emptied your cart!', 'success')
+    return render_template('home.html', title='Home', form=form, message=error,)
+
+# to get dynamic pricing in the drop down on the add to cart form for one item - in progress may not be needed
+@app.route('/price/<int:product_id>')
+def get_price(product_id):
+    attributes = Product.query.filter_by(id=product_id).all()
+
+    priceList = []
+
+    for attribute in attributes:
+        attributeObject ={}
+        attributeObject['id'] = attribute.id
+        attributeObject['species'] = attribute.species
+        attributeObject['price'] = attribute.price
+        attributeObject['plant_nickname'] = attribute.plant_nickname
+        priceList.append(attributeObject)
+
+    # return ({'price_value': priceList})
+    return render_template('cart.html', title='Cart', priceList=priceList)
+
+
+# error handling - custom 404 page
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('page_not_found.html'), 404
+
+# order history - not quite working yet
+# @app.route('/customer_order_history', methods=['GET'])
+# def customer_order_history():
+#     error = ""
+#     customer_order_history = db.session.query(Person, OrderHeader, OrderStatus, OrderLine, Product).select_from(Person).\
+#         join(OrderHeader).join(OrderStatus).join(OrderLine).join(Product).all()
+#
+#     for customer, order, product, order_detail in customer_order_history:
+#         display = (customer.first_name, customer.last_name, order.id, order.order_date, order.status_description, product.species, order_detail.quantity, product.price)
+#
+#     return render_template('order_history.html', title='Order History', display=display, message=error)
+
+
+# Pass Stuff to Nav
+@app.context_processor
+def layout():
+    form = SearchForm()
+    return dict(form=form)
+
+
+# create search function
+@app.route('/search', methods=["POST"])
+def search():
+    form = SearchForm()
+    posts = BlogPosts.query
+    if form.validate_on_submit():
+
+        # get data from submitted form
+        post.searched = form.searched.data
+        # Query the database
+        posts = posts.filter(BlogPosts.post_content.like('%' + post.searched + '%'))
+        posts = posts.order_by(BlogPosts.title).all()
+
+        return render_template("search.html", form=form, searched=post.searched, posts=posts)
+
 
 
 # STAFF ACCESS QUERIES

@@ -6,6 +6,7 @@
 <div class="forms">
     <form action="", method="POST">
         {{ form.hidden_tag() }}
+        {{ form.csrf_token() }}
         <fieldset>
             <legend>Join today</legend>
             <h5>Here, you'll be able to:</h5>
@@ -27,10 +28,20 @@
             <div class="form-group">
                 {{ form.email.label(class="form-control-label") }}
                 {{ form.email(class="form-control form-control-lg", placeholder="example@example.com") }}
+                <ul>
+                    {% for error in form.email.errors %}
+                        <li style="color:red;">{{ error }}</li>
+                    {% endfor %}
+                </ul>
             </div>
             <div class="form-group">
                 {{ form.username.label(class="form-control-label") }}
                 {{ form.username(class="form-control form-control-lg", placeholder="Your username here") }}
+                 <ul>
+                    {% for error in form.username.errors %}
+                        <li style="color:red;">{{ error }}</li>
+                    {% endfor %}
+                </ul>
             </div>
             <div class="form-group">
                 {{ form.password.label(class="form-control-label") }}
@@ -39,6 +50,11 @@
             <div class="form-group">
                 {{ form.confirm_password.label(class="form-control-label") }}
                 {{ form.confirm_password(class="form-control form-control-lg", placeholder="Repeat your password") }}
+                <ul>
+                {% for error in form.confirm_password.errors %}
+                        <li style="color:red;">{{ error }}</li>
+                    {% endfor %}
+                </ul>
             </div>
             <div class="form-group">
                 {{ form.address_line_one.label(class="form-control-label") }}

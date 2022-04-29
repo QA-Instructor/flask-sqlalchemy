@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, BooleanField, DateField, IntegerField, SelectField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, input_required
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 
 # need form to do email newsletter sign up
 
@@ -9,18 +9,25 @@ class EmailSignUpForm(FlaskForm):
     submit = SubmitField('Sign Up')
 
 
+def validate_username(form, field):
+    excluded_chars = " *?!'^+%&/()=}][{$#"
+    for char in form.username.data:
+        if char in excluded_chars:
+            raise ValidationError(
+                f'Character {char} is not allowed in username. Please do not use any of the following characters: {excluded_chars}')
+
 # new form needs to link to userlogin person and address tables for registering customers (is set in the route to set the
 # persontype to '2' which is customer
 class CustomerRegistrationForm(FlaskForm):
     # userlogin elements
-    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=30)])
+    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=30), validate_username])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=6)])
-    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('confirm_password', message="Passwords must match")]) #Equal to validator not working, will still submit even if passwords do not match
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password', message="Passwords must match")])
 
     # person elements
     first_name = StringField('First Name', validators=[DataRequired(), Length(min=2, max=30)])
     last_name = StringField('Last Name', validators=[DataRequired(), Length(min=2, max=30)])
-    email = StringField('Email', validators=[DataRequired(), Email(message='Please supply a valid email')]) #email validator not working, form will still submit even if no @ or . is present in field.
+    email = StringField('Email', validators=[DataRequired(), Email(message='Please supply a valid email')])
 
     # address elements
     address_line_one = StringField('Address Line 1', validators=[DataRequired()])
@@ -31,14 +38,6 @@ class CustomerRegistrationForm(FlaskForm):
     # submit
     submit = SubmitField('Sign Up')
 
-    # Custom error created to raise error when special characters are used in username, however, error not raising when tested"
-    def validate_username(self, username):
-        # self.username = username
-        excluded_chars = " *?!'^+%&/()=}][{$#"
-        for char in self.username.data:
-            if char in excluded_chars:
-                raise ValidationError(
-                    f'Character {char} is not allowed in username.')
 
 
 class LoginForm(FlaskForm):
@@ -52,7 +51,7 @@ class LoginForm(FlaskForm):
 # person and staff info tables to be functional (can set persontype to '1' which is staff in the routes)
 class StaffRegistrationForm(FlaskForm):
     # userlogin elements
-    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=30)])
+    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=30), validate_username])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=6)])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('confirm_password',
                                                                                              message="Passwords must match")])
@@ -85,6 +84,15 @@ class PlantForm(FlaskForm):
     plant_price = IntegerField('Plant Price', validators=[DataRequired()])
     plant_stock = IntegerField('Number Being Added To Stock', validators=[DataRequired()])
     plant_size = SelectField('Size', choices=[('1', 'Tiny'), ('2', 'Small'), ('3', 'Medium'), ('4', 'Tall')], validators=[DataRequired()])
+    plant_nickname = StringField('Plant Nickname', validators=[DataRequired()])
+    plant_info = StringField('General Plant Info', validators=[DataRequired()])
+    care_tip_1 = StringField('First Care Tip', validators=[DataRequired()])
+    care_tip_2 = StringField('Second Care Tip')
+    care_tip_3 = StringField('Third Care Tip')
+    image_1 = StringField('Image Link', validators=[DataRequired()])
+    image_2 = StringField('Image Link')
+    image_3 = StringField('Image Link')
+    tech_description = StringField('Women in tech description', validators=[DataRequired()])
     submit = SubmitField('Register Plant')
 
 
@@ -96,6 +104,12 @@ class NewBlogPostForm(FlaskForm):
 
     submit = SubmitField('Add post')
 
+# delete blog post
+class DeleteBlogPostForm(FlaskForm):
+    id = IntegerField('ID of the post you want to delete', validators=[DataRequired()])
+
+    submit = SubmitField('Add post')
+
 # log in form
 class LogInForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -103,6 +117,20 @@ class LogInForm(FlaskForm):
     type = SelectField('Type', choices=[('1', 'Staff'), ('2', 'Customer')])
 
     submit = SubmitField('Log in')
+
+# add to cart
+class AddToCartForm(FlaskForm):
+    product = SelectField('Species', choices=[(1, 'Boston Fern'), (2, 'Aloe Vera'), (3, 'Parlour Palm')])
+    # product = SelectField('Species', choices=['Boston Fern', 'Aloe Vera', 'Parlour Palm'])
+    quantity = IntegerField('Quantity', validators=[DataRequired()])
+    # price =
+    submit = SubmitField('Add to cart')
+
+# create a search form
+class SearchForm(FlaskForm):
+    searched = StringField('Searched', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
 
 # Victoria's code
 class BasicForm(FlaskForm):
