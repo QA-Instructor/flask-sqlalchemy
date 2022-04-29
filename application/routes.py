@@ -1,9 +1,10 @@
 from flask import render_template, request, flash, redirect, url_for, session
 from application import app, db
-from application.forms import EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm, \
-    NewBlogPostForm, LogInForm, SearchForm
+from application.forms import EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm,\
+    NewBlogPostForm, LogInForm, AddToCartForm, DeleteBlogPostForm, SearchForm
+
 from application.models import Person, Address, Newsletter, UserLogin, StaffInfo, Product, BlogPosts,\
-    Category, PlantType, Size
+    OrderHeader, OrderLine, OrderStatus, Category, PlantType, Size
 from datetime import date
 
 
@@ -39,9 +40,9 @@ def contact():
     return render_template('contact_us.html', title='Contact Us')
 
 
-@app.route('/shop', methods=['GET'])
-def shop():
-    return render_template('shop.html', title='Shop')
+# @app.route('/shop', methods=['GET'])
+# def shop():
+#     return render_template('shop.html', title='Shop')
 
 
 @app.route('/plant1', methods=['GET'])
@@ -341,13 +342,37 @@ def addpost():
 
     return render_template('addpost.html', message= error, form=form)
 
+# display specific blog post
 @app.route('/post/<int:post_id>')
 def post(post_id):
     post = BlogPosts.query.filter_by(id=post_id).one()
 
     return render_template('post.html', post=post)
 
-# session variables
+# delete blog post - functional
+@app.route('/delete_blogpost/<int:blogposts_id>', methods=['GET','DELETE'])
+def delete_blogpost(blogposts_id):
+    error = ""
+    form = DeleteBlogPostForm()
+
+    if request.method == 'DELETE':
+        post = BlogPosts.query.get(blogposts_id)
+        db.session.delete(post)
+        db.session.commit()
+
+        if not post:
+            error = "There is no blog post with ID: " + str(blogposts_id)
+
+    posts = BlogPosts.query.order_by(BlogPosts.date_posted.desc()).all()
+    return render_template('plant_care.html', title='Plant Care', message= error, posts=posts, form=form)
+
+# dont think we need this anymore
+# @app.route('/delete_blogpost_info', methods=['GET'])
+# def delete_blogpost_info():
+#     return render_template('delete_blogpost.html', title='Delete Blog post')
+
+
+# session variables - login
 
 @app.route('/login', methods=['GET', 'POST'])
 @app.route('/log_in', methods=['GET', 'POST'])
@@ -358,36 +383,43 @@ def login():
     if request.method == 'POST':
         # pop previous session in case someone was already logged in
         session.pop('logged_in_username', default=None)
+        session.pop('typesession', default=None)
+        session.pop('logged_in', default=None)
+        session.pop('id_number', default=None)
+        session.pop('cart', default=None)
 
         # if form.validate_on_submit():
 
-        # # taking the username and password from the form so we can compare to the db
+        # # taking the username and password from the form so that we can compare to the db
         form_username = request.form['username']
         form_password = request.form['password']
 
-        # need to do the validation here to check if username and password match the database
-
-        # this is looking for a record on the database where both the username and password match
-
         db_username_password = UserLogin.query.filter_by(username=form_username, password=form_password).all()
+        for user_id in db_username_password:
+            user_id_for_session_variable = user_id.id
 
-        # user_and_persontype = db.session.query(UserLogin, Person, StaffInfo).select_from(UserLogin).join(Person).join(StaffInfo).all()
-        # print(user_and_persontype)
-        # setting initial value of pw_check to false:
-        pw_check = False
+        # setting initial value of password_check to false:
+        password_check = False
 
         if db_username_password != []:
-            pw_check = True
+            password_check = True
         else:
-            pw_check = False
+            password_check = False
 
-        if pw_check == True:
+        if password_check == True:
+
         # if validation has passed, save the username to the session object
             session['logged_in_username'] = request.form['username']
             session['logged_in'] = True
+            session['id_number'] = user_id_for_session_variable
 
-        # also need to check if they are a customer or staff, so need a second session variable
+        # also need to check if they are a customer or staff, so need a another session variable
         # some sort of if statement needed here to check db and then:
+
+        # this query gives you all the staff id numbers, can we then filter this based on username/id?
+        # user_and_persontype = db.session.query(UserLogin, Person, StaffInfo).select_from(UserLogin).join(Person).join(StaffInfo).all()
+        # print(user_and_persontype)
+
         # not currently checking db, but will take the form input instead as a starting point:
             if request.form['type'] == '1':
                 # if person_type = 1 then:
@@ -395,7 +427,7 @@ def login():
             else:
                 session['typesession'] = 'customer'
 
-            # will then need to return different nav/functionality depending on which type of log in it is
+            # will then return different nav/functionality depending on which type of log in it is - this works
 
             # will show shop page plus session variable specific text
                 return redirect(url_for('shop'))
@@ -412,6 +444,7 @@ def login():
 
     return render_template('login.html', message= error, form=form)
 
+# session variables - log out
 
 @app.route('/log_out')
 @app.route('/logout')
@@ -422,9 +455,113 @@ def delete_session():
     session.pop('logged_in_username', default=None)
     session.pop('typesession', default=None)
     session.pop('logged_in', default=None)
+    session.pop('id_number', default=None)
+    session.pop('cart', default=None)
 
     flash(f' You have logged out!', 'success')
     return render_template('home.html', title='Home', form=form, message=error,)
+
+# session variables - shopping cart
+
+@app.route('/add_to_cart', methods=['GET', 'POST'])
+def add_to_cart():
+    error = ""
+    form = AddToCartForm()
+
+    if request.method == 'POST':
+        product = form.product.data
+        quantity = form.quantity.data
+        # price = [Product.query.filter_by(product).first()]
+        # price = form.price.data
+        attributes = Product.query.filter_by(id=product).all()
+        headings = ('Plant Name', 'Species', 'Price', 'Quantity', 'Sub-Total')
+        #
+        # productAttributes = []
+
+        # what if we nested dictionaries not lists?
+        # productAttributes = {}
+
+        for attribute in attributes:
+            attributeObject = {}
+            attributeObject['id'] = attribute.id
+            attributeObject['species'] = attribute.species
+            attributeObject['price'] = attribute.price
+            attributeObject['plant_nickname'] = attribute.plant_nickname
+            attributeObject['quantity'] = quantity
+            attributeObject['sub_total'] = (attribute.price * quantity)
+            if 'cart' in session:
+                session['cart'].append(attributeObject)
+                session.modified = True
+
+            else:
+                session['cart'] = [attributeObject]
+
+
+        return render_template('cart_success.html', title='Cart', form=form, message=error, attributeObject=attributeObject, cart_contents=session['cart'], headings=headings)
+    return render_template('add_to_cart.html', form=form, message=error, title='home')
+
+# view cart (currently very basic!)
+@app.route('/cart', methods=['GET', 'POST'])
+def view_cart():
+    error = ""
+    form = AddToCartForm()
+    if 'cart' in session:
+        cart_contents = session['cart']
+    else:
+        cart_contents = []
+
+    headings = ('Plant Name', 'Species', 'Price', 'Quantity', 'Sub-Total')
+
+
+    return render_template('cart.html', title='Cart', form=form, message=error, cart_contents=cart_contents, headings=headings)
+    # return render_template('add_to_cart.html', form=form, message=error, title='home')
+
+# empty cart (but will stay logged in)
+@app.route('/clear_cart')
+def clear_cart():
+    error = ""
+    form = EmailSignUpForm()
+    # Clear the shopping cart in the session object
+    session.pop('cart', default=None)
+
+    flash(f' You have emptied your cart!', 'success')
+    return render_template('home.html', title='Home', form=form, message=error,)
+
+# to get dynamic pricing in the drop down on the add to cart form for one item - in progress may not be needed
+@app.route('/price/<int:product_id>')
+def get_price(product_id):
+    attributes = Product.query.filter_by(id=product_id).all()
+
+    priceList = []
+
+    for attribute in attributes:
+        attributeObject ={}
+        attributeObject['id'] = attribute.id
+        attributeObject['species'] = attribute.species
+        attributeObject['price'] = attribute.price
+        attributeObject['plant_nickname'] = attribute.plant_nickname
+        priceList.append(attributeObject)
+
+    # return ({'price_value': priceList})
+    return render_template('cart.html', title='Cart', priceList=priceList)
+
+
+# error handling - custom 404 page
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('page_not_found.html'), 404
+
+# order history - not quite working yet
+# @app.route('/customer_order_history', methods=['GET'])
+# def customer_order_history():
+#     error = ""
+#     customer_order_history = db.session.query(Person, OrderHeader, OrderStatus, OrderLine, Product).select_from(Person).\
+#         join(OrderHeader).join(OrderStatus).join(OrderLine).join(Product).all()
+#
+#     for customer, order, product, order_detail in customer_order_history:
+#         display = (customer.first_name, customer.last_name, order.id, order.order_date, order.status_description, product.species, order_detail.quantity, product.price)
+#
+#     return render_template('order_history.html', title='Order History', display=display, message=error)
 
 
 # Pass Stuff to Nav
@@ -455,6 +592,186 @@ def plant(plant_id):
     plant = Product.query.filter_by(id=plant_id).one()
     return render_template('plant.html', title="Plant", plant=plant)
 
+
+# STAFF ACCESS QUERIES
+
+# QUERY - in progress: staff and corresponding job titles
+# Gives list of staff members and their job titles
+@app.route('/staff_jobs', methods=['GET'])
+def staff_jobs():
+    error = ""
+    staff_and_jobs = db.session.query(StaffInfo, Person).join(Person).all()
+    headings = ('Job Title', 'First Name', 'Last Name', 'Email')
+
+    # for job, staff in staff_and_jobs:
+    #     print(job.job_title, staff.first_name, staff.last_name)
+    return render_template('staff_jobs.html', staff_and_jobs=staff_and_jobs, message=error, headings=headings)
+
+
+# QUERY: customers and their orders
+# Gives list of customer names, their order id and order date, the products ordered and the quantity
+@app.route('/customer_orders', methods=['GET'])
+def show_customer_orders():
+    error = ""
+    customer_orders = db.session.query(Person, OrderHeader, OrderLine, Product).select_from(Person).join(
+        OrderHeader).join(OrderLine).join(Product).all()
+    return render_template('customer_orders.html', customer_orders=customer_orders, message=error)
+
+# QUERY: Outstanding orders
+@app.route('/outstanding_orders', methods=['GET'])
+def show_outstanding_orders():
+    error = ""
+    outstanding_orders = db.session.query(OrderHeader, OrderStatus, OrderLine, Product).select_from(OrderHeader). \
+        join(OrderStatus).join(OrderLine).join(Product).filter(OrderStatus.id == 1).all()
+    return render_template('outstanding_orders.html', outstanding_orders=outstanding_orders, message=error)
+
+
+# CUSTOMER ACCESS QUERIES
+
+# PLANT SHOP PAGE - IN PROGRESS
+
+# MAIN SHOP PAGE
+@app.route('/shop', methods=['GET'])
+def shop():
+    plant_shop_plant = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).all()
+    return render_template('shop.html', title='Plant Shop', plant_shop_plant=plant_shop_plant)
+
+@app.route('/plant/<int:product_id>')
+def product_store(product_id):
+    plant = Product.query.filter_by(id=product_id).one()
+
+    return render_template('plant.html', plant=plant)
+
+
+# QUERY: Indoor plants
+@app.route('/indoor_plants', methods=['GET'])
+def show_indoor_plants():
+    error = ""
+    display_indoor_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(Category.id == 1).all()
+    return render_template('shop.html', display_indoor_plants=display_indoor_plants, message=error)
+
+
+# QUERY: Outdoor plants
+@app.route('/outdoor_plants', methods=['GET'])
+def show_outdoor_plants():
+    error = ""
+    display_outdoor_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(Category.id == 2).all()
+    return render_template('shop.html', display_outdoor_plants=display_outdoor_plants, message=error)
+
+
+# QUERY: filter by height - tiny
+@app.route('/tiny_plants', methods=['GET'])
+def show_tiny_plants():
+    error = ""
+    display_tiny_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(Size.id == 1).all()
+    return render_template('shop.html', display_tiny_plants=display_tiny_plants, message=error)
+
+# QUERY: filter by height - small
+@app.route('/small_plants', methods=['GET'])
+def show_small_plants():
+    error = ""
+    display_small_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(Size.id == 2).all()
+    return render_template('shop.html', display_small_plants=display_small_plants, message=error)
+
+# QUERY: filter by height - medium
+@app.route('/medium_plants', methods=['GET'])
+def show_medium_plants():
+    error = ""
+    display_medium_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(Size.id == 3).all()
+    return render_template('shop.html', display_medium_plants=display_medium_plants, message=error)
+
+
+# QUERY: filter by height - tall
+@app.route('/tall_plants', methods=['GET'])
+def show_tall_plants():
+    error = ""
+    display_tall_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(Size.id == 4).all()
+    return render_template('shop.html', display_tall_plants=display_tall_plants, message=error)
+
+
+# QUERY: filter by type - cactus / succulent
+@app.route('/cacti_succulent_plants', methods=['GET'])
+def show_cacti_succulent_plants():
+    error = ""
+    display_cacti_succulent_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(PlantType.id == 1).all()
+    return render_template('shop.html', display_cacti_succulent_plants=display_cacti_succulent_plants, message=error)
+
+
+# QUERY: filter by type - hanging
+@app.route('/hanging_plants', methods=['GET'])
+def show_hanging_plants():
+    error = ""
+    display_hanging_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(PlantType.id == 2).all()
+    return render_template('shop.html', display_hanging_plants=display_hanging_plants, message=error)
+
+
+# QUERY: filter by type - flowering
+@app.route('/flowering_plants', methods=['GET'])
+def show_flowering_plants():
+    error = ""
+    display_flowering_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(PlantType.id == 3).all()
+    return render_template('shop.html', display_flowering_plants=display_flowering_plants, message=error)
+
+
+# QUERY: filter by type - palm
+@app.route('/palm_plants', methods=['GET'])
+def show_palm_plants():
+    error = ""
+    display_palm_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(PlantType.id == 4).all()
+    return render_template('shop.html', display_palm_plants=display_palm_plants, message=error)
+
+
+# QUERY: filter by type - fern
+@app.route('/fern_plants', methods=['GET'])
+def show_fern_plants():
+    error = ""
+    display_fern_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(PlantType.id == 5).all()
+    return render_template('shop.html', display_fern_plants=display_fern_plants, message=error)
+
+# QUERY: filter by price
+@app.route('/value_savers', methods=['GET'])
+def show_value_saver():
+    error = ""
+    display_value_saver = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(Product.price < 10).all()
+    return render_template('shop.html', display_value_saver=display_value_saver, message=error)
+
+# QUERY: filter by price
+@app.route('/modest_picks', methods=['GET'])
+def show_modest_picks():
+    error = ""
+    display_modest_picks = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(Product.price < 25).all()
+    return render_template('shop.html', display_modest_picks=display_modest_picks, message=error)
+
+# QUERY: filter by price
+@app.route('/fancy_picks', methods=['GET'])
+def show_fancy_picks():
+    error = ""
+    display_fancy_picks = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(Product.price < 55).all()
+    return render_template('shop.html', display_fancy_picks=display_fancy_picks, message=error)
+
+
+# QUERY: filter by price
+@app.route('/premium_range', methods=['GET'])
+def show_premium_range():
+    error = ""
+    display_premium_range = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(Product.price > 56).all()
+    return render_template('shop.html', display_premium_range=display_premium_range, message=error)
 
 # Victoria's code
 # def register_basic_form():
