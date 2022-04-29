@@ -1,10 +1,16 @@
 {% extends "layout.html" %}
 {% block body_content %}
 
+<div class="container-cart">
+  <img class="bg obj-fit-cover" src="{{url_for('static',filename='images/three_pots_succulents.jpg')}}" alt="three small succulent plants in white ceramic pots">
+  <h1>Shopping Cart</h1>
 
+</div>
 
 <div class="container-fluid bg-1 text-center">
     <h1>Shopping Cart</h1>
+
+
 
 <h2> You just added to your cart: </h2>
         <h2 hidden>{{ attributeObject.id }}</h2>
@@ -51,19 +57,12 @@
 </table>
 </div>
 
-<h1> Your shopping cart contains {{ session['cart'] }}</h1>
+
 
 
 
 </div>
 
-<h2> {{ productAttributes }} </h2>
-
-<h2> {{ attributeObject }} </h2>
-
-{% for attribute in attributeObject %}
-    <h3> {{attributeObject.species}}</h3>
-
-{% endfor %}
+    <button class="btn1"><a href="{{ url_for('clear_cart') }}" style="color:#0A451B">Empty Cart</a></button>
 
 {% endblock %}
