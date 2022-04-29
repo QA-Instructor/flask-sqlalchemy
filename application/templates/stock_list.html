@@ -15,7 +15,7 @@
 
 
 <div>
-<h1>Orders that need packing and shipping</h1>
+<h1>Current stock list</h1>
 
 <div class="container-fluid bg-1 text-center">
     <div class="table-responsive table-striped">
@@ -29,13 +29,16 @@
             </thead>
             <tbody>
                 <tr>
-                {% for order, order_status, order_detail, product in outstanding_orders %}
+                {% for product, category, plant_type, size in plant_shop_plant %}
 
-                    <th scope="row">{{order.id}}</th>
-                      <td>{{order.order_date}}  </td>
-                      <td>{{order_status.status_description}}</td>
-                      <td>{{product.species}}</td>
-                      <td>{{order_detail.quantity}}</td>
+
+                    <th scope="row">{{product.species}} </th>
+                      <td>{{category.category_description}}  </td>
+                      <td>{{size.size_description}} </td>
+                      <td>{{plant_type.plant_type_description}}</td>
+                      <td>{{product.price}}</td>
+                      <td>{{product.stock}}</td>
+
 
 
                 </tr>

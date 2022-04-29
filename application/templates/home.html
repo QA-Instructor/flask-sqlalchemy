@@ -8,8 +8,8 @@
   <img class="bg obj-fit-cover" src="{{url_for('static',filename='images/logoleaves.jpg')}}" alt="leaves">
   <h1>The Plant Emporium</h1>
   <h2>Plants for every space</h2>
-    <button class="btn1"><a href="" style="color:white">Shop Indoor</a></button>
-    <button class="btn2"><a href="" style="color:white">Shop Outdoor</a></button>
+    <button class="btn1"><a href="{{ url_for('show_indoor_plants') }}" style="color:white">Shop Indoor</a></button>
+    <button class="btn2"><a href="{{ url_for('show_outdoor_plants') }}" style="color:white">Shop Outdoor</a></button>
 </div>
 
 <!--newletter subscripton -->
@@ -28,17 +28,8 @@
     </div>
 
 
-<!-- Jodie - sorry I commented out your lovely code! I am not sure how to get the checkbox to work from a form
- perspective so don't have that at present-->
 
-<!--        <div class="sign_up_form">-->
-<!--            <h3>Subscribe to our newsletter to hear more plant news</h3>-->
-<!--            <form action="#">-->
-<!--                <input type="email" class="input-box" placeholder="Your Email">-->
-<!--                <p><span><input type="checkbox"></span> I agree to the terms of services</p>-->
-<!--                <button type="button" class="sign-btn">Subscribe</button>-->
-<!--            </form>-->
-<!--        </div>-->
 
 {% endblock %}
 
+</div>
