@@ -608,17 +608,19 @@ def staff_jobs():
 @app.route('/customer_orders', methods=['GET'])
 def show_customer_orders():
     error = ""
+    headings = ('Order ID number', 'Customer First Name', 'Customer Last Name', 'Date of Order', 'Species', 'Quantity')
     customer_orders = db.session.query(Person, OrderHeader, OrderLine, Product).select_from(Person).join(
         OrderHeader).join(OrderLine).join(Product).all()
-    return render_template('customer_orders.html', customer_orders=customer_orders, message=error)
+    return render_template('customer_orders.html', customer_orders=customer_orders, message=error, headings=headings)
 
 # QUERY: Outstanding orders
 @app.route('/outstanding_orders', methods=['GET'])
 def show_outstanding_orders():
     error = ""
+    headings = ('Order ID', 'Order Date', 'Order Status', 'Species', 'Quantity')
     outstanding_orders = db.session.query(OrderHeader, OrderStatus, OrderLine, Product).select_from(OrderHeader). \
         join(OrderStatus).join(OrderLine).join(Product).filter(OrderStatus.id == 1).all()
-    return render_template('outstanding_orders.html', outstanding_orders=outstanding_orders, message=error)
+    return render_template('outstanding_orders.html', outstanding_orders=outstanding_orders, message=error, headings=headings)
 
 
 # CUSTOMER ACCESS QUERIES

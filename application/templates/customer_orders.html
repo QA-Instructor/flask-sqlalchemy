@@ -4,12 +4,49 @@
 </head>
 <body>
 <div>
-{% for customer, order, order_detail, product in customer_orders %}
-   <p>{{customer.first_name}} {{customer.last_name}} {{order.id}} {{order.order_date}} {{product.species}} {{order_detail.quantity}}</p>
-{% endfor %}
+
+
     <br>
     {{ message }}
 </div>
+
+<div>
+<h1>Customer Orders</h1>
+
+<div class="container-fluid bg-1 text-center">
+    <div class="table-responsive table-striped">
+        <table class="table">
+            <thead>
+                <tr>
+                {% for header in headings %}
+                    <th scope="col">{{ header }}</th>
+                {% endfor %}
+                 </tr>
+            </thead>
+            <tbody>
+                <tr>
+                {% for customer, order, order_detail, product in customer_orders %}
+
+                    <th scope="row">{{order.id}}</th>
+                      <td>{{customer.first_name}}  </td>
+                      <td>{{customer.last_name}}</td>
+                      <td>{{order.order_date}}</td>
+                      <td>{{product.species}}</td>
+                      <td>{{order_detail.quantity}}</td>
+
+                </tr>
+                 {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</div>
+
+
+
 
 
 {% endblock %}
