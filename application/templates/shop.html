@@ -1,6 +1,18 @@
 {% extends "layout.html" %}
+<!--<head>-->
+<!--<script type="text/javascript">-->
+<!--    function goToNewPage()-->
+<!--    {-->
+<!--        var url = document.getElementById('list').value;-->
+<!--        if(url != 'none') {-->
+<!--            window.location = url;-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
+<!--</head>-->
+
 {% block body_content %}
-<h1>Shop</h1>
+<h1 xmlns="http://www.w3.org/1999/html">Shop</h1>
 
 
 {% if session['logged_in_username'] %}
@@ -19,12 +31,197 @@
 
 <br>
 <hr>
+{% endif %}
 
+<!-- Indoor/Outdoor dropdown -->
+<div class="btn-group">
+  <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+    Environment
+  </button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="/indoor_plants">Indoor</a>
+    <a class="dropdown-item" href="/outdoor_plants">Outdoor</a>
+  </div>
+</div>
+
+<!-- Size dropdown -->
+<div class="btn-group">
+  <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+    Size
+  </button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="/tiny_plants">Tiny</a>
+    <a class="dropdown-item" href="/small_plants">Small</a>
+    <a class="dropdown-item" href="/medium_plants">Medium</a>
+    <a class="dropdown-item" href="/tall_plants">Tall</a>
+  </div>
+</div>
+
+<!-- Plant Type dropdown -->
+<div class="btn-group">
+  <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+    Plant Type
+  </button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="/cacti_succulent_plants">Cacti/Succulent</a>
+    <a class="dropdown-item" href="/hanging_plants">Hanging</a>
+    <a class="dropdown-item" href="/flowering_plants">Flowering</a>
+    <a class="dropdown-item" href="/palm_plants">Palm</a>
+    <a class="dropdown-item" href="/fern_plants">Fern</a>
+  </div>
+</div>
+
+
+<!-- Price dropdown -->
+<div class="btn-group">
+  <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+    Price
+  </button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="/value_savers">Value Savers</a>
+    <a class="dropdown-item" href="/modest_picks">Modest Picks</a>
+    <a class="dropdown-item" href="/fancy_picks">Fancy Picks</a>
+    <a class="dropdown-item" href="/premium_range">Premium Range</a>
+  </div>
+</div>
+
+
+<!--display all plants-->
+{% if plant_shop_plant %}
+{% for product, category, plant_type, size in plant_shop_plant %}
+   <p>{{product.species}} {{category.category_description}}
+       {{plant_type.plant_type_description}} {{size.size_description}} {{product.price}}</p>
+{% endfor %}
 {% endif %}
 
 
+<!--display outdoor plants-->
+{% if display_outdoor_plants %}
+{% for product, category, plant_type, size in display_outdoor_plants %}
+   <p>{{product.species}} {{category.category_description}}
+       {{plant_type.plant_type_description}} {{size.size_description}} {{product.price}}</p>
+{% endfor %}
+{% endif %}
 
-<p>Here are our current plants in stock</p>
+
+<!--display indoor plants-->
+{% if display_indoor_plants %}
+{% for product, category, plant_type, size in display_indoor_plants %}
+   <p>{{product.species}} {{category.category_description}}
+       {{plant_type.plant_type_description}} {{size.size_description}} {{product.price}}</p>
+{% endfor %}
+{% endif %}
+
+
+<!--display tiny plants-->
+{% if display_tiny_plants %}
+{% for product, category, plant_type, size in display_tiny_plants %}
+   <p>{{product.species}} {{category.category_description}}
+       {{plant_type.plant_type_description}} {{size.size_description}} {{product.price}}</p>
+{% endfor %}
+{% endif %}
+
+<!--display small plants-->
+{% if display_small_plants %}
+{% for product, category, plant_type, size in display_small_plants %}
+   <p>{{product.species}} {{category.category_description}}
+       {{plant_type.plant_type_description}} {{size.size_description}} {{product.price}}</p>
+{% endfor %}
+{% endif %}
+
+
+<!--display medium plants-->
+{% if display_medium_plants %}
+{% for product, category, plant_type, size in display_medium_plants %}
+   <p>{{product.species}} {{category.category_description}}
+       {{plant_type.plant_type_description}} {{size.size_description}} {{product.price}}</p>
+{% endfor %}
+{% endif %}
+
+<!--display tall plants-->
+{% if display_tall_plants %}
+{% for product, category, plant_type, size in display_tall_plants %}
+   <p>{{product.species}} {{category.category_description}}
+       {{plant_type.plant_type_description}} {{size.size_description}} {{product.price}}</p>
+{% endfor %}
+{% endif %}
+
+<!--display cactus and succulent plants-->
+{% if display_cacti_succulent_plants %}
+{% for product, category, plant_type, size in display_cacti_succulent_plants %}
+   <p>{{product.species}} {{category.category_description}}
+       {{plant_type.plant_type_description}} {{size.size_description}} {{product.price}}</p>
+{% endfor %}
+{% endif %}
+
+<!--display hanging plants-->
+{% if display_hanging_plants %}
+{% for product, category, plant_type, size in display_hanging_plants %}
+   <p>{{product.species}} {{category.category_description}}
+       {{plant_type.plant_type_description}} {{size.size_description}} {{product.price}}</p>
+{% endfor %}
+{% endif %}
+
+<!--display flowering plants-->
+{% if display_flowering_plants %}
+{% for product, category, plant_type, size in display_flowering_plants %}
+   <p>{{product.species}} {{category.category_description}}
+       {{plant_type.plant_type_description}} {{size.size_description}} {{product.price}}</p>
+{% endfor %}
+{% endif %}
+
+<!--display palm plants-->
+{% if display_palm_plants %}
+{% for product, category, plant_type, size in display_palm_plants %}
+   <p>{{product.species}} {{category.category_description}}
+       {{plant_type.plant_type_description}} {{size.size_description}} {{product.price}}</p>
+{% endfor %}
+{% endif %}
+
+<!--display fern plants-->
+{% if display_fern_plants %}
+{% for product, category, plant_type, size in display_fern_plants %}
+   <p>{{product.species}} {{category.category_description}}
+       {{plant_type.plant_type_description}} {{size.size_description}} {{product.price}}</p>
+{% endfor %}
+{% endif %}
+
+
+<!--display value saver plants-->
+{% if display_value_saver %}
+{% for product, category, plant_type, size in display_value_saver %}
+   <p>{{product.species}} {{category.category_description}}
+       {{plant_type.plant_type_description}} {{size.size_description}} {{product.price}}</p>
+{% endfor %}
+{% endif %}
+
+<!--display modest picks-->
+{% if display_modest_picks %}
+{% for product, category, plant_type, size in display_modest_picks %}
+   <p>{{product.species}} {{category.category_description}}
+       {{plant_type.plant_type_description}} {{size.size_description}} {{product.price}}</p>
+{% endfor %}
+{% endif %}
+
+<!--display fancy picks-->
+{% if display_fancy_picks %}
+{% for product, category, plant_type, size in display_fancy_picks %}
+   <p>{{product.species}} {{category.category_description}}
+       {{plant_type.plant_type_description}} {{size.size_description}} {{product.price}}</p>
+{% endfor %}
+{% endif %}
+
+<!--display premium picks-->
+{% if display_premium_range %}
+{% for product, category, plant_type, size in display_premium_range %}
+   <p>{{product.species}} {{category.category_description}}
+       {{plant_type.plant_type_description}} {{size.size_description}} {{product.price}}</p>
+{% endfor %}
+{% endif %}
 
 <div class="plant1">
 <h2>Plant 1</h2>

@@ -1,7 +1,7 @@
 from flask import render_template, request, flash, redirect, url_for, session
 from application import app, db
-from application.forms import EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm, \
-NewBlogPostForm, LogInForm, AddToCartForm, DeleteBlogPostForm, SearchForm
+from application.forms import EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm,\
+    NewBlogPostForm, LogInForm, AddToCartForm, DeleteBlogPostForm, SearchForm
 
 from application.models import Person, Address, Newsletter, UserLogin, StaffInfo, Product, BlogPosts,\
     OrderHeader, OrderLine, OrderStatus, Category, PlantType, Size
@@ -40,9 +40,9 @@ def contact():
     return render_template('contact_us.html', title='Contact Us')
 
 
-@app.route('/shop', methods=['GET'])
-def shop():
-    return render_template('shop.html', title='Shop')
+# @app.route('/shop', methods=['GET'])
+# def shop():
+#     return render_template('shop.html', title='Shop')
 
 
 @app.route('/plant1', methods=['GET'])
@@ -587,6 +587,186 @@ def search():
         return render_template("search.html", form=form, searched=post.searched, posts=posts)
 
 
+
+# STAFF ACCESS QUERIES
+
+# QUERY - in progress: staff and corresponding job titles
+# Gives list of staff members and their job titles
+@app.route('/staff_jobs', methods=['GET'])
+def staff_jobs():
+    error = ""
+    staff_and_jobs = db.session.query(StaffInfo, Person).join(Person).all()
+    headings = ('Job Title', 'First Name', 'Last Name', 'Email')
+
+    # for job, staff in staff_and_jobs:
+    #     print(job.job_title, staff.first_name, staff.last_name)
+    return render_template('staff_jobs.html', staff_and_jobs=staff_and_jobs, message=error, headings=headings)
+
+
+# QUERY: customers and their orders
+# Gives list of customer names, their order id and order date, the products ordered and the quantity
+@app.route('/customer_orders', methods=['GET'])
+def show_customer_orders():
+    error = ""
+    customer_orders = db.session.query(Person, OrderHeader, OrderLine, Product).select_from(Person).join(
+        OrderHeader).join(OrderLine).join(Product).all()
+    return render_template('customer_orders.html', customer_orders=customer_orders, message=error)
+
+# QUERY: Outstanding orders
+@app.route('/outstanding_orders', methods=['GET'])
+def show_outstanding_orders():
+    error = ""
+    outstanding_orders = db.session.query(OrderHeader, OrderStatus, OrderLine, Product).select_from(OrderHeader). \
+        join(OrderStatus).join(OrderLine).join(Product).filter(OrderStatus.id == 1).all()
+    return render_template('outstanding_orders.html', outstanding_orders=outstanding_orders, message=error)
+
+
+# CUSTOMER ACCESS QUERIES
+
+# PLANT SHOP PAGE - IN PROGRESS
+
+# MAIN SHOP PAGE
+@app.route('/shop', methods=['GET'])
+def shop():
+    plant_shop_plant = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).all()
+    return render_template('shop.html', title='Plant Shop', plant_shop_plant=plant_shop_plant)
+
+@app.route('/plant/<int:product_id>')
+def product_store(product_id):
+    plant = Product.query.filter_by(id=product_id).one()
+
+    return render_template('plant.html', plant=plant)
+
+
+# QUERY: Indoor plants
+@app.route('/indoor_plants', methods=['GET'])
+def show_indoor_plants():
+    error = ""
+    display_indoor_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(Category.id == 1).all()
+    return render_template('shop.html', display_indoor_plants=display_indoor_plants, message=error)
+
+
+# QUERY: Outdoor plants
+@app.route('/outdoor_plants', methods=['GET'])
+def show_outdoor_plants():
+    error = ""
+    display_outdoor_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(Category.id == 2).all()
+    return render_template('shop.html', display_outdoor_plants=display_outdoor_plants, message=error)
+
+
+# QUERY: filter by height - tiny
+@app.route('/tiny_plants', methods=['GET'])
+def show_tiny_plants():
+    error = ""
+    display_tiny_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(Size.id == 1).all()
+    return render_template('shop.html', display_tiny_plants=display_tiny_plants, message=error)
+
+# QUERY: filter by height - small
+@app.route('/small_plants', methods=['GET'])
+def show_small_plants():
+    error = ""
+    display_small_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(Size.id == 2).all()
+    return render_template('shop.html', display_small_plants=display_small_plants, message=error)
+
+# QUERY: filter by height - medium
+@app.route('/medium_plants', methods=['GET'])
+def show_medium_plants():
+    error = ""
+    display_medium_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(Size.id == 3).all()
+    return render_template('shop.html', display_medium_plants=display_medium_plants, message=error)
+
+
+# QUERY: filter by height - tall
+@app.route('/tall_plants', methods=['GET'])
+def show_tall_plants():
+    error = ""
+    display_tall_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(Size.id == 4).all()
+    return render_template('shop.html', display_tall_plants=display_tall_plants, message=error)
+
+
+# QUERY: filter by type - cactus / succulent
+@app.route('/cacti_succulent_plants', methods=['GET'])
+def show_cacti_succulent_plants():
+    error = ""
+    display_cacti_succulent_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(PlantType.id == 1).all()
+    return render_template('shop.html', display_cacti_succulent_plants=display_cacti_succulent_plants, message=error)
+
+
+# QUERY: filter by type - hanging
+@app.route('/hanging_plants', methods=['GET'])
+def show_hanging_plants():
+    error = ""
+    display_hanging_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(PlantType.id == 2).all()
+    return render_template('shop.html', display_hanging_plants=display_hanging_plants, message=error)
+
+
+# QUERY: filter by type - flowering
+@app.route('/flowering_plants', methods=['GET'])
+def show_flowering_plants():
+    error = ""
+    display_flowering_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(PlantType.id == 3).all()
+    return render_template('shop.html', display_flowering_plants=display_flowering_plants, message=error)
+
+
+# QUERY: filter by type - palm
+@app.route('/palm_plants', methods=['GET'])
+def show_palm_plants():
+    error = ""
+    display_palm_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(PlantType.id == 4).all()
+    return render_template('shop.html', display_palm_plants=display_palm_plants, message=error)
+
+
+# QUERY: filter by type - fern
+@app.route('/fern_plants', methods=['GET'])
+def show_fern_plants():
+    error = ""
+    display_fern_plants = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(PlantType.id == 5).all()
+    return render_template('shop.html', display_fern_plants=display_fern_plants, message=error)
+
+# QUERY: filter by price
+@app.route('/value_savers', methods=['GET'])
+def show_value_saver():
+    error = ""
+    display_value_saver = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(Product.price < 10).all()
+    return render_template('shop.html', display_value_saver=display_value_saver, message=error)
+
+# QUERY: filter by price
+@app.route('/modest_picks', methods=['GET'])
+def show_modest_picks():
+    error = ""
+    display_modest_picks = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(Product.price < 25).all()
+    return render_template('shop.html', display_modest_picks=display_modest_picks, message=error)
+
+# QUERY: filter by price
+@app.route('/fancy_picks', methods=['GET'])
+def show_fancy_picks():
+    error = ""
+    display_fancy_picks = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(Product.price < 55).all()
+    return render_template('shop.html', display_fancy_picks=display_fancy_picks, message=error)
+
+
+# QUERY: filter by price
+@app.route('/premium_range', methods=['GET'])
+def show_premium_range():
+    error = ""
+    display_premium_range = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).filter(Product.price > 56).all()
+    return render_template('shop.html', display_premium_range=display_premium_range, message=error)
 
 # Victoria's code
 # def register_basic_form():
