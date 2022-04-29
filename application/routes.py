@@ -622,6 +622,15 @@ def show_outstanding_orders():
         join(OrderStatus).join(OrderLine).join(Product).filter(OrderStatus.id == 1).all()
     return render_template('outstanding_orders.html', outstanding_orders=outstanding_orders, message=error, headings=headings)
 
+# current stock list for staff query
+@app.route('/stock_list', methods=['GET'])
+def stock_list():
+    headings = ('Species', 'Environment', 'Size', 'Plant Type', 'Price', 'In Stock')
+    plant_shop_plant = db.session.query(Product, Category, PlantType, Size).select_from(Product). \
+        join(Category).join(PlantType).join(Size).order_by(Product.species.asc()).all()
+    return render_template('stock_list.html', title='Stock List', plant_shop_plant=plant_shop_plant, headings=headings)
+
+
 
 # CUSTOMER ACCESS QUERIES
 
@@ -639,6 +648,7 @@ def product_store(product_id):
     plant = Product.query.filter_by(id=product_id).one()
 
     return render_template('plant.html', plant=plant)
+
 
 
 # QUERY: Indoor plants
