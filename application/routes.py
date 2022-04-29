@@ -474,9 +474,9 @@ def add_to_cart():
         # price = [Product.query.filter_by(product).first()]
         # price = form.price.data
         attributes = Product.query.filter_by(id=product).all()
-        headings = ('Plant Name', 'Species', 'Price', 'Quantity')
-
-        productAttributes = []
+        headings = ('Plant Name', 'Species', 'Price', 'Quantity', 'Sub-Total')
+        #
+        # productAttributes = []
 
         # what if we nested dictionaries not lists?
         # productAttributes = {}
@@ -488,15 +488,16 @@ def add_to_cart():
             attributeObject['price'] = attribute.price
             attributeObject['plant_nickname'] = attribute.plant_nickname
             attributeObject['quantity'] = quantity
-            productAttributes.append(attributeObject)
+            attributeObject['sub_total'] = (attribute.price * quantity)
+            if 'cart' in session:
+                session['cart'].append(attributeObject)
+                session.modified = True
 
-        if 'cart' in session:
-            session['cart'].append(productAttributes)
-            session.modified = True
-        else:
-            session['cart'] = [productAttributes]
+            else:
+                session['cart'] = [attributeObject]
 
-        return render_template('cart_success.html', title='Cart', form=form, message=error, productAttributes=productAttributes, attributeObject=attributeObject, cart_contents=session['cart'], headings=headings)
+
+        return render_template('cart_success.html', title='Cart', form=form, message=error, attributeObject=attributeObject, cart_contents=session['cart'], headings=headings)
     return render_template('add_to_cart.html', form=form, message=error, title='home')
 
 # view cart (currently very basic!)
@@ -523,7 +524,7 @@ def view_cart():
 
     # for key in cart_contents:
     #     print(key, ':', cart_contents[key])
-    headings = ('Plant Name', 'Species', 'Price', 'Quantity')
+    headings = ('Plant Name', 'Species', 'Price', 'Quantity', 'Sub-Total')
 
 
 
@@ -534,7 +535,7 @@ def view_cart():
     return render_template('cart.html', title='Cart', form=form, message=error, cart_contents=cart_contents, headings=headings)
     # return render_template('add_to_cart.html', form=form, message=error, title='home')
 
-# to get dynamic pricing in the drop down on the add to cart form for one item
+# to get dynamic pricing in the drop down on the add to cart form for one item - in progress may not be needed
 @app.route('/price/<int:product_id>')
 def get_price(product_id):
     attributes = Product.query.filter_by(id=product_id).all()

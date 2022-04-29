@@ -22,18 +22,25 @@
   </thead>
   <tbody>
     <tr>
-     {% for line in cart_contents %}
-        {% for item in line %}
-            {% for value in item.items() %}
-            <p hidden> Plant id: {{ item.id }} </p>
-      <th scope="row"><a href="#">{{ item.plant_nickname }}</a></th>
-      <td>{{ item.species}}</td>
-      <td>£{{ item.price }}</td>
-      <td>{{ item.quantity }}</td>
+        {% for value in cart_contents %}
+            <p hidden> Plant id: {{ value.id }} </p>
+      <th scope="row"><a href="#">{{ value.plant_nickname }}</a></th>
+      <td>{{ value.species}}</td>
+      <td>£{{ value.price }}</td>
+      <td>{{ value.quantity }}</td>
+      <td>£{{ (value.sub_total) }}</td>
     </tr>
     {% endfor %}
-    {% endfor %}
-    {% endfor %}
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td> Total price: £{{ cart_contents|sum('sub_total')}}</td>
+    </tr>
+
+
+
 
   </tbody>
 </table>
@@ -42,19 +49,7 @@
 </div>
 
 
- <h2> Why can't I stop it repeating?</h2>
-    {% for line in cart_contents %}
-        {% for dict_item in line %}
-        {% for key, value in dict_item.items() %}
-            Plant id: {{ dict_item.id }}
-            Plant name: {{ dict_item.plant_nickname }}
-            Plant species: {{ dict_item.species}}
-            Item price: £{{ dict_item.price }}
-            Quantity: {{ dict_item.quantity }}
-<br>
-     {% endfor %}
-     {% endfor %}
-     {% endfor %}
+
 
 
 

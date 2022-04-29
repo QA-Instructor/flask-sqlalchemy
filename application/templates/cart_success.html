@@ -10,7 +10,8 @@
         <h2 hidden>{{ attributeObject.id }}</h2>
         <p> {{ attributeObject.species}}</p>
         <p>{{ attributeObject.plant_nickname}}</p>
-        <p> Price for this is £{{ attributeObject.price }}</p>
+        <p> Price for this is £{{ attributeObject.price }} per item</p>
+        <p> Sub-total is £{{ attributeObject.sub_total }}</p>
         <p> Quantity added to cart {{ attributeObject.quantity }}</p>
 
 
@@ -28,18 +29,23 @@
   </thead>
   <tbody>
     <tr>
-     {% for line in cart_contents %}
-        {% for item in line %}
-            {% for value in item.items() %}
-            <p hidden> Plant id: {{ item.id }} </p>
-      <th scope="row"><a href="#">{{ item.plant_nickname }}</a></th>
-      <td>{{ item.species}}</td>
-      <td>£{{ item.price }}</td>
-      <td>{{ item.quantity }}</td>
+        {% for value in cart_contents %}
+            <p hidden> Plant id: {{ value.id }} </p>
+      <th scope="row"><a href="#">{{ value.plant_nickname }}</a></th>
+      <td>{{ value.species}}</td>
+      <td>£{{ value.price }}</td>
+      <td>{{ value.quantity }}</td>
+      <td>£{{ (value.sub_total) }}</td>
     </tr>
+
     {% endfor %}
-    {% endfor %}
-    {% endfor %}
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td> Total price: £{{ cart_contents|sum('sub_total')}}</td>
+    </tr>
 
   </tbody>
 </table>
