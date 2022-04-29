@@ -17,7 +17,37 @@
                 <tbody>
                     <tr class="table-success">
                       <td hidden> Plant id: {{ attributeObject.id }} </td>
-                      <th scope="row"><a href="#">{{ attributeObject.plant_nickname}}</a></th>
+                               {% if attributeObject.id == 1 %}
+                                <td><a href="plant/{{ attributeObject.id }}"><img class="img-fluid img-thumbnail" src="{{ url_for('static', filename='images/boston_fern_single.jpg') }}" alt="Boston Fern Image 1" width="150" height="200"></a></td>
+                                {% endif %}
+                                {% if attributeObject.id == 2 %}
+                                <td><a href="plant/{{ attributeObject.id }}"><img class="img-fluid img-thumbnail" src="{{ url_for('static', filename='images/aloe_vera.jpg') }}" alt="Aloe Vera" width="150" height="200"></a></td>
+                                {% endif %}
+                                {% if attributeObject.id == 3 %}
+                                <td><a href="plant/{{ attributeObject.id }}"><img class="img-fluid img-thumbnail" src="{{ url_for('static', filename='images/parlour_palm.jpg') }}" alt="Parlour Palm" width="150" height="200"></a></td>
+                                {% endif %}
+                                {% if attributeObject.id == 4 %}
+                                <td><a href="plant/{{ attributeObject.id }}"><img class="img-fluid img-thumbnail" src="{{ url_for('static', filename='images/anthurium_pot.jpg') }}" alt="Anthurium in a pot" width="150" height="200"></a></td>
+                                {% endif %}
+                                {% if attributeObject.id == 5 %}
+                                <td><a href="plant/{{ attributeObject.id }}"><img class="img-fluid img-thumbnail" src="{{ url_for('static', filename='images/swiss_cheese_close.jpg') }}" alt="Swiss Cheese Plant" width="150" height="200"></a></td>
+                                {% endif %}
+                                {% if attributeObject.id == 6 %}
+                                <td><a href="plant/{{ attributeObject.id }}"><img class="img-fluid img-thumbnail" src="{{ url_for('static', filename='images/sweet_orange_tree_1.jpg') }}" alt="Sweet Orange Tree" width="150" height="200"></a></td>
+                                {% endif %}
+                                {% if attributeObject.id == 7 %}
+                                <td><a href="plant/{{ attributeObject.id }}"><img class="img-fluid img-thumbnail" src="{{ url_for('static', filename='images/climbing_rose_1.jpg') }}" alt="Climbing Rose" width="150" height="200"></a></td>
+                                {% endif %}
+                                {% if attributeObject.id == 8 %}
+                                <td><a href="plant/{{ attributeObject.id }}"><img class="img-fluid img-thumbnail" src="{{ url_for('static', filename='images/fatsia_japonica_leaf.jpg') }}" alt="Fatsia Japonica Leaf" width="150" height="200"></a></td>
+                                {% endif %}
+                                {% if attributeObject.id == 9 %}
+                                <td><a href="plant/{{ attributeObject.id }}"><img class="img-fluid img-thumbnail" src="{{ url_for('static', filename='images/hydrangea_white.jpg') }}" alt="White Hydrangea" width="150" height="200"></a></td>
+                                {% endif %}
+                                {% if attributeObject.id == 10 %}
+                                <td><a href="plant/{{ attributeObject.id }}"><img class="img-fluid img-thumbnail" src="{{ url_for('static', filename='images/alstromeria_yellow.jpg') }}" alt="Yellow Alstromeria" width="150" height="200"></a></td>
+                                {% endif %}
+                      <th scope="row"><a href="plant/{{ attributeObject.id }}">{{ attributeObject.plant_nickname}}</a></th>
                       <td>{{ attributeObject.species}}</td>
                       <td>Price for this is £{{ attributeObject.price }} per item</td>
                       <td>Sub-total is £{{ attributeObject.sub_total }}</td>
@@ -50,7 +80,37 @@
                     <tr>
                     {% for value in cart_contents %}
                        <td hidden> Plant id: {{ value.id }} </td>
-                      <th scope="row"><a href="#">{{ value.plant_nickname }}</a></th>
+                            {% if value.id == 1 %}
+                            <td><a href="plant/{{value.id}}"><img class="img-fluid img-thumbnail" src="{{ url_for('static', filename='images/boston_fern_single.jpg') }}" alt="Boston Fern Image 1" width="150" height="200"></a></td>
+                            {% endif %}
+                            {% if value.id == 2 %}
+                            <td><a href="plant/{{value.id}}"><img class="img-fluid img-thumbnail" src="{{ url_for('static', filename='images/aloe_vera.jpg') }}" alt="Aloe Vera" width="150" height="200"></a></td>
+                            {% endif %}
+                            {% if value.id == 3 %}
+                            <td><a href="plant/{{value.id}}"><img class="img-fluid img-thumbnail" src="{{ url_for('static', filename='images/parlour_palm.jpg') }}" alt="Parlour Palm" width="150" height="200"></a></td>
+                            {% endif %}
+                            {% if value.id == 4 %}
+                            <td><a href="plant/{{value.id}}"><img class="img-fluid img-thumbnail" src="{{ url_for('static', filename='images/anthurium_pot.jpg') }}" alt="Anthurium in a pot" width="150" height="200"></a></td>
+                            {% endif %}
+                            {% if value.id == 5 %}
+                            <td><a href="plant/{{value.id}}"><img class="img-fluid img-thumbnail" src="{{ url_for('static', filename='images/swiss_cheese_close.jpg') }}" alt="Swiss Cheese Plant" width="150" height="200"></a></td>
+                            {% endif %}
+                            {% if value.id == 6 %}
+                            <td><a href="plant/{{value.id}}"><img class="img-fluid img-thumbnail" src="{{ url_for('static', filename='images/sweet_orange_tree_1.jpg') }}" alt="Sweet Orange Tree" width="150" height="200"></a></td>
+                            {% endif %}
+                            {% if value.id == 7 %}
+                            <td><a href="plant/{{value.id}}"><img class="img-fluid img-thumbnail" src="{{ url_for('static', filename='images/climbing_rose_1.jpg') }}" alt="Climbing Rose" width="150" height="200"></a></td>
+                            {% endif %}
+                            {% if value.id == 8 %}
+                            <td><a href="plant/{{value.id}}"><img class="img-fluid img-thumbnail" src="{{ url_for('static', filename='images/fatsia_japonica_leaf.jpg') }}" alt="Fatsia Japonica Leaf" width="150" height="200"></a></td>
+                            {% endif %}
+                            {% if value.id == 9 %}
+                            <td><a href="plant/{{value.id}}"><img class="img-fluid img-thumbnail" src="{{ url_for('static', filename='images/hydrangea_white.jpg') }}" alt="White Hydrangea" width="150" height="200"></a></td>
+                            {% endif %}
+                            {% if value.id == 10 %}
+                            <td><a href="plant/{{value.id}}"><img class="img-fluid img-thumbnail" src="{{ url_for('static', filename='images/alstromeria_yellow.jpg') }}" alt="Yellow Alstromeria" width="150" height="200"></a></td>
+                            {% endif %}
+                      <th scope="row"><a href="plant/{{value.id}}">{{ value.plant_nickname }}</a></th>
                       <td>{{ value.species}}</td>
                       <td>£{{ value.price }}</td>
                       <td>{{ value.quantity }}</td>
@@ -59,6 +119,7 @@
 
                     {% endfor %}
                     <tr>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>

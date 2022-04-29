@@ -474,7 +474,7 @@ def add_to_cart():
         # price = [Product.query.filter_by(product).first()]
         # price = form.price.data
         attributes = Product.query.filter_by(id=product).all()
-        headings = ('Plant Name', 'Species', 'Price', 'Quantity', 'Sub-Total')
+        headings = ('Image', 'Plant Name', 'Species', 'Price', 'Quantity', 'Sub-Total')
         #
         # productAttributes = []
 
@@ -510,7 +510,7 @@ def view_cart():
     else:
         cart_contents = []
 
-    headings = ('Plant Name', 'Species', 'Price', 'Quantity', 'Sub-Total')
+    headings = ('Image', 'Plant Name', 'Species', 'Price', 'Quantity', 'Sub-Total')
 
 
     return render_template('cart.html', title='Cart', form=form, message=error, cart_contents=cart_contents, headings=headings)
