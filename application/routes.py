@@ -506,7 +506,7 @@ def view_cart():
     error = ""
     form = AddToCartForm()
     cart_contents = session['cart']
-    print("Cart contents", cart_contents)
+    # print("Cart contents", cart_contents)
     # i = len(cart_contents)
     # print(i)
     # for line in cart_contents:
