@@ -505,35 +505,27 @@ def add_to_cart():
 def view_cart():
     error = ""
     form = AddToCartForm()
-    cart_contents = session['cart']
-    # print("Cart contents", cart_contents)
-    # i = len(cart_contents)
-    # print(i)
-    # for line in cart_contents:
-    #     print("line", line)
-    #     for item in line:
-    #         print("item", item)
-    #         for (key, value) in item.items():
-    #             print("key and value", key, value)
+    if 'cart' in session:
+        cart_contents = session['cart']
+    else:
+        cart_contents = []
 
-    # for (key, value) in cart_contents.items():
-    #     print(key, value)
-
-    # for item in range (0, len(cart_contents)):
-    #     print(item)
-
-    # for key in cart_contents:
-    #     print(key, ':', cart_contents[key])
     headings = ('Plant Name', 'Species', 'Price', 'Quantity', 'Sub-Total')
-
-
-
-
-
 
 
     return render_template('cart.html', title='Cart', form=form, message=error, cart_contents=cart_contents, headings=headings)
     # return render_template('add_to_cart.html', form=form, message=error, title='home')
+
+# empty cart (but will stay logged in)
+@app.route('/clear_cart')
+def clear_cart():
+    error = ""
+    form = EmailSignUpForm()
+    # Clear the shopping cart in the session object
+    session.pop('cart', default=None)
+
+    flash(f' You have emptied your cart!', 'success')
+    return render_template('home.html', title='Home', form=form, message=error,)
 
 # to get dynamic pricing in the drop down on the add to cart form for one item - in progress may not be needed
 @app.route('/price/<int:product_id>')

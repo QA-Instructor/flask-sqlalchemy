@@ -9,49 +9,55 @@
 
 
 
-<h3>Everything in your cart is:</h3>
+{% if cart_contents != [] %}
 
-<div class="table-responsive">
-    <table class="table">
-  <thead>
-    <tr>
-        {% for header in headings %}
-      <th scope="col">{{ header }}</th>
-       {% endfor %}
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-        {% for value in cart_contents %}
-            <p hidden> Plant id: {{ value.id }} </p>
-      <th scope="row"><a href="#">{{ value.plant_nickname }}</a></th>
-      <td>{{ value.species}}</td>
-      <td>£{{ value.price }}</td>
-      <td>{{ value.quantity }}</td>
-      <td>£{{ (value.sub_total) }}</td>
-    </tr>
-    {% endfor %}
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Total price: </td>
-        <td> £{{ cart_contents|sum('sub_total')}}</td>
-    </tr>
+    <h3>Everything in your cart is:</h3>
 
-
-
-
-  </tbody>
-</table>
-</div>
-
-</div>
+    <div class="table-responsive">
+        <table class="table">
+      <thead>
+        <tr>
+            {% for header in headings %}
+          <th scope="col">{{ header }}</th>
+           {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+            {% for value in cart_contents %}
+                <p hidden> Plant id: {{ value.id }} </p>
+          <th scope="row"><a href="#">{{ value.plant_nickname }}</a></th>
+          <td>{{ value.species}}</td>
+          <td>£{{ value.price }}</td>
+          <td>{{ value.quantity }}</td>
+          <td>£{{ (value.sub_total) }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Total price: </td>
+            <td> £{{ cart_contents|sum('sub_total')}}</td>
+        </tr>
 
 
 
 
+      </tbody>
+    </table>
+    </div>
+
+    </div>
+
+{% else %}
+
+<h1> Your cart is currently empty! Why not visit our <a href="{{ url_for('shop') }}">shop</a> for some inspiration?</h1>
 
 
+{% endif %}
+
+
+<button class="btn1"><a href="{{ url_for('clear_cart') }}" style="color:#0A451B">Empty Cart</a></button>
 
 {% endblock %}
