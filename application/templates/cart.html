@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% block body_content %}
+
+
+
+<div class="container-fluid bg-1 text-center">
+    <h1>Shopping Cart</h1>
+
+
+
+
+<h3>Everything in your cart is:</h3>
+
+<div class="table-responsive">
+    <table class="table">
+  <thead>
+    <tr>
+        {% for header in headings %}
+      <th scope="col">{{ header }}</th>
+       {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+        {% for value in cart_contents %}
+            <p hidden> Plant id: {{ value.id }} </p>
+      <th scope="row"><a href="#">{{ value.plant_nickname }}</a></th>
+      <td>{{ value.species}}</td>
+      <td>£{{ value.price }}</td>
+      <td>{{ value.quantity }}</td>
+      <td>£{{ (value.sub_total) }}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>Total price: </td>
+        <td> £{{ cart_contents|sum('sub_total')}}</td>
+    </tr>
+
+
+
+
+  </tbody>
+</table>
+</div>
+
+</div>
+
+
+
+
+
+
+
+{% endblock %}

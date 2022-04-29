@@ -104,6 +104,12 @@ class NewBlogPostForm(FlaskForm):
 
     submit = SubmitField('Add post')
 
+# delete blog post
+class DeleteBlogPostForm(FlaskForm):
+    id = IntegerField('ID of the post you want to delete', validators=[DataRequired()])
+
+    submit = SubmitField('Add post')
+
 # log in form
 class LogInForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -112,10 +118,19 @@ class LogInForm(FlaskForm):
 
     submit = SubmitField('Log in')
 
+# add to cart
+class AddToCartForm(FlaskForm):
+    product = SelectField('Species', choices=[(1, 'Boston Fern'), (2, 'Aloe Vera'), (3, 'Parlour Palm')])
+    # product = SelectField('Species', choices=['Boston Fern', 'Aloe Vera', 'Parlour Palm'])
+    quantity = IntegerField('Quantity', validators=[DataRequired()])
+    # price =
+    submit = SubmitField('Add to cart')
+
 # create a search form
 class SearchForm(FlaskForm):
     searched = StringField('Searched', validators=[DataRequired()])
     submit = SubmitField('Submit')
+
 
 # Victoria's code
 class BasicForm(FlaskForm):
