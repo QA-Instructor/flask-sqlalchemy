@@ -451,6 +451,12 @@ def search():
 
 
 
+@app.route('/plant/<int:plant_id>')
+def plant(plant_id):
+    plant = Product.query.filter_by(id=plant_id).one()
+    return render_template('plant.html', title="Plant", plant=plant)
+
+
 # Victoria's code
 # def register_basic_form():
 #     error = ""
