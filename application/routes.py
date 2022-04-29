@@ -596,10 +596,11 @@ def search():
 def staff_jobs():
     error = ""
     staff_and_jobs = db.session.query(StaffInfo, Person).join(Person).all()
+    headings = ('Job Title', 'First Name', 'Last Name', 'Email')
 
-    for job, staff in staff_and_jobs:
-        print(job.job_title, staff.first_name, staff.last_name)
-    return render_template('staff_jobs.html', staff_and_jobs=staff_and_jobs, message=error)
+    # for job, staff in staff_and_jobs:
+    #     print(job.job_title, staff.first_name, staff.last_name)
+    return render_template('staff_jobs.html', staff_and_jobs=staff_and_jobs, message=error, headings=headings)
 
 
 # QUERY: customers and their orders
