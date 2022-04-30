@@ -132,6 +132,12 @@ class SearchForm(FlaskForm):
     submit = SubmitField('Submit')
 
 
+class OrderForm(FlaskForm):
+    # basically as the fields we need to make a new db record are already in the cart values or can be autopopulated,
+    # so think you would just use this form as the confirmation button
+    # submit
+    submit = SubmitField('Place Order')
+
 # Victoria's code
 class BasicForm(FlaskForm):
     first_name = StringField('First Name')
