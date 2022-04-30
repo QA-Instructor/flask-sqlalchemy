@@ -420,12 +420,27 @@ def login():
         # user_and_persontype = db.session.query(UserLogin, Person, StaffInfo).select_from(UserLogin).join(Person).join(StaffInfo).all()
         # print(user_and_persontype)
 
-        # not currently checking db, but will take the form input instead as a starting point:
-            if request.form['type'] == '1':
+
+            # assigning type log in based on db not the dropdown:
+
+            login_type = Person.query.filter_by(id=user_id_for_session_variable).all()
+            for person in login_type:
+                login_type_staff = person.person_type_id
+
+            print(login_type_staff)
+
+            if login_type_staff == 1:
                 # if person_type = 1 then:
                 session['typesession'] = 'staff'
             else:
                 session['typesession'] = 'customer'
+
+            # not currently checking db, but will take the form input instead as a starting point:
+            # if request.form['type'] == '1':
+            #     # if person_type = 1 then:
+            #     session['typesession'] = 'staff'
+            # else:
+            #     session['typesession'] = 'customer'
 
             # will then return different nav/functionality depending on which type of log in it is - this works
 
