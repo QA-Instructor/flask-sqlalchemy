@@ -4,12 +4,47 @@
 </head>
 <body>
 <div>
-{% for item in display %}
 
-   <p>{{ customer.first_name }} {{ customer.last_name }} {{ order.id }} {{ order.order_date }} {{ order.status_description }}
-       {{ product.species }} {{ order_detail.quantity }} {{ product.price }}
-   </p>
-{% endfor %}
+
+
+
+    <div>
+<h1>Your Previous Orders</h1>
+
+<div class="container-fluid bg-1 text-center">
+    <div class="table-responsive table-striped">
+        <table class="table">
+            <thead>
+                <tr>
+                {% for header in headings %}
+                    <th scope="col">{{ header }}</th>
+                {% endfor %}
+                 </tr>
+            </thead>
+            <tbody>
+                <tr>
+                {% for order_header, order_status, order_detail, product in customer_order_history %}
+
+                    <th scope="row">{{ order_header.id }}</th>
+                      <td>{{ order_status.status_description}}  </td>
+                      <td>{{ order_header.order_date }}</td>
+                      <td>{{product.species}}</td>
+                      <td>{{order_detail.quantity }} </td>
+                      <td>£{{ order_detail.price_paid }}</td>
+
+                </tr>
+                 {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</div>
+
+
+
     <br>
     {{ message }}
 </div>

@@ -527,23 +527,23 @@ def clear_cart():
     flash(f' You have emptied your cart!', 'success')
     return render_template('home.html', title='Home', form=form, message=error,)
 
-# to get dynamic pricing in the drop down on the add to cart form for one item - in progress may not be needed
-@app.route('/price/<int:product_id>')
-def get_price(product_id):
-    attributes = Product.query.filter_by(id=product_id).all()
-
-    priceList = []
-
-    for attribute in attributes:
-        attributeObject ={}
-        attributeObject['id'] = attribute.id
-        attributeObject['species'] = attribute.species
-        attributeObject['price'] = attribute.price
-        attributeObject['plant_nickname'] = attribute.plant_nickname
-        priceList.append(attributeObject)
-
-    # return ({'price_value': priceList})
-    return render_template('cart.html', title='Cart', priceList=priceList)
+# to get dynamic pricing in the drop down on the add to cart form for one item - in progress (abandoned)
+# @app.route('/price/<int:product_id>')
+# def get_price(product_id):
+#     attributes = Product.query.filter_by(id=product_id).all()
+#
+#     priceList = []
+#
+#     for attribute in attributes:
+#         attributeObject ={}
+#         attributeObject['id'] = attribute.id
+#         attributeObject['species'] = attribute.species
+#         attributeObject['price'] = attribute.price
+#         attributeObject['plant_nickname'] = attribute.plant_nickname
+#         priceList.append(attributeObject)
+#
+#     # return ({'price_value': priceList})
+#     return render_template('cart.html', title='Cart', priceList=priceList)
 
 
 # error handling - custom 404 page
@@ -552,16 +552,15 @@ def page_not_found(error):
     return render_template('page_not_found.html'), 404
 
 # order history - not quite working yet
-# @app.route('/customer_order_history', methods=['GET'])
-# def customer_order_history():
-#     error = ""
-#     customer_order_history = db.session.query(Person, OrderHeader, OrderStatus, OrderLine, Product).select_from(Person).\
-#         join(OrderHeader).join(OrderStatus).join(OrderLine).join(Product).all()
-#
-#     for customer, order, product, order_detail in customer_order_history:
-#         display = (customer.first_name, customer.last_name, order.id, order.order_date, order.status_description, product.species, order_detail.quantity, product.price)
-#
-#     return render_template('order_history.html', title='Order History', display=display, message=error)
+@app.route('/customer_order_history', methods=['GET'])
+def customer_order_history():
+    error = ""
+    person_id = session['id_number']
+    headings = ('Order ID number', 'Order Status', 'Date of Order', 'Species', 'Quantity', 'Total Price')
+    customer_order_history = db.session.query(OrderHeader, OrderStatus, OrderLine, Product).select_from(OrderHeader). \
+        join(OrderStatus).join(OrderLine).join(Product).filter(OrderHeader.id == person_id).all()
+
+    return render_template('order_history.html', title='Order History', customer_order_history=customer_order_history, message=error, headings=headings)
 
 
 # Pass Stuff to Nav
