@@ -21,7 +21,7 @@
 
 {% if session['typesession'] == 'staff' and session['logged_in'] == True %}
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #2E6B28;">
-      <a class="navbar-brand" href="{{ url_for('email_signup_form') }}">The Plant Emporium</a>
+      <a class="navbar-brand" href="{{ url_for('email_signup_form') }}">TPE</a>
       <button
               class="navbar-toggler"
               type="button" data-toggle="collapse"
@@ -51,7 +51,7 @@
             <a class="nav-link dropdown-toggle" href="{{ url_for('shop') }}" id="staffnavbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Shop
             </a>
-<!--              update these links once we have the routes set up-->
+
             <div class="dropdown-menu" aria-labelledby="staffnavbarDropdown">
               <a class="dropdown-item" href="{{ url_for('show_indoor_plants') }}">Indoor</a>
               <a class="dropdown-item" href="{{ url_for('show_outdoor_plants') }}">Outdoor</a>
@@ -77,20 +77,20 @@
 
             </div>
           </li>
+<!-- don't actually have any updating routes set up! -->
+<!--          <li class="nav-item dropdown">-->
+<!--            <a class="nav-link dropdown-toggle" id="staffupdateitemnavbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--              Update Item-->
+<!--            </a>-->
+<!--&lt;!&ndash;              update these links once we have the routes set up&ndash;&gt;-->
+<!--            <div class="dropdown-menu" aria-labelledby="staffupdateitemnavbarDropdown">-->
+<!--              <a class="dropdown-item" href="#">Update customer</a>-->
+<!--              <a class="dropdown-item" href="#">Update staff member</a>-->
+<!--              <a class="dropdown-item" href="#">Update plant</a>-->
+<!--              <a class="dropdown-item" href="#">Update blog post</a>-->
 
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="staffupdateitemnavbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Update Item
-            </a>
-<!--              update these links once we have the routes set up-->
-            <div class="dropdown-menu" aria-labelledby="staffupdateitemnavbarDropdown">
-              <a class="dropdown-item" href="#">Update customer</a>
-              <a class="dropdown-item" href="#">Update staff member</a>
-              <a class="dropdown-item" href="#">Update plant</a>
-              <a class="dropdown-item" href="#">Update blog post</a>
-
-            </div>
-          </li>
+<!--            </div>-->
+<!--          </li>-->
 
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="staffdeleteitemnavbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -126,14 +126,14 @@
 
 
         <form class="form-inline">
-          <button class="btn btn-outline-success ml-2" type="button"><a href="{{ url_for('delete_session') }}">Log out</a></button>
+          <button class="btn btn-outline-success ml-2 btn-sm" type="button"><a href="{{ url_for('delete_session') }}">Log out</a></button>
         </form>
 
 
         <form method="POST" action="{{ url_for('search') }}" class="form-inline my-2 my-lg-0">
           {{ form.hidden_tag() }}
-          <input class="form-control mr-sm-2 ml-2" type="search" placeholder="Search" aria-label="Search", name="searched">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          <input class="form-control-sm mr-sm-2 ml-2" type="search" placeholder="Search" aria-label="Search", name="searched">
+          <button class="btn btn-outline-success my-2 my-sm-0 btn-sm" type="submit">Search</button>
         </form>
       </div>
     </nav>
@@ -210,13 +210,13 @@
         </span>
 
         <form class="form-inline">
-          <button class="btn btn-outline-success ml-2" type="button"><a href="{{ url_for('delete_session') }}">Log out</a></button>
+          <button class="btn btn-outline-success ml-2 btn-sm" type="button"><a href="{{ url_for('delete_session') }}">Log out</a></button>
         </form>
 
         <form method="POST" action="{{ url_for('search') }}" class="form-inline my-2 my-lg-0">
           {{ form.hidden_tag() }}
-          <input class="form-control mr-sm-2 ml-2" type="search" placeholder="Search" aria-label="Search", name="searched">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          <input class="form-control-sm mr-sm-2 ml-2" type="search" placeholder="Search" aria-label="Search", name="searched">
+          <button class="btn btn-outline-success my-2 my-sm-0 btn-sm" type="submit">Search</button>
         </form>
       </div>
     </nav>
@@ -270,17 +270,19 @@
         </ul>
 
         <form class="form-inline">
-          <button class="btn btn-outline-success ml-2" type="button"><a href="{{ url_for('login') }}">Log in</a></button>
+          <button class="btn btn-outline-success ml-2 btn-sm" type="button"><a href="{{ url_for('login') }}">Log in</a></button>
         </form>
 
         <form class="form-inline">
-          <button class="btn btn-outline-success ml-2" type="button"><a href="{{ url_for('register') }}">Register</a></button>
+          <button class="btn btn-outline-success ml-2 btn-sm" type="button"><a href="{{ url_for('register') }}">Register</a></button>
         </form>
 
         <form method="POST" action="{{ url_for('search') }}" class="form-inline my-2 my-lg-0">
-          {{ form.hidden_tag() }}
-          <input class="form-control mr-sm-2 ml-2" type="search" placeholder="Search" aria-label="Search", name="searched">
-          <button class="btn btn-outline-success my-2 my-sm-0 " type="submit">Search</button>
+          <div class="col-auto">{{ form.hidden_tag() }}
+            <label class="visually-hidden" for="autoSizingInput"></label>
+          <input class="form-control-sm mr-sm-2 ml-2" id="autoSizingInput" type="search" placeholder="Search" aria-label="Search", name="searched">
+          <button class="btn btn-outline-success my-2 my-sm-0 btn-sm" type="submit">Search</button>
+          </div>
         </form>
       </div>
     </nav>
