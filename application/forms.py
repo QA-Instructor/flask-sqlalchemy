@@ -108,7 +108,7 @@ class NewBlogPostForm(FlaskForm):
 class DeleteBlogPostForm(FlaskForm):
     id = IntegerField('ID of the post you want to delete', validators=[DataRequired()])
 
-    submit = SubmitField('Add post')
+    submit = SubmitField('Delete post')
 
 # log in form
 class LogInForm(FlaskForm):
