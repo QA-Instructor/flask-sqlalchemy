@@ -558,7 +558,7 @@ def customer_order_history():
     person_id = session['id_number']
     headings = ('Order ID number', 'Order Status', 'Date of Order', 'Species', 'Quantity', 'Total Price')
     customer_order_history = db.session.query(OrderHeader, OrderStatus, OrderLine, Product).select_from(OrderHeader). \
-        join(OrderStatus).join(OrderLine).join(Product).filter(OrderHeader.id == person_id).all()
+        join(OrderStatus).join(OrderLine).join(Product).filter(OrderHeader.person_id == person_id).all()
 
     return render_template('order_history.html', title='Order History', customer_order_history=customer_order_history, message=error, headings=headings)
 

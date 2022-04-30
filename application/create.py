@@ -150,7 +150,10 @@ order2 = OrderHeader(person_id=2, order_date='2022-04-10', status_id=4, total_co
 order3 = OrderHeader(person_id=3, order_date='2022-04-12', status_id=3, total_cost=197.97) # staff_id=3)
 order4 = OrderHeader(person_id=4, order_date='2022-04-16', status_id=4, total_cost=20.00) # staff_id=4)
 order5 = OrderHeader(person_id=1, order_date='2022-04-19', status_id=4, total_cost=195.00) #staff_id=1)
-plant_orders = [order1, order2, order3, order4, order5]
+order6 = OrderHeader(person_id=4, order_date='2022-04-18', status_id=5, total_cost=105.00) #staff_id=1)
+order7 = OrderHeader(person_id=4, order_date='2022-04-21', status_id=3, total_cost=172.48) #staff_id=1)
+order8 = OrderHeader(person_id=4, order_date='2022-04-30', status_id=1, total_cost=12) #staff_id=1)
+plant_orders = [order1, order2, order3, order4, order5, order6, order7, order8]
 
 
 # orderLine
@@ -161,7 +164,13 @@ order_line4 = OrderLine(order_header_id=3, product_id=4, quantity=4, price_paid=
 order_line5 = OrderLine(order_header_id=4, product_id=2, quantity=2, price_paid=8.00)
 order_line6 = OrderLine(order_header_id=4, product_id=1, quantity=1, price_paid=12.00)
 order_line7 = OrderLine(order_header_id=5, product_id=6, quantity=3, price_paid=195.00)
-order_lines = [order_line1, order_line2, order_line3, order_line4, order_line5, order_line6, order_line7]
+order_line8 = OrderLine(order_header_id=6, product_id=8, quantity=1, price_paid=55.00)
+order_line9 = OrderLine(order_header_id=6, product_id=7, quantity=2, price_paid=60.00)
+order_line10 = OrderLine(order_header_id=7, product_id=10, quantity=1, price_paid=27.00)
+order_line11 = OrderLine(order_header_id=7, product_id=9, quantity=2, price_paid=59.98)
+order_line12 = OrderLine(order_header_id=7, product_id=5, quantity=1, price_paid=85.50)
+order_line13 = OrderLine(order_header_id=8, product_id=2, quantity=3, price_paid=12.00)
+order_lines = [order_line1, order_line2, order_line3, order_line4, order_line5, order_line6, order_line7, order_line8, order_line9, order_line10, order_line11, order_line12, order_line13]
 
 db.session.add_all(blogs)
 db.session.add_all(news)
