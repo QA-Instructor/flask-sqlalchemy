@@ -1,7 +1,7 @@
 from flask import render_template, request, flash, redirect, url_for, session
 from application import app, db
 from application.forms import EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm,\
-    NewBlogPostForm, LogInForm, AddToCartForm, DeleteBlogPostForm, SearchForm
+    NewBlogPostForm, LogInForm, AddToCartForm, DeleteBlogPostForm, SearchForm, OrderForm
 
 from application.models import Person, Address, Newsletter, UserLogin, StaffInfo, Product, BlogPosts,\
     OrderHeader, OrderLine, OrderStatus, Category, PlantType, Size
@@ -349,22 +349,30 @@ def post(post_id):
 
     return render_template('post.html', post=post)
 
-# delete blog post - functional
-@app.route('/delete_blogpost/<int:blogposts_id>', methods=['GET','DELETE'])
-def delete_blogpost(blogposts_id):
+# delete blog post - functional in postman, trying to make work on the website
+# something weird happening here, is putting csrf token in browser when you hit the delete button
+@app.route('/delete_blogpost', methods=['GET','DELETE'])
+# @app.route('/delete_blogpost/<int:blogposts_id>', methods=['GET','DELETE'])
+def delete_blogpost():
     error = ""
     form = DeleteBlogPostForm()
 
-    if request.method == 'DELETE':
-        post = BlogPosts.query.get(blogposts_id)
-        db.session.delete(post)
-        db.session.commit()
+    # if request.method == 'DELETE':
+    #     id_to_delete = form.id.data
+    #     post = BlogPosts.query.get(id=id_to_delete)
+    #     print(post)
+    #     db.session.delete(post)
+    #     db.session.commit()
+    #
+    #     if not post:
+    #         error = "There is no blog post with ID: " + str(form.id.data)
 
-        if not post:
-            error = "There is no blog post with ID: " + str(blogposts_id)
+    # else:
+    #
+    #     posts = BlogPosts.query.order_by(BlogPosts.date_posted.desc()).all()
+    #     return render_template('plant_care.html', title='Plant Care', message= error, posts=posts, form=form)
 
-    posts = BlogPosts.query.order_by(BlogPosts.date_posted.desc()).all()
-    return render_template('plant_care.html', title='Plant Care', message= error, posts=posts, form=form)
+    return render_template('delete_blogpost.html', title='Delete a blogpost', message= error, form=form)
 
 # dont think we need this anymore
 # @app.route('/delete_blogpost_info', methods=['GET'])
@@ -800,6 +808,53 @@ def show_premium_range():
         join(Category).join(PlantType).join(Size).filter(Product.price > 56).all()
     return render_template('shop.html', display_premium_range=display_premium_range, message=error)
 
+
+# Place an Order in progress, need to work out how to get the data out of the shopping cart
+# @app.route('/complete_order', methods=['GET', 'POST'])
+# def complete_order():
+#     error = ""
+#     form = OrderForm()
+#
+#     if form.validate_on_submit():
+#         flash(f' Order placed!', 'success')
+#     else:
+#         return render_template('cart.html', form=form)
+#
+#     if request.method == 'POST':
+#         cart_contents = session['cart']
+#         for item in cart_contents:
+#             print(item)
+#         person_id = session['id_number']
+#         order_date = date.today()
+#         status_id = 1
+#         total_cost = #need to work out how to get this from the shopping cart
+#         product_id = #need to work out how to get this from the shopping cart
+#         quantity = #need to work out how to get this from the shopping cart
+#         price_paid = #need to work out how to get this from the shopping cart
+#
+#
+#         # if messages left in for all form routes because may need to raise error here for validations that aren't currently showing
+#         # if len(first_name) == 0 \
+#         #         or len(last_name) == 0 \
+#         #         or len(email) == 0\
+#         #         or len(address_line_one) == 0\
+#         #         or len(postcode) == 0\
+#         #         or len(password) < 4\
+#         #         or len(username) == 0:
+#         #     error = "Please complete each section of this form"
+#         # else:
+#         order_header = OrderHeader(person_id=person_id, order_date=order_date, status_id=status_id,
+#                                    total_cost=total_cost)
+#
+#         order_line = OrderLine(product_id=product_id, quantity=quantity, price_paid=price_paid)
+#
+#         db.session.add(order_header)
+#         db.session.add(order_line)
+#
+#         db.session.commit()
+#         return render_template('home.html', title='Home', message=error, form=form)
+#     return render_template('home.html', title='Home', message=error, form=form)
+
 # Victoria's code
 # def register_basic_form():
 #     error = ""
@@ -908,3 +963,4 @@ def show_premium_range():
 #     return render_template('person_and_cars.html', person=person, message=error, title="Person and Car Info")
 #
 #     # return render_template('home.html', form=form, message=error)
+

@@ -108,7 +108,7 @@ class NewBlogPostForm(FlaskForm):
 class DeleteBlogPostForm(FlaskForm):
     id = IntegerField('ID of the post you want to delete', validators=[DataRequired()])
 
-    submit = SubmitField('Add post')
+    submit = SubmitField('Delete post')
 
 # log in form
 class LogInForm(FlaskForm):
@@ -131,6 +131,12 @@ class SearchForm(FlaskForm):
     searched = StringField('Searched', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
+
+class OrderForm(FlaskForm):
+    # basically as the fields we need to make a new db record are already in the cart values or can be autopopulated,
+    # so think you would just use this form as the confirmation button
+    # submit
+    submit = SubmitField('Place Order')
 
 # Victoria's code
 class BasicForm(FlaskForm):

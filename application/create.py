@@ -28,9 +28,9 @@ db.create_all()
 
 # Blogposts table
 blog1 = BlogPosts(author='The Plant Doctor', date_posted='2022-01-01', title='Welcome', post_content='Hi, we are the '
-                                                                'Plant Emporium, what an exciting time to be alive')
-blog2 = BlogPosts(author='Master of the Retail Outlet', date_posted='2022-01-10', title='Exciting News', post_content='The shop is now officially open! Come and see us to get your plant fix, we have some gorgeous stock and are happy to help you choose')
-blog3 = BlogPosts(author='The Plant Doctor', date_posted='2022-01-10', title='Plant Clinic', post_content='We are now going to be running Sad Plant Fridays - post your ailing plants to Twitter #SadPlantFridays or email us at jody@theplantemporium.com and our resident Plant Doctor will diagnose the issue and more importantly, offer a solution!')
+                                                                'Plant Emporium, and we just want to welcome you to our shiny new website! It has taken a lot of blood, sweat and tears to get to this point and we cannot believe it is all actually working now.')
+blog2 = BlogPosts(author='Master of the Retail Outlet', date_posted='2022-03-16', title='Exciting News', post_content='The shop is now officially open! We have a delightful new physical retail space, located in the heart of Sky Studios in Isleworth. After all the renovation work we have done, we cannot wait to show off the space! Come and see us to get your plant fix, we have some gorgeous stock and are happy to help you choose the perfect new planty companion.')
+blog3 = BlogPosts(author='The Plant Doctor', date_posted='2022-04-30', title='Plant Clinic', post_content='We are now going to be running Sad Plant Fridays - post your ailing plants to Twitter #SadPlantFridays or email us at jody@theplantemporium.com and our resident Plant Doctor will diagnose the issue and more importantly, offer a solution! The Plant Doctor has years of experience in diagnosing and treating all manner of plant ailments, and firmly believes that we should Never Say Die! Well, unless the plant is really SUPER dead of course.')
 blogs = [blog1, blog2, blog3]
 
 # Newsletter signup table
