@@ -25,12 +25,13 @@
             </thead>
             <tbody>
                 <tr>
-                {% for customer, order, order_detail, product in customer_orders %}
+                {% for customer, order, order_status, order_detail, product in customer_orders %}
 
                     <th scope="row">{{order.id}}</th>
                       <td>{{customer.first_name}}  </td>
                       <td>{{customer.last_name}}</td>
                       <td>{{order.order_date}}</td>
+                      <td>{{order_status.status_description}}</td>
                       <td>{{product.species}}</td>
                       <td>{{order_detail.quantity}}</td>
 

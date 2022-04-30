@@ -612,9 +612,10 @@ def staff_jobs():
 @app.route('/customer_orders', methods=['GET'])
 def show_customer_orders():
     error = ""
-    headings = ('Order ID number', 'Customer First Name', 'Customer Last Name', 'Date of Order', 'Species', 'Quantity')
-    customer_orders = db.session.query(Person, OrderHeader, OrderLine, Product).select_from(Person).join(
-        OrderHeader).join(OrderLine).join(Product).all()
+    headings = ('Order ID number', 'Customer First Name', 'Customer Last Name', 'Date of Order', 'Order Status', 'Species', 'Quantity')
+    customer_orders = db.session.query(Person, OrderHeader, OrderStatus, OrderLine, Product).select_from(Person).join(
+        OrderHeader).join(OrderStatus).join(OrderLine).join(Product).all()
+
     return render_template('customer_orders.html', customer_orders=customer_orders, message=error, headings=headings)
 
 # QUERY: Outstanding orders
