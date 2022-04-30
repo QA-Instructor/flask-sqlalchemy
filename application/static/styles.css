@@ -52,6 +52,16 @@ a {
     color: white;
     }
 
+a:link {
+    color: #2E6B28;
+
+}
+
+a:visited {
+    color: #2E6B28;
+
+}
+
 /* Styling the buttons and place it in the middle of the container/image */
 .container-home .btn1 {
   position: absolute;
