@@ -311,15 +311,18 @@
             </div>
             {% endif %}
 
-            <div class="row justify-content-md-center p-3 border">
-                <div class="col p-2"><h4>Price</h4>
-                    £{{ plant.price }}</div>
+            <div class="row justify-content-md-center p-3">
+
 <!--                make this into a form-->
 
-                <form action="{{ url_for('add_to_cart') }}" method="post">
+                <form action="{{ url_for('add_to_cart') }}" method="post" class="d-flex">
+                     <div class="col p-2"><h4>Price</h4>
+                    £{{ plant.price }}
+                </div>
                     <div class="col p-2"><h4>Quantity</h4>
                         <input type="text" class="product-quantity" name="quantity" value="1" size="2" min="1", max="{{plant.stock}}" />
                     </div>
+
                     <div class="col p-2 pt-4">
                        <button type="submit" class="btn btn-info"></a>Add to Cart</button>
                     </div>
