@@ -528,7 +528,7 @@ def add_to_cart():
         attributeObject['quantity'] = form.quantity.data
         attributeObject['sub_total'] = (plant.price * form.quantity.data)
         if 'cart' in session:
-            # session['cart'].append(attributeObject)
+            session['cart'].append(attributeObject)
             # below for loop merges duplicates when item added to the cart twice
             for idx, cart_item in enumerate(session['cart']):
                 if plant.id == cart_item['id']:
