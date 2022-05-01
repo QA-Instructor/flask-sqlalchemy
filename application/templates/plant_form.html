@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block body_content %}
+<div class="forms">
+    <form action="", method="POST">
+        {{ form.hidden_tag() }}
+        <fieldset>
+            <legend>Add Plant</legend>
+            <h5>Here, you'll be able to:</h5>
+            <li>Add a plant to the existing Plant Emporium Directory</li>
+            <br>
+            <div class="form-group">
+                {{ form.plant_species.label(class="form-control-label") }}
+                {{ form.plant_species(class="form-control form-control-lg", placeholder="e.g. Boston Fern") }}
+            </div>
+            <div class="form-group">
+                {{ form.plant_type.label(class="form-control-label") }}
+                {{ form.plant_type(class="form-control form-control-lg") }}
+            </div>
+            <div class="form-group">
+                {{ form.plant_category.label(class="form-control-label") }}
+                {{ form.plant_category(class="form-control form-control-lg") }}
+            </div>
+            <div class="form-group">
+                {{ form.plant_size.label(class="form-control-label") }}
+                {{ form.plant_size(class="form-control form-control-lg") }}
+            </div>
+            <div class="form-group">
+                {{ form.plant_stock.label(class="form-control-label") }}
+                {{ form.plant_stock(class="form-control form-control-lg") }}
+            </div>
+            <div class="form-group">
+                {{ form.plant_price.label(class="form-control-label") }}
+                {{ form.plant_price(class="form-control form-control-lg") }}
+            </div>
+        </fieldset>
+        <br>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-secondary") }}
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}

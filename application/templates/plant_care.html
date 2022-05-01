@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+{% block body_content %}
+
+<div class="container-blog">
+  <img class="bg obj-fit-cover" src="{{url_for('static',filename='images/header_plant_care_flip.png')}}" alt="spiky succulent">
+  <h1>Plant Care Blog</h1>
+
+
+</div>
+<!--<h2 class="blog-post-title">Plant Care</h2>-->
+<!--<blockquote class="text-left">Welcome to the Plant Care Blog! Here our staff will offer regular tips as well as highlighting important events.</blockquote>-->
+
+<!--<div class="container-fluid bg-1 text-left">-->
+<!--    <h2 class="blog-post-title">Recent Posts</h2>-->
+<!--    <hr>-->
+<!--    {% for post in posts %}-->
+<!--    <h3 class="pb-4 mb-4 fst-italic border-bottom">-->
+<!--        <a href="post/{{ post.id }}">  {{ post.title }} </a>-->
+<!--    </h3>-->
+<!--        <p> {{ post.post_content }}</p>-->
+<!--    &lt;!&ndash;            this if block displays a different image based on the post_id field; can be set to specific numbers or could do a range etc etc&ndash;&gt;-->
+<!--        {% if post.id == 1 %}-->
+<!--            <div class="thumbnail">-->
+<!--            <img src="{{ url_for('static', filename='images/aloe_vera_pot.jpg') }}" alt="aloe vera plant" style="width:15%">-->
+<!--            </div>-->
+<!--        {% elif post.id == 2 %}-->
+<!--            <div class="thumbnail">-->
+<!--            <img src="{{ url_for('static', filename='images/parlour_palm.jpg') }}" alt="parlour palm" style="width:15%">-->
+<!--            </div>-->
+<!--        {% else %}-->
+<!--            <div class="thumbnail">-->
+<!--            <img src="{{ url_for('static', filename='images/swiss_cheese_plant.jpg') }}" alt="swiss cheese plant" style="width:15%">-->
+<!--            </div>-->
+<!--        {% endif %}-->
+<!--        <p class="blog-post-meta">Posted by {{ post.author }} on {{ post.date_posted.strftime('%B %d, %Y') }}</p>-->
+<!--    <br>-->
+<!--    <hr>-->
+<!--    {% endfor %}-->
+<!--</div>-->
+
+
+
+<blockquote class="text-left">Welcome to the Plant Care Blog! Here our staff will offer regular tips as well as highlighting important events.</blockquote>
+
+
+{% for post in posts %}
+<div class="card-deck"  style="width: 30rem">
+  <div class="card my-4" >
+     {% if post.id == 1 %}
+    <img class="card-img-top"  src="{{url_for('static',filename='images/lifestyle3.jpg')}}" alt="Card image cap">
+     {% elif post.id == 2 %}
+    <img class="card-img-top" src="{{url_for('static',filename='images/lifestyle1.jpg')}}" alt="Card image cap">
+      {% elif post.id == 3 %}
+    <img class="card-img-top" src="{{url_for('static',filename='images/green_leaves.jpg')}}" alt="Card image cap">
+      {% else %}
+    <img class="card-img-top" src="{{url_for('static',filename='images/general_rose_2.jpg')}}" alt="Card image cap">
+      {% endif %}
+
+
+      <div class="card-body" >
+      <h5 class="card-title"><a href=post/{{ post.id }}>{{ post.title }}</a></h5>
+      <h6 class="card-subtitle mb-2 text-muted">Posted by: {{ post.author }}</h6>
+      <p class="card-text">{{ post.post_content }}</p>
+      <p class="card-text"><small class="text-muted">{{ post.date_posted.strftime('%B %d, %Y') }}</small></p>
+    </div>
+  </div>
+
+</div>
+ {% endfor %}
+{% endblock %}

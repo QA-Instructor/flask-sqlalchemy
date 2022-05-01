@@ -4,3 +4,5 @@ pymysql
 wtforms
 flask_wtf
 markupsafe==2.0.1
+cryptography
+email_validator

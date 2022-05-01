@@ -1,16 +1,324 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
     <title>{{title}} - Page</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/plant_emporium_favicon.png') }}">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>{{ title }} Page</h1>
+
+{% if session['typesession'] == 'staff' and session['logged_in'] == True %}
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #2E6B28;">
+      <a class="navbar-brand" href="{{ url_for('email_signup_form') }}">TPE</a>
+      <button
+              class="navbar-toggler"
+              type="button" data-toggle="collapse"
+              data-target="#staffnavbarSupportedContent"
+              aria-controls="staffnavbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="staffnavbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('email_signup_form') }}">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('about') }}">About Us <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('contact') }}">Contact Us <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('plant_care') }}">Plant Care <span class="sr-only">(current)</span></a>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="{{ url_for('shop') }}" id="staffnavbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Shop
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="staffnavbarDropdown">
+              <a class="dropdown-item" href="{{ url_for('show_indoor_plants') }}">Indoor</a>
+              <a class="dropdown-item" href="{{ url_for('show_outdoor_plants') }}">Outdoor</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{{ url_for('shop') }}">All plants</a>
+            </div>
+          </li>
+<!--            if you want a disabled/greyed out menu option-->
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>-->
+<!--          </li>-->
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="staffadditemnavbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Add Item
+            </a>
+<!--              update these links once we have the routes set up-->
+            <div class="dropdown-menu" aria-labelledby="staffadditemnavbarDropdown">
+              <a class="dropdown-item" href="{{ url_for('register') }}">Add new customer</a>
+              <a class="dropdown-item" href="{{ url_for('register_staff') }}">Add new staff member</a>
+              <a class="dropdown-item" href="{{ url_for('plant_form') }}">Add new plant</a>
+              <a class="dropdown-item" href="{{ url_for('addpost') }}">Add new blog post</a>
+
+            </div>
+          </li>
+<!-- don't actually have any updating routes set up! -->
+<!--          <li class="nav-item dropdown">-->
+<!--            <a class="nav-link dropdown-toggle" id="staffupdateitemnavbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--              Update Item-->
+<!--            </a>-->
+<!--&lt;!&ndash;              update these links once we have the routes set up&ndash;&gt;-->
+<!--            <div class="dropdown-menu" aria-labelledby="staffupdateitemnavbarDropdown">-->
+<!--              <a class="dropdown-item" href="#">Update customer</a>-->
+<!--              <a class="dropdown-item" href="#">Update staff member</a>-->
+<!--              <a class="dropdown-item" href="#">Update plant</a>-->
+<!--              <a class="dropdown-item" href="#">Update blog post</a>-->
+
+<!--            </div>-->
+<!--          </li>-->
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="staffdeleteitemnavbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Delete Item
+            </a>
+<!--              update these links once we have the routes set up-->
+            <div class="dropdown-menu" aria-labelledby="staffdeleteitemnavbarDropdown">
+<!--              update this link once fixed-->
+              <a class="dropdown-item" href="{{ url_for('delete_blogpost') }}">Delete blog post</a>
+
+            </div>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="staffqueriesnavbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Reports
+            </a>
+<!--              update these links once we have the routes set up-->
+            <div class="dropdown-menu" aria-labelledby="staffqueriesnavbarDropdown">
+              <a class="dropdown-item" href="{{ url_for('staff_jobs') }}">Staff list</a>
+              <a class="dropdown-item" href="{{ url_for('show_customer_orders') }}">Customer orders</a>
+              <a class="dropdown-item" href="{{ url_for('stock_list') }}">Stock list</a>
+              <a class="dropdown-item" href="{{ url_for('show_outstanding_orders') }}">Orders to ship</a>
+
+
+            </div>
+          </li>
+        </ul>
+
+        <span class="navbar-text ml-2">
+          Staff
+        </span>
+
+
+        <form class="form-inline">
+          <button class="btn btn-outline-success ml-2 btn-sm" style="background-color: #F0EDE1;" type="button"><a href="{{ url_for('delete_session') }}">Log out</a></button>
+        </form>
+
+
+        <form method="POST" action="{{ url_for('search') }}" class="form-inline my-2 my-lg-0">
+          {{ form.hidden_tag() }}
+          <input class="form-control-sm mr-sm-2 ml-2" type="search" placeholder="Search" aria-label="Search", name="searched">
+          <button class="btn btn-outline-success my-2 my-sm-0 btn-sm" style="background-color: #F0EDE1;" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+
+{% elif session['typesession'] == 'customer' and session['logged_in'] == True %}
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0A451B;">
+      <a class="navbar-brand" href="{{ url_for('email_signup_form') }}">The Plant Emporium</a>
+      <button
+              class="navbar-toggler"
+              type="button" data-toggle="collapse"
+              data-target="#customernavbarSupportedContent"
+              aria-controls="customernavbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="customernavbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('email_signup_form') }}">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('about') }}">About Us <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('contact') }}">Contact Us <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('plant_care') }}">Plant Care <span class="sr-only">(current)</span></a>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="{{ url_for('shop') }}" id="customernavbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Shop
+            </a>
+<!--              update these links once we have the routes set up-->
+            <div class="dropdown-menu" aria-labelledby="customernavbarDropdown">
+              <a class="dropdown-item" href="{{ url_for('show_indoor_plants') }}">Indoor</a>
+              <a class="dropdown-item" href="{{ url_for('show_outdoor_plants') }}">Outdoor</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{{ url_for('shop') }}">All plants</a>
+            </div>
+          </li>
+<!--            if you want a disabled/greyed out menu option-->
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>-->
+<!--          </li>-->
+
+
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="customeraccountnavbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              My Account
+            </a>
+<!--              update these links once we have the routes set up-->
+            <div class="dropdown-menu" aria-labelledby="customeraccountnavbarDropdown">
+              <a class="dropdown-item" href="{{ url_for('customer_order_history') }}">Order History</a>
+              <a class="dropdown-item" href="{{ url_for('update_customer_email') }}">Update email address</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{{ url_for('delete_session') }}">Log Out</a>
+
+            </div>
+          </li>
+
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('view_cart') }}">Shopping Cart <span class="sr-only">(current)</span></a>
+          </li>
+
+        </ul>
+
+        <span class="navbar-text ml-2" >
+          Welcome Back {{ session['logged_in_username'] }}
+        </span>
+
+        <form class="form-inline">
+          <button class="btn btn-outline-success ml-2 btn-sm" style="background-color: #F0EDE1;" type="button"><a href="{{ url_for('delete_session') }}">Log out</a></button>
+        </form>
+
+        <form method="POST" action="{{ url_for('search') }}" class="form-inline my-2 my-lg-0">
+          {{ form.hidden_tag() }}
+          <input class="form-control-sm mr-sm-2 ml-2" type="search" placeholder="Search" aria-label="Search", name="searched">
+          <button class="btn btn-outline-success my-2 my-sm-0 btn-sm" style="background-color: #F0EDE1;" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+
+
+{% else %}
+<!--if no session variable, display standard nav-->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #2E6B28;">
+      <a class="navbar-brand" href="{{ url_for('email_signup_form') }}">The Plant Emporium</a>
+      <button
+              class="navbar-toggler"
+              type="button" data-toggle="collapse"
+              data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('email_signup_form') }}">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('about') }}">About Us <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('contact') }}">Contact Us <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('plant_care') }}">Plant Care <span class="sr-only">(current)</span></a>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="{{ url_for('shop') }}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Shop
+            </a>
+<!--              update these links once we have the routes set up-->
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">Indoor</a>
+              <a class="dropdown-item" href="#">Outdoor</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{{ url_for('shop') }}">All plants</a>
+            </div>
+          </li>
+<!--            if you want a disabled/greyed out menu option-->
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>-->
+<!--          </li>-->
+        </ul>
+
+        <form class="form-inline">
+          <button class="btn btn-outline-success ml-2 btn-sm" style="background-color: #F0EDE1;" type="button"><a href="{{ url_for('login') }}">Log in</a></button>
+        </form>
+
+        <form class="form-inline">
+          <button class="btn btn-outline-success ml-2 btn-sm" style="background-color: #F0EDE1;" type="button"><a href="{{ url_for('register') }}">Register</a></button>
+        </form>
+
+        <form method="POST" action="{{ url_for('search') }}" class="form-inline my-2 my-lg-0">
+          <div class="col-auto">{{ form.hidden_tag() }}
+            <label class="visually-hidden" for="autoSizingInput"></label>
+          <input class="form-control-sm mr-sm-2 ml-2" id="autoSizingInput" type="search" placeholder="Search" aria-label="Search", name="searched">
+          <button class="btn btn-outline-success my-2 my-sm-0 btn-sm" style="background-color: #F0EDE1;" type="submit">Search</button>
+          </div>
+        </form>
+      </div>
+    </nav>
+
+
+{% endif %}
+
+
+<!--    <h1>{{ title }} Page</h1>-->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
 {% block body_content %}{% endblock %}
 <hr>
 {% block footer_content %}{% endblock %}
+
+<footer>
+        <img class="logo" src="{{url_for('static',filename='/images/plant_emporium_logo.png')}}" alt="logo" height="300px" width="300px">
+        <p>&copy; 2022 The Plant Emporium, brought to you by Team Yellow</p>
+
+</footer>
+
+<!-- Optional JavaScript for Bootstrap -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
 </body>
+
 </html>
 

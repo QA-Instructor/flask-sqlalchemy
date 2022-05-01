@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block body_content %}
+
+
+<div class="container-contact">
+  <img class="bg obj-fit-cover" src="{{url_for('static',filename='images/header_contact_us.png')}}" alt="plants">
+  <h1>Contact Us</h1>
+
+
+</div>
+<h1>Contact Us</h1>
+
+<h2>You can reach us by the following methods</h2>
+
+<h3>Phone:</h3>
+<p>0208555444</p>
+<h3>Email:</h3>
+info@plantemporium.com
+<h3>Address:</h3>
+<p>The Plant Emporium <br>
+Sky Studios <br>
+Grant Way, <br>
+Isleworth <br>
+TW7 5QD</p>
+
+<!--location map from google maps-->
+<h4>Locate us:</h4>
+<p><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d158963.9634391506!2d-0.3515108968034671!3d51.498318670930935!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48760da6d86a7cbd%3A0x89f5cc64588e9c32!2sSky%20Studios!5e0!3m2!1sen!2suk!4v1650049903329!5m2!1sen!2suk" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></p>
+
+
+{% endblock %}

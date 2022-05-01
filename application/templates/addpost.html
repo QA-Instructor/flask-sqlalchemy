@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block body_content %}
+
+<div class="forms">
+    <form action="", method="POST">
+        {{ form.hidden_tag() }}
+        <fieldset>
+            <legend>Add a blogpost</legend>
+            <h5>Here, you'll be able to:</h5>
+            <li>Add a new blogpost!</li>
+
+            <br>
+            <div class="form-group">
+                {{ form.title.label(class="form-control-label") }}
+                {{ form.title(class="form-control form-control-lg") }}
+            </div>
+            <div class="form-group">
+                {{ form.author.label(class="form-control-label") }}
+                {{ form.author(class="form-control form-control-lg") }}
+            </div>
+            <div class="form-group">
+                {{ form.post_content.label(class="form-control-label") }}
+                {{ form.post_content(class="form-control form-control-lg") }}
+            </div>
+          </fieldset>
+        <div class="form-group">
+            {{ form.submit }}
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}
