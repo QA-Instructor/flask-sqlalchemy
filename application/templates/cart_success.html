@@ -136,21 +136,17 @@
 
 </div>
 
-    <button class="btn1"><a href="{{ url_for('clear_cart') }}" style="color:#0A451B">Empty Cart</a></button>
+<h2> Placing an order </h2>
+<p> Click Checkout when you have everything that you need! </p>
 
-<!--trying to get submit order button here but doesn't work because this is on the OrderForm form-->
-<!--<br>-->
 
-<!--<div class="forms">-->
-<!--    <form action="", method="POST">-->
-<!--        {{ form.hidden_tag() }}-->
-<!--        {{ form.csrf_token() }}-->
-<!--        <fieldset>-->
-<!--        </fieldset>-->
-<!--<div class="form-group">-->
-<!--    {{ form.submit(class="btn btn-secondary") }}-->
-<!-- </div>-->
-<!--    </form>-->
-<!--</div>-->
+<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+  <button class="btn btn-warning me-md-2 ml-2 btn-lg" type="button"><a href="{{ url_for('clear_cart') }}" style="color:#0A451B">Empty Cart</a></button>
+
+</div>
+
+<div class="mx-auto" style="width: 200px;">
+  <button class="btn btn-success ml-2 btn-lg" type="button"><a href="{{ url_for('view_cart') }}" style="color:white">Checkout</a></button>
+</div>
 
 {% endblock %}

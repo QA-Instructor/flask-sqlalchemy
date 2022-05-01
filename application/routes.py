@@ -24,7 +24,8 @@ def email_signup_form():
             news = Newsletter(newsletter_email=email)
             db.session.add(news)
             db.session.commit()
-            return 'Thank you!'
+            flash(f'Success! {form.email.data} will now get our lovely email newsletter', 'success')
+            return render_template('home.html', form=form, message=error, title='home')
     return render_template('home.html', form=form, message=error, title='home')
 
 
@@ -435,7 +436,7 @@ def login():
             for person in login_type:
                 login_type_staff = person.person_type_id
 
-            print(login_type_staff)
+            # print(login_type_staff)
 
             if login_type_staff == 1:
                 # if person_type = 1 then:
@@ -823,7 +824,7 @@ def complete_order():
 
     if request.method == 'POST':
         cart_contents = session['cart']
-        print("cart contents", cart_contents)
+        # print("cart contents", cart_contents)
         # cart_contents is a list with multiple dictionaries in (if more than one type of item in the cart)
         total_cost = 0
         # iterate through the dictionaries to get the values needed
@@ -853,15 +854,18 @@ def complete_order():
         order_header = OrderHeader(person_id=person_id, order_date=order_date, status_id=status_id,
                                    total_cost=total_cost)
 
-        order_line = OrderLine(product_id=product_id, quantity=quantity, price_paid=price_paid)
-        print("order header", order_header)
-        print("order line", order_line)
+        order_line = OrderLine(order_header=order_header, product_id=product_id, quantity=quantity, price_paid=price_paid)
+        # print("order header", order_header)
+        # print("order line", order_line)
 
         db.session.add(order_header)
         db.session.add(order_line)
 
         db.session.commit()
-        return render_template('complete_order.html', title='Complete Order', message=error, form=form)
+        session.pop('cart', default=None)
+        flash(f' Order successfully placed, enjoy your new plant friends!', 'success')
+
+        return render_template('home.html', title='Home', message=error, form=EmailSignUpForm())
     return render_template('complete_order.html', title='Complete Order', message=error, form=form)
 
 @app.route('/update_customer_email', methods=['PUT', 'GET'])
@@ -878,6 +882,7 @@ def update_customer_email():
         db.session.commit()
 
         flash(f' You have updated your email address!', 'success')
+
         return render_template('home.html', message=error, title="Home")
     return render_template('update_email.html', form=form, person_id=person_id, message=error, title='Update Email')
 
