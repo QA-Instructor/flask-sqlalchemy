@@ -487,42 +487,64 @@ def delete_session():
 
 # session variables - shopping cart
 
-@app.route('/add_to_cart', methods=['GET', 'POST'])
+@app.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
+
     error = ""
     form = AddToCartForm()
 
-    if request.method == 'POST':
-        product = form.product.data
-        quantity = form.quantity.data
-        # price = [Product.query.filter_by(product).first()]
-        # price = form.price.data
-        attributes = Product.query.filter_by(id=product).all()
-        headings = ('Image', 'Plant Name', 'Species', 'Price', 'Quantity', 'Sub-Total')
-        #
-        # productAttributes = []
+    # error message if user tries to press add to cart when not logged in
+    if 'logged_in' not in session:
 
-        # what if we nested dictionaries not lists?
-        # productAttributes = {}
+        flash(' Please Login to make a purchase', 'danger')
+        return redirect(url_for('login'))
+        return render_template('login.html', title='Home', form=form, message=error)
+        # return render_template('add_to_cart.html', form=form, message=error, title='home')
 
-        for attribute in attributes:
-            attributeObject = {}
-            attributeObject['id'] = attribute.id
-            attributeObject['species'] = attribute.species
-            attributeObject['price'] = attribute.price
-            attributeObject['plant_nickname'] = attribute.plant_nickname
-            attributeObject['quantity'] = quantity
-            attributeObject['sub_total'] = (attribute.price * quantity)
-            if 'cart' in session:
-                session['cart'].append(attributeObject)
-                session.modified = True
+    headings = ('Image', 'Plant Name', 'Species', 'Price', 'Quantity', 'Sub-Total')
 
-            else:
-                session['cart'] = [attributeObject]
+    # if request.method == 'POST':
 
+    plant_id = int(request.referrer.split('/')[4])
+    plant = Product.query.filter_by(id=plant_id).one()
+    # product = form.product.data
+    # quantity = form.quantity.data
 
-        return render_template('cart_success.html', title='Cart', form=form, message=error, attributeObject=attributeObject, cart_contents=session['cart'], headings=headings)
-    return render_template('add_to_cart.html', form=form, message=error, title='home')
+    # price = [Product.query.filter_by(product).first()]
+    # price = form.price.data
+    # attributes = Product.query.filter_by(id=product).all()
+
+    #
+    # productAttributes = []
+
+    # what if we nested dictionaries not lists?
+    # productAttributes = {}
+    attributeObject = {}
+    # for attribute in plant:
+
+    attributeObject['id'] = plant.id
+    attributeObject['species'] = plant.species
+    attributeObject['price'] = plant.price
+    attributeObject['plant_nickname'] = plant.plant_nickname
+    attributeObject['quantity'] = form.quantity.data
+    attributeObject['sub_total'] = (plant.price * form.quantity.data)
+    if 'cart' in session:
+        # session['cart'].append(attributeObject)
+        # below for loop merges duplicates when item added to the cart twice
+        plantInCart = False
+        for idx, cart_item in enumerate(session['cart']):
+            if plant.id == cart_item['id']:
+                session['cart'][idx]['quantity'] += form.quantity.data
+                session['cart'][idx]['sub_total'] += plant.price * form.quantity.data
+                plantInCart = True
+        if not plantInCart:
+            session['cart'].append(attributeObject)
+        session.modified = True
+    else:
+        session['cart'] = [attributeObject]
+
+    return render_template('cart_success.html', title='Cart', form=form, message=error, attributeObject=attributeObject, cart_contents=session['cart'], headings=headings)
+    # return render_template('cart.html', title='Cart', form=form, message=error, cart_contents=session['cart'], headings=headings)
 
 # view cart (currently very basic!)
 @app.route('/cart', methods=['GET', 'POST'])
@@ -613,7 +635,11 @@ def search():
 
 @app.route('/plant/<int:plant_id>')
 def plant(plant_id):
+
+    # form = AddToCartForm()
+
     plant = Product.query.filter_by(id=plant_id).one()
+
     return render_template('plant.html', title="Plant", plant=plant)
 
 
