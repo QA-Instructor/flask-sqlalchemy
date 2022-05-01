@@ -126,14 +126,14 @@
 
 
         <form class="form-inline">
-          <button class="btn btn-outline-success ml-2 btn-sm" type="button"><a href="{{ url_for('delete_session') }}">Log out</a></button>
+          <button class="btn btn-outline-success ml-2 btn-sm" style="background-color: #F0EDE1;" type="button"><a href="{{ url_for('delete_session') }}">Log out</a></button>
         </form>
 
 
         <form method="POST" action="{{ url_for('search') }}" class="form-inline my-2 my-lg-0">
           {{ form.hidden_tag() }}
           <input class="form-control-sm mr-sm-2 ml-2" type="search" placeholder="Search" aria-label="Search", name="searched">
-          <button class="btn btn-outline-success my-2 my-sm-0 btn-sm" type="submit">Search</button>
+          <button class="btn btn-outline-success my-2 my-sm-0 btn-sm" style="background-color: #F0EDE1;" type="submit">Search</button>
         </form>
       </div>
     </nav>
@@ -210,13 +210,13 @@
         </span>
 
         <form class="form-inline">
-          <button class="btn btn-outline-success ml-2 btn-sm" type="button"><a href="{{ url_for('delete_session') }}">Log out</a></button>
+          <button class="btn btn-outline-success ml-2 btn-sm" style="background-color: #F0EDE1;" type="button"><a href="{{ url_for('delete_session') }}">Log out</a></button>
         </form>
 
         <form method="POST" action="{{ url_for('search') }}" class="form-inline my-2 my-lg-0">
           {{ form.hidden_tag() }}
           <input class="form-control-sm mr-sm-2 ml-2" type="search" placeholder="Search" aria-label="Search", name="searched">
-          <button class="btn btn-outline-success my-2 my-sm-0 btn-sm" type="submit">Search</button>
+          <button class="btn btn-outline-success my-2 my-sm-0 btn-sm" style="background-color: #F0EDE1;" type="submit">Search</button>
         </form>
       </div>
     </nav>
@@ -270,18 +270,18 @@
         </ul>
 
         <form class="form-inline">
-          <button class="btn btn-outline-success ml-2 btn-sm" type="button"><a href="{{ url_for('login') }}">Log in</a></button>
+          <button class="btn btn-outline-success ml-2 btn-sm" style="background-color: #F0EDE1;" type="button"><a href="{{ url_for('login') }}">Log in</a></button>
         </form>
 
         <form class="form-inline">
-          <button class="btn btn-outline-success ml-2 btn-sm" type="button"><a href="{{ url_for('register') }}">Register</a></button>
+          <button class="btn btn-outline-success ml-2 btn-sm" style="background-color: #F0EDE1;" type="button"><a href="{{ url_for('register') }}">Register</a></button>
         </form>
 
         <form method="POST" action="{{ url_for('search') }}" class="form-inline my-2 my-lg-0">
           <div class="col-auto">{{ form.hidden_tag() }}
             <label class="visually-hidden" for="autoSizingInput"></label>
           <input class="form-control-sm mr-sm-2 ml-2" id="autoSizingInput" type="search" placeholder="Search" aria-label="Search", name="searched">
-          <button class="btn btn-outline-success my-2 my-sm-0 btn-sm" type="submit">Search</button>
+          <button class="btn btn-outline-success my-2 my-sm-0 btn-sm" style="background-color: #F0EDE1;" type="submit">Search</button>
           </div>
         </form>
       </div>
