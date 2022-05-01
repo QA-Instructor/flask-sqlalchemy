@@ -527,7 +527,8 @@ def add_to_cart():
 @app.route('/cart', methods=['GET', 'POST'])
 def view_cart():
     error = ""
-    form = AddToCartForm()
+    # form was set to AddToCart() but trying to get ordering working
+    form = OrderForm()
     if 'cart' in session:
         cart_contents = session['cart']
     else:
@@ -810,50 +811,58 @@ def show_premium_range():
 
 
 # Place an Order in progress, need to work out how to get the data out of the shopping cart
-# @app.route('/complete_order', methods=['GET', 'POST'])
-# def complete_order():
-#     error = ""
-#     form = OrderForm()
-#
-#     if form.validate_on_submit():
-#         flash(f' Order placed!', 'success')
-#     else:
-#         return render_template('cart.html', form=form)
-#
-#     if request.method == 'POST':
-#         cart_contents = session['cart']
-#         for item in cart_contents:
-#             print(item)
-#         person_id = session['id_number']
-#         order_date = date.today()
-#         status_id = 1
-#         total_cost = #need to work out how to get this from the shopping cart
-#         product_id = #need to work out how to get this from the shopping cart
-#         quantity = #need to work out how to get this from the shopping cart
-#         price_paid = #need to work out how to get this from the shopping cart
-#
-#
-#         # if messages left in for all form routes because may need to raise error here for validations that aren't currently showing
-#         # if len(first_name) == 0 \
-#         #         or len(last_name) == 0 \
-#         #         or len(email) == 0\
-#         #         or len(address_line_one) == 0\
-#         #         or len(postcode) == 0\
-#         #         or len(password) < 4\
-#         #         or len(username) == 0:
-#         #     error = "Please complete each section of this form"
-#         # else:
-#         order_header = OrderHeader(person_id=person_id, order_date=order_date, status_id=status_id,
-#                                    total_cost=total_cost)
-#
-#         order_line = OrderLine(product_id=product_id, quantity=quantity, price_paid=price_paid)
-#
-#         db.session.add(order_header)
-#         db.session.add(order_line)
-#
-#         db.session.commit()
-#         return render_template('home.html', title='Home', message=error, form=form)
-#     return render_template('home.html', title='Home', message=error, form=form)
+@app.route('/complete_order', methods=['GET', 'POST'])
+def complete_order():
+    error = ""
+    form = OrderForm()
+
+    # if form.validate_on_submit():
+    #     flash(f' Order placed!', 'success')
+    # else:
+    #     return render_template('cart.html', form=form)
+
+    if request.method == 'POST':
+        cart_contents = session['cart']
+        print("cart contents", cart_contents)
+        # cart_contents is a list with multiple dictionaries in (if more than one type of item in the cart)
+        total_cost = 0
+        # iterate through the dictionaries to get the values needed
+        for item in cart_contents:
+            person_id = session['id_number']
+            order_date = date.today()
+            status_id = 1
+            product_id = item['id']
+            quantity = item['quantity']
+            price_per_item= item['price']
+            price_paid = price_per_item * quantity
+            total_cost += price_paid # need to work out how to get this from the shopping cart is going to be sum of all subtotals
+
+
+        # if messages left in for all form routes because may need to raise error here for validations that aren't currently showing
+        # if len(first_name) == 0 \
+        #         or len(last_name) == 0 \
+        #         or len(email) == 0\
+        #         or len(address_line_one) == 0\
+        #         or len(postcode) == 0\
+        #         or len(password) < 4\
+        #         or len(username) == 0:
+        #     error = "Please complete each section of this form"
+        # else:
+
+        # it is so close to working! just not autopopulating the order_header id
+        order_header = OrderHeader(person_id=person_id, order_date=order_date, status_id=status_id,
+                                   total_cost=total_cost)
+
+        order_line = OrderLine(product_id=product_id, quantity=quantity, price_paid=price_paid)
+        print("order header", order_header)
+        print("order line", order_line)
+
+        db.session.add(order_header)
+        db.session.add(order_line)
+
+        db.session.commit()
+        return render_template('complete_order.html', title='Complete Order', message=error, form=form)
+    return render_template('complete_order.html', title='Complete Order', message=error, form=form)
 
 # Victoria's code
 # def register_basic_form():
