@@ -492,10 +492,15 @@ def add_to_cart():
     error = ""
     form = AddToCartForm()
 
-    if not session['logged_in']:
+    # error message if user tries to press add to cart when not logged in
+    if 'logged_in' not in session:
 
-        flash(f' Please Login to make a purchase', 'danger')
-        render_template('login.html', title="Login")
+        flash(' Please Login to make a purchase', 'danger')
+        return redirect(url_for('login'))
+        return render_template('login.html', title='Home', form=form, message=error)
+        # return render_template('add_to_cart.html', form=form, message=error, title='home')
+
+
 
     if request.method == 'POST':
 
@@ -524,6 +529,7 @@ def add_to_cart():
         attributeObject['sub_total'] = (plant.price * form.quantity.data)
         if 'cart' in session:
             # session['cart'].append(attributeObject)
+            # below for loop merges duplicates when item added to the cart twice
             for idx, cart_item in enumerate(session['cart']):
                 if plant.id == cart_item['id']:
                     session['cart'][idx]['quantity'] += form.quantity.data
@@ -532,9 +538,8 @@ def add_to_cart():
         else:
             session['cart'] = [attributeObject]
 
-
-    return render_template('cart_success.html', title='Cart', form=form, message=error, attributeObject=attributeObject, cart_contents=session['cart'], headings=headings)
-    # return render_template('add_to_cart.html', form=form, message=error, title='home')
+        return render_template('cart_success.html', title='Cart', form=form, message=error, attributeObject=attributeObject, cart_contents=session['cart'], headings=headings)
+    return render_template('add_to_cart.html', form=form, message=error, title='home')
 
 # view cart (currently very basic!)
 @app.route('/cart', methods=['GET', 'POST'])
@@ -628,11 +633,6 @@ def plant(plant_id):
     # form = AddToCartForm()
 
     plant = Product.query.filter_by(id=plant_id).one()
-
-    # if not session['logged_in']:
-    #
-    #     flash(f' Please Login to make a purchase', 'danger')
-    #     render_template('login.html', title="Login")
 
     return render_template('plant.html', title="Plant", plant=plant)
 
