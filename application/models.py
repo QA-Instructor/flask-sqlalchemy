@@ -131,7 +131,8 @@ class OrderHeader(db.Model):
     total_cost = db.Column(db.Integer)
     # staff_id = db.Column(db.Integer, db.ForeignKey('StaffInfo.id'), nullable=False)
     # staff_id = db.Column(db.Integer, db.ForeignKey('person.staff_info_id'), nullable=False)
-
+    # not a field in the table, but OrderLine table links back to OrderHeader
+    order_header = db.relationship('OrderLine', backref='order_header')
 
 
 class OrderLine(db.Model):
