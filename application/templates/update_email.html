@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block body_content %}
+
+<!--trying to get update email form and  button working here-->
+<div class="forms">
+    <form action="", method="PUT">
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token() }}
+        <fieldset>
+            <div class="form-group">
+                {{ form.new_email.label(class="form-control-label") }}
+                {{ form.new_email(class="form-control form-control-lg", placeholder="Example@email.com") }}
+            </div>
+        </fieldset>
+    <div class="form-group">
+    {{ form.submit(class="btn btn-secondary") }}
+    </div>
+    </form>
+
+</div>
+
+
+
+{% endblock %}

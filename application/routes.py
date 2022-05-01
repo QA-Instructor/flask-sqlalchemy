@@ -1,7 +1,7 @@
 from flask import render_template, request, flash, redirect, url_for, session
 from application import app, db
 from application.forms import EmailSignUpForm, CustomerRegistrationForm, StaffRegistrationForm, PlantForm,\
-    NewBlogPostForm, LogInForm, AddToCartForm, DeleteBlogPostForm, SearchForm, OrderForm
+    NewBlogPostForm, LogInForm, AddToCartForm, DeleteBlogPostForm, SearchForm, OrderForm, UpdateEmailForm
 
 from application.models import Person, Address, Newsletter, UserLogin, StaffInfo, Product, BlogPosts,\
     OrderHeader, OrderLine, OrderStatus, Category, PlantType, Size
@@ -863,6 +863,23 @@ def complete_order():
         db.session.commit()
         return render_template('complete_order.html', title='Complete Order', message=error, form=form)
     return render_template('complete_order.html', title='Complete Order', message=error, form=form)
+
+@app.route('/update_customer_email', methods=['PUT', 'GET'])
+@app.route('/customer/<int:person_id>/<string:new_email>', methods=['PUT', 'GET'])
+def update_customer_email():
+    error = ""
+    form = UpdateEmailForm()
+    person_id = session['id_number']
+    new_email = form.new_email.data
+
+    if request.method == 'PUT':
+        person = Person.query.get(person_id)
+        person.email = new_email
+        db.session.commit()
+
+        flash(f' You have updated your email address!', 'success')
+        return render_template('home.html', message=error, title="Home")
+    return render_template('update_email.html', form=form, person_id=person_id, message=error, title='Update Email')
 
 # Victoria's code
 # def register_basic_form():

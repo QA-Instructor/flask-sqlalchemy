@@ -138,6 +138,11 @@ class OrderForm(FlaskForm):
     # submit
     submit = SubmitField('Place Order')
 
+class UpdateEmailForm(FlaskForm):
+    new_email = StringField('New email address', validators=[DataRequired()])
+    # submit
+    submit = SubmitField('Update Email')
+
 # Victoria's code
 class BasicForm(FlaskForm):
     first_name = StringField('First Name')
