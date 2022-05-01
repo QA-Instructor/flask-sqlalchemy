@@ -80,6 +80,22 @@
 
 <button class="btn1"><a href="{{ url_for('clear_cart') }}" style="color:#0A451B">Empty Cart</a></button>
 
+<br>
+
+<!--trying to get place order button working here-->
+<!--<div class="forms">-->
+<!--    <form action="", method="POST">-->
+<!--        {{ form.hidden_tag() }}-->
+<!--        {{ form.csrf_token() }}-->
+<!--        <fieldset>-->
+<!--        </fieldset>-->
+<!--    <div class="form-group">-->
+<!--    {{ form.submit(class="btn btn-secondary") }}-->
+<!--    </div>-->
+<!--    </form>-->
+
+<!--</div>-->
+
 {% else %}
 
 <h1> Your cart is currently empty! Why not visit our <a href="{{ url_for('shop') }}">shop</a> for some inspiration?</h1>
